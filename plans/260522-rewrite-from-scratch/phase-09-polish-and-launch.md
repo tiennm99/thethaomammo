@@ -108,12 +108,12 @@ Smoke flow on production:
 - [x] Manifest + theme-color (slice 1; favicon binary deferred)
 - [x] `/api/health` endpoint (slice 1)
 - [ ] Lighthouse ≥ 90 on home + detail (defer — perf measurement)
-- [ ] All `docs/*.md` updated
-- [ ] Changelog v1.0 entry
-- [ ] Roadmap post-MVP listed
-- [ ] Smoke test workflow + tests
-- [ ] Deploy checklist documented
-- [ ] Production smoke green
+- [x] Core `docs/*.md` written (codebase-summary, deployment-guide, development-roadmap, project-changelog)
+- [x] Changelog (Unreleased entry)
+- [x] Roadmap post-MVP listed
+- [x] Smoke test workflow + tests (slice 2)
+- [x] Deploy checklist documented (deployment-guide § 8)
+- [ ] Production smoke green (run after first prod deploy)
 - [ ] v1.0.0 tagged
 
 ## Success Criteria
