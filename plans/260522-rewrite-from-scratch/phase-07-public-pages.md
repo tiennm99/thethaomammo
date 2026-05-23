@@ -131,9 +131,9 @@ Data flow:
 - [x] Athlete profile (slice 2; needs migration 000018 — v_athletes_public anon access)
 - [x] Club info (slice 2)
 - [x] Gallery (slice 2)
-- [ ] Print: athlete
-- [ ] Print: bracket
-- [ ] Print: match record
+- [x] Print: athlete (slice 3)
+- [x] Print: bracket (slice 3)
+- [x] Print: match record (slice 3, BIÊN BẢN THI ĐẤU form)
 - [x] sitemap.xml correct (slice 1)
 - [x] robots.txt blocks admin/print (slice 1)
 - [ ] LCP < 2.5s on 3G (Lighthouse)

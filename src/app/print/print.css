@@ -1,0 +1,62 @@
+/* Print-friendly styles. Applies to all /print/* routes. */
+
+.print-root {
+  background: white;
+  color: black;
+  font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
+  padding: 16mm;
+  max-width: 210mm;
+  margin: 0 auto;
+}
+
+.print-root h1,
+.print-root h2,
+.print-root h3 {
+  color: black;
+  margin: 0 0 8px 0;
+}
+
+.print-root table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.print-root th,
+.print-root td {
+  border: 1px solid #000;
+  padding: 6px 8px;
+  text-align: left;
+  font-size: 12pt;
+}
+
+.print-root .no-print {
+  display: block;
+}
+
+@media print {
+  @page {
+    size: A4;
+    margin: 14mm;
+  }
+  html,
+  body {
+    background: white !important;
+    color: black !important;
+  }
+  .print-root {
+    padding: 0;
+    max-width: 100%;
+  }
+  .no-print {
+    display: none !important;
+  }
+  a {
+    color: black;
+    text-decoration: none;
+  }
+  /* Avoid splitting rows in tables across pages where possible. */
+  tr,
+  .avoid-break {
+    page-break-inside: avoid;
+  }
+}
