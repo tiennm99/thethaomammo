@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
 import { sanitizeRulesHtml } from "@/lib/sanitize/rules-html";
+import { formatDate, formatDateRange } from "@/lib/format/date-range";
 import { SponsorGrid } from "@/components/public/sponsor-grid";
 import { GalleryPreview } from "@/components/public/gallery-preview";
 
@@ -40,28 +41,13 @@ const GENDER_LABEL: Record<string, string> = {
   mixed: "Đôi nam nữ",
 };
 
-function formatDateRange(start: string | null, end: string | null): string {
-  if (!start && !end) return "Chưa công bố";
-  const opts: Intl.DateTimeFormatOptions = {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-  };
-  const s = start ? new Date(start).toLocaleDateString("vi-VN", opts) : null;
-  const e = end ? new Date(end).toLocaleDateString("vi-VN", opts) : null;
-  if (s && e && s !== e) return `${s} – ${e}`;
-  return s ?? e ?? "Chưa công bố";
-}
-
 type Params = { params: Promise<{ slug: string }> };
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { slug } = await params;
   const data = await loadTournament(slug);
   if (!data) return { title: "Không tìm thấy giải đấu" };
-  const dateLabel = data.starts_at
-    ? new Date(data.starts_at).toLocaleDateString("vi-VN")
-    : "";
+  const dateLabel = formatDate(data.starts_at, "");
   return {
     title: data.name,
     description: `${data.name}${data.venue ? ` tại ${data.venue}` : ""}${dateLabel ? `, ${dateLabel}` : ""}.`,
@@ -119,7 +105,7 @@ export default async function TournamentDetailPage({ params }: Params) {
               {tournament.name}
             </h1>
             <p className="text-muted-foreground">
-              {formatDateRange(tournament.starts_at, tournament.ends_at)}
+              {formatDateRange(tournament.starts_at, tournament.ends_at, "Chưa công bố")}
               {tournament.venue && ` · ${tournament.venue}`}
             </p>
           </div>

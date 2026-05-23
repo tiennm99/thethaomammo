@@ -1,6 +1,5 @@
 import Link from "next/link";
-import { publicUrlFor } from "@/lib/storage/asset-upload";
-import { createClient } from "@/lib/supabase/server";
+import { publicAssetUrl } from "@/lib/storage/public-asset-url";
 
 type Photo = {
   id: string;
@@ -13,15 +12,14 @@ type Props = {
   photos: Photo[];
 };
 
-export async function GalleryPreview({ tournamentId, photos }: Props) {
+export function GalleryPreview({ tournamentId, photos }: Props) {
   if (photos.length === 0) return null;
-  const supabase = await createClient();
 
   return (
     <div className="space-y-3">
       <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
         {photos.slice(0, 6).map((p) => {
-          const url = publicUrlFor(supabase, "gallery", p.storage_path);
+          const url = publicAssetUrl("gallery", p.storage_path);
           if (!url) return null;
           return (
             <li

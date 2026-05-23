@@ -128,9 +128,9 @@ Data flow:
 - [x] Home page rendered (slice 1: tournament list, live badge)
 - [x] Tournament detail page (slice 1: events, sponsors, gallery preview, rules HTML sanitized w/ tabnabbing guard)
 - [x] Live index + detail (Phase 05 already shipped)
-- [ ] Athlete profile
-- [ ] Club info
-- [ ] Gallery
+- [x] Athlete profile (slice 2; needs migration 000018 — v_athletes_public anon access)
+- [x] Club info (slice 2)
+- [x] Gallery (slice 2)
 - [ ] Print: athlete
 - [ ] Print: bracket
 - [ ] Print: match record

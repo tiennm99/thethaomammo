@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { formatDateRange } from "@/lib/format/date-range";
 
 type Props = {
   slug: string;
@@ -21,26 +22,6 @@ const STATUS_BADGE: Record<string, string> = {
   in_progress: "bg-blue-100 text-blue-900",
   completed: "bg-muted text-muted-foreground",
 };
-
-function formatDateRange(start: string | null, end: string | null): string {
-  if (!start && !end) return "—";
-  const s = start
-    ? new Date(start).toLocaleDateString("vi-VN", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-      })
-    : null;
-  const e = end
-    ? new Date(end).toLocaleDateString("vi-VN", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-      })
-    : null;
-  if (s && e && s !== e) return `${s} – ${e}`;
-  return s ?? e ?? "—";
-}
 
 export function TournamentCard({
   slug,

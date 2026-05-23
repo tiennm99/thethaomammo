@@ -1,5 +1,4 @@
-import { publicUrlFor } from "@/lib/storage/asset-upload";
-import { createClient } from "@/lib/supabase/server";
+import { publicAssetUrl } from "@/lib/storage/public-asset-url";
 
 type Sponsor = {
   id: string;
@@ -27,9 +26,8 @@ const TIER_LABEL: Record<string, string> = {
   court: "Tài trợ sân",
 };
 
-export async function SponsorGrid({ sponsors }: { sponsors: Sponsor[] }) {
+export function SponsorGrid({ sponsors }: { sponsors: Sponsor[] }) {
   if (sponsors.length === 0) return null;
-  const supabase = await createClient();
 
   const byTier = new Map<string, Sponsor[]>();
   for (const s of sponsors) {
@@ -50,7 +48,7 @@ export async function SponsorGrid({ sponsors }: { sponsors: Sponsor[] }) {
           </h3>
           <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 items-center">
             {(byTier.get(tier) ?? []).map((s) => {
-              const url = publicUrlFor(supabase, "tournament-assets", s.logo_path);
+              const url = publicAssetUrl("tournament-assets", s.logo_path);
               const inner = url ? (
                 /* eslint-disable-next-line @next/next/no-img-element -- public sponsor logo, served from public Supabase Storage bucket */
                 <img

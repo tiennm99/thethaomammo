@@ -12,13 +12,25 @@ export default async function RegisterPage({ params }: Params) {
 
   const { data: tournament } = await supabase
     .from("tournaments")
-    .select("id, slug, name, is_legacy, payment_qr_path, payment_info_text")
+    .select("id, slug, name, status, is_legacy, payment_qr_path, payment_info_text")
     .eq("slug", slug)
     .is("deleted_at", null)
     .maybeSingle();
 
   if (!tournament || tournament.is_legacy) {
     notFound();
+  }
+
+  // Match the RPC's trust-boundary so we don't render a form that will fail on POST.
+  if (tournament.status !== "open" && tournament.status !== "in_progress") {
+    return (
+      <main className="flex-1 p-6 max-w-xl mx-auto">
+        <h1 className="text-2xl font-semibold">{tournament.name}</h1>
+        <p className="mt-3 text-sm text-muted-foreground">
+          Giải đấu hiện không mở đăng ký.
+        </p>
+      </main>
+    );
   }
 
   const { data: events } = await supabase
