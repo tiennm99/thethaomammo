@@ -10,11 +10,19 @@ const groups: { label: string; items: { href: string; label: string }[] }[] = [
     items: [
       { href: "/admin/tournaments", label: "Giải đấu" },
       { href: "/admin/clubs", label: "Câu lạc bộ" },
+      { href: "/admin/athletes", label: "Vận động viên" },
     ],
   },
   {
     label: "Đăng ký",
-    items: [{ href: "/admin/payments", label: "Duyệt thanh toán" }],
+    items: [
+      { href: "/admin/registrations", label: "Đăng ký" },
+      { href: "/admin/payments", label: "Duyệt thanh toán" },
+    ],
+  },
+  {
+    label: "Thi đấu",
+    items: [{ href: "/admin/matches", label: "Trận đấu" }],
   },
 ];
 

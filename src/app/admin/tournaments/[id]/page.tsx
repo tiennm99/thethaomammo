@@ -50,9 +50,17 @@ export default async function AdminTournamentEditPage({ params }: Params) {
           <h1 className="text-2xl font-semibold">{tournament.name}</h1>
           <p className="text-sm text-muted-foreground">/giai/{tournament.slug}</p>
         </div>
-        {tournament.status !== "archived" && (
-          <ArchiveButton action={archiveAction} />
-        )}
+        <div className="flex items-center gap-3">
+          <Link
+            href={`/admin/tournaments/${id}/courts`}
+            className="inline-flex h-9 px-3 items-center rounded-md border border-input text-sm hover:bg-accent"
+          >
+            Sân thi đấu →
+          </Link>
+          {tournament.status !== "archived" && (
+            <ArchiveButton action={archiveAction} />
+          )}
+        </div>
       </header>
 
       <section className="mb-8">
