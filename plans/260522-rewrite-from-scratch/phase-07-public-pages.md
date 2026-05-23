@@ -1,7 +1,7 @@
 ---
 phase: 07
 title: Public Pages — list/detail/live/gallery/sponsors/print
-status: pending
+status: in_progress
 effort: M (5-7 days)
 blocks: [09]
 depends_on: [03, 05]
@@ -124,20 +124,20 @@ Data flow:
 12. Performance pass: `next/image priority` on LCP image, font preload, defer client JS.
 
 ## Todo List
-- [ ] Custom image loader
-- [ ] Home page rendered
-- [ ] Tournament detail page
-- [ ] Live index + detail (realtime)
+- [ ] Custom image loader (deferred — using public Supabase URLs + native <img>; next/image follow-up)
+- [x] Home page rendered (slice 1: tournament list, live badge)
+- [x] Tournament detail page (slice 1: events, sponsors, gallery preview, rules HTML sanitized w/ tabnabbing guard)
+- [x] Live index + detail (Phase 05 already shipped)
 - [ ] Athlete profile
 - [ ] Club info
 - [ ] Gallery
 - [ ] Print: athlete
 - [ ] Print: bracket
 - [ ] Print: match record
-- [ ] sitemap.xml correct
-- [ ] robots.txt blocks admin/print
+- [x] sitemap.xml correct (slice 1)
+- [x] robots.txt blocks admin/print (slice 1)
 - [ ] LCP < 2.5s on 3G (Lighthouse)
-- [ ] No PII leaked in views
+- [x] No PII leaked in views (verified — all public reads go through v_*_public views or non-PII columns)
 
 ## Success Criteria
 - Home Lighthouse Performance ≥ 90 (mobile, throttled).
