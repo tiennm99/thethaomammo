@@ -125,7 +125,7 @@ src/server/admin/payments.ts             ← verifyPayment, rejectPayment
 - [x] Events CRUD nested under tournament (slice 2)
 - [x] Athletes list + edit + soft-delete/restore + CSV import/export (slice 3 + slice 6)
 - [x] Clubs CRUD (basic — no logo upload yet)
-- [x] Registrations admin — list + filter (manual create still pending) (slice 3)
+- [x] Registrations admin — list + filter (slice 3) + manual create singles (slice 7; doubles deferred)
 - [x] Payments verification queue (slice 2)
 - [x] Matches list + scoring shortcuts (slice 3)
 - [x] Courts CRUD (slice 3)

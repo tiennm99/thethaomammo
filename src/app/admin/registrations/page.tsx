@@ -84,11 +84,19 @@ export default async function AdminRegistrationsListPage({
 
   return (
     <main className="flex-1 p-6">
-      <header className="mb-6">
-        <h1 className="text-2xl font-semibold">Đăng ký</h1>
-        <p className="text-sm text-muted-foreground">
-          Toàn bộ đăng ký, lọc theo nội dung và trạng thái.
-        </p>
+      <header className="mb-6 flex items-start justify-between gap-3 flex-wrap">
+        <div>
+          <h1 className="text-2xl font-semibold">Đăng ký</h1>
+          <p className="text-sm text-muted-foreground">
+            Toàn bộ đăng ký, lọc theo nội dung và trạng thái.
+          </p>
+        </div>
+        <Link
+          href="/admin/registrations/new"
+          className="inline-flex h-9 px-3 items-center rounded-md bg-primary text-primary-foreground text-sm font-medium hover:opacity-90"
+        >
+          + Tạo đăng ký
+        </Link>
       </header>
 
       <form className="mb-4 flex flex-wrap gap-3 items-end" method="get">
