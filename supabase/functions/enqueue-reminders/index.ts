@@ -29,16 +29,21 @@ Deno.serve(async (req) => {
   const nowIso = now.toISOString();
 
   // Pending payments for tournaments starting in the next 24h.
+  // Filter is_legacy=false at the DB level to avoid pulling legacy rows.
+  // Runtime guard below is belt-and-suspenders.
   const { data: pendingPayments } = await supabase
     .from("registrations")
     .select(
       `id, user_id, event_id,
        event:event_id!inner ( tournament:tournament_id!inner ( id, name, starts_at, is_legacy ) )`,
     )
-    .eq("payment_status", "pending")
+    .in("payment_status", ["unpaid", "pending"])
+    .eq("event.tournament.is_legacy", false)
     .is("deleted_at", null);
 
   // Upcoming matches scheduled in the next 24h.
+  // Filter is_legacy=false at the DB level to avoid pulling legacy rows.
+  // Runtime guard below is belt-and-suspenders.
   const { data: upcomingMatches } = await supabase
     .from("matches")
     .select(
@@ -47,6 +52,7 @@ Deno.serve(async (req) => {
        participants:match_participants ( athlete_id )`,
     )
     .eq("status", "pending")
+    .eq("event.tournament.is_legacy", false)
     .gte("scheduled_at", nowIso)
     .lte("scheduled_at", horizonIso);
 
@@ -83,7 +89,7 @@ Deno.serve(async (req) => {
     });
   }
 
-  for (const m of (upcomingMatches ?? []) as Array<{
+  type MatchRow = {
     id: string;
     scheduled_at: string | null;
     round: number;
@@ -92,7 +98,28 @@ Deno.serve(async (req) => {
       | { name: string; tournament: { id: string; name: string; is_legacy: boolean } | { id: string; name: string; is_legacy: boolean }[] | null }[]
       | null;
     participants: { athlete_id: string | null }[] | null;
-  }>) {
+  };
+
+  // Collect all unique athlete IDs across all upcoming matches in one pass,
+  // then resolve claim_user_id in a single DB roundtrip (avoids N+1).
+  const allAthleteIds = new Set<string>();
+  for (const m of (upcomingMatches ?? []) as MatchRow[]) {
+    for (const p of m.participants ?? []) {
+      if (p.athlete_id) allAthleteIds.add(p.athlete_id);
+    }
+  }
+  const athleteUserMap = new Map<string, string>();
+  if (allAthleteIds.size > 0) {
+    const { data: athleteRows } = await supabase
+      .from("athletes")
+      .select("id, claim_user_id")
+      .in("id", [...allAthleteIds]);
+    for (const a of athleteRows ?? []) {
+      if (a.claim_user_id) athleteUserMap.set(a.id, a.claim_user_id);
+    }
+  }
+
+  for (const m of (upcomingMatches ?? []) as MatchRow[]) {
     const event = flatten(m.event);
     const t = event ? flatten(event.tournament) : null;
     if (!t || t.is_legacy) continue;
@@ -101,14 +128,9 @@ Deno.serve(async (req) => {
       .map((p) => p.athlete_id)
       .filter((id): id is string => Boolean(id));
     for (const athleteId of athletes) {
-      // Resolve athlete -> claim_user_id. Athletes without a claimed account
-      // won't receive a reminder; could be extended via registrations.user_id.
-      const { data: athlete } = await supabase
-        .from("athletes")
-        .select("claim_user_id")
-        .eq("id", athleteId)
-        .maybeSingle();
-      const userId = athlete?.claim_user_id ?? null;
+      // Athletes without a claimed account won't receive a reminder;
+      // could be extended via registrations.user_id.
+      const userId = athleteUserMap.get(athleteId) ?? null;
       if (!userId) continue;
       rows.push({
         type: "match_reminder",
