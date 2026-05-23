@@ -1,7 +1,7 @@
 ---
 phase: 09
 title: Polish + Launch — SEO, perf, error budget, deploy checklist
-status: pending
+status: in_progress
 effort: S (3-5 days)
 blocks: [10]
 depends_on: [01, 02, 03, 04, 05, 06, 07, 08]
@@ -103,11 +103,11 @@ Smoke flow on production:
 10. Cut `v1.0.0` tag.
 
 ## Todo List
-- [ ] 404 + error pages
-- [ ] OG / meta on key pages
-- [ ] Favicon + manifest
-- [ ] `/api/health` endpoint
-- [ ] Lighthouse ≥ 90 on home + detail
+- [x] 404 + error pages (slice 1: root + /giai/[slug] scoped)
+- [x] OG / meta on tournament detail (slice 1)
+- [x] Manifest + theme-color (slice 1; favicon binary deferred)
+- [x] `/api/health` endpoint (slice 1)
+- [ ] Lighthouse ≥ 90 on home + detail (defer — perf measurement)
 - [ ] All `docs/*.md` updated
 - [ ] Changelog v1.0 entry
 - [ ] Roadmap post-MVP listed

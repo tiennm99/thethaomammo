@@ -30,6 +30,11 @@ export const metadata: Metadata = {
     siteName: "Thể Thao Mầm Mơ",
     url: SITE_URL,
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "Thể Thao Mầm Mơ",
+  },
+  themeColor: "#0a0a0a",
   robots: { index: true, follow: true },
 };
 

@@ -48,9 +48,24 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const data = await loadTournament(slug);
   if (!data) return { title: "Không tìm thấy giải đấu" };
   const dateLabel = formatDate(data.starts_at, "");
+  const description = `${data.name}${data.venue ? ` tại ${data.venue}` : ""}${
+    dateLabel ? `, ${dateLabel}` : ""
+  }.`;
   return {
     title: data.name,
-    description: `${data.name}${data.venue ? ` tại ${data.venue}` : ""}${dateLabel ? `, ${dateLabel}` : ""}.`,
+    description,
+    alternates: { canonical: `/giai/${data.slug}` },
+    openGraph: {
+      type: "article",
+      title: data.name,
+      description,
+      url: `/giai/${data.slug}`,
+    },
+    twitter: {
+      card: "summary",
+      title: data.name,
+      description,
+    },
   };
 }
 
