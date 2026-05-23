@@ -1,5 +1,8 @@
 -- App schema + core entities (clubs, athletes, tournaments, events).
 
+create extension if not exists pg_trgm;
+create extension if not exists unaccent;
+
 create schema if not exists thethaomammo;
 grant usage on schema thethaomammo to authenticated, anon, service_role;
 

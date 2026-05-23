@@ -39,10 +39,10 @@ create policy clubs_manager_update_own on thethaomammo.clubs
   using (id = shared.user_scope('thethaomammo','club_manager'))
   with check (id = shared.user_scope('thethaomammo','club_manager'));
 
--- athletes: public read active (limited cols via view), authenticated may read all active,
--- claimer may update own, admin all
-create policy athletes_select on thethaomammo.athletes
-  for select to anon, authenticated using (deleted_at is null);
+-- athletes: anon reads ONLY via v_athletes_public view (no PII columns).
+-- Authenticated users see full rows; admin/claimer can write.
+create policy athletes_select_authenticated on thethaomammo.athletes
+  for select to authenticated using (deleted_at is null);
 create policy athletes_self_update on thethaomammo.athletes
   for update to authenticated using (claim_user_id = auth.uid()) with check (claim_user_id = auth.uid());
 create policy athletes_admin_write on thethaomammo.athletes
