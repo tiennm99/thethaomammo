@@ -18,6 +18,7 @@ describe("enqueueNotification", () => {
       type: "registration_success",
       payload: {},
     });
+    expect(res.ok).toBe(false);
     expect(res.error).toBe("user_id or email required");
     expect(insert).not.toHaveBeenCalled();
   });
@@ -30,6 +31,7 @@ describe("enqueueNotification", () => {
       payload: { tournament_name: "G1" },
       dedup_key: "pv:reg1",
     });
+    expect(res.ok).toBe(true);
     expect(res.error).toBeUndefined();
     expect(client.from).toHaveBeenCalledWith("notifications");
     expect(insert).toHaveBeenCalledWith(
@@ -49,6 +51,7 @@ describe("enqueueNotification", () => {
       user_id: "u1",
       dedup_key: "match:m1:a1",
     });
+    expect(res.ok).toBe(true);
     expect(res.error).toBeUndefined();
   });
 
@@ -58,6 +61,18 @@ describe("enqueueNotification", () => {
       type: "match_reminder",
       user_id: "u1",
     });
+    expect(res.ok).toBe(false);
     expect(res.error).toBe("boom");
+  });
+
+  it("signals deduped:true on unique-violation so callers can distinguish already-enqueued", async () => {
+    const { client } = makeClient({ code: "23505", message: "dup" });
+    const res = await enqueueNotification(client, {
+      type: "payment_verified",
+      user_id: "u2",
+      dedup_key: "pv:reg2",
+    });
+    expect(res.ok).toBe(true);
+    expect(res.deduped).toBe(true);
   });
 });

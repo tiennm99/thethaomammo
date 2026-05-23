@@ -76,7 +76,7 @@ export async function verifyPaymentAction(
     if (insErr) return { error: insErr.message };
   }
 
-  await enqueueNotification(supabase, {
+  const verifyEnqueueResult = await enqueueNotification(supabase, {
     type: "payment_verified",
     user_id: reg.user_id,
     payload: {
@@ -86,6 +86,13 @@ export async function verifyPaymentAction(
     },
     dedup_key: `pay_verified:${reg.id}`,
   });
+  if (!verifyEnqueueResult.ok) {
+    console.error("[payments] notification enqueue failed", {
+      registrationId,
+      action: "verify",
+      error: verifyEnqueueResult.error,
+    });
+  }
 
   revalidatePath("/admin/payments");
   revalidatePath(`/admin/payments/${registrationId}`);
@@ -115,7 +122,7 @@ export async function rejectPaymentAction(
   if (regErr) return { error: regErr.message };
   if (!reg) return { error: "Đăng ký không ở trạng thái chờ duyệt." };
 
-  await enqueueNotification(supabase, {
+  const rejectEnqueueResult = await enqueueNotification(supabase, {
     type: "payment_rejected",
     user_id: reg.user_id,
     payload: {
@@ -126,6 +133,13 @@ export async function rejectPaymentAction(
     },
     dedup_key: `pay_rejected:${reg.id}`,
   });
+  if (!rejectEnqueueResult.ok) {
+    console.error("[payments] notification enqueue failed", {
+      registrationId,
+      action: "reject",
+      error: rejectEnqueueResult.error,
+    });
+  }
 
   revalidatePath("/admin/payments");
   revalidatePath(`/admin/payments/${registrationId}`);
