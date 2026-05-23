@@ -60,11 +60,28 @@ export default async function AdminAthletesListPage({
 
   return (
     <main className="flex-1 p-6">
-      <header className="mb-6">
-        <h1 className="text-2xl font-semibold">Vận động viên</h1>
-        <p className="text-sm text-muted-foreground">
-          Tìm và chỉnh sửa hồ sơ VĐV.
-        </p>
+      <header className="mb-6 flex items-start justify-between gap-3 flex-wrap">
+        <div>
+          <h1 className="text-2xl font-semibold">Vận động viên</h1>
+          <p className="text-sm text-muted-foreground">
+            Tìm và chỉnh sửa hồ sơ VĐV.
+          </p>
+        </div>
+        <div className="flex items-center gap-2">
+          <Link
+            href="/admin/athletes/import"
+            className="inline-flex h-9 px-3 items-center rounded-md border border-input text-sm hover:bg-accent"
+          >
+            Nhập CSV
+          </Link>
+          {/* eslint-disable-next-line @next/next/no-html-link-for-pages -- plain anchor needed so the browser handles download (Content-Disposition: attachment) */}
+          <a
+            href="/admin/athletes/export"
+            className="inline-flex h-9 px-3 items-center rounded-md border border-input text-sm hover:bg-accent"
+          >
+            Xuất CSV
+          </a>
+        </div>
       </header>
 
       <form className="mb-4 flex flex-wrap gap-3 items-end" method="get">

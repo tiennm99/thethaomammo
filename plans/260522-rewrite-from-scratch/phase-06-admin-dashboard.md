@@ -123,7 +123,7 @@ src/server/admin/payments.ts             ← verifyPayment, rejectPayment
 - [ ] Generic resource-table + resource-form (deferred — risk note says build concrete first)
 - [x] Tournament settings — General tab only (Events/Sponsors/Gallery/Brackets tabs pending)
 - [x] Events CRUD nested under tournament (slice 2)
-- [x] Athletes list + edit + soft-delete/restore (slice 3 — CSV import/export still pending)
+- [x] Athletes list + edit + soft-delete/restore + CSV import/export (slice 3 + slice 6)
 - [x] Clubs CRUD (basic — no logo upload yet)
 - [x] Registrations admin — list + filter (manual create still pending) (slice 3)
 - [x] Payments verification queue (slice 2)
