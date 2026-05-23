@@ -129,11 +129,11 @@ src/server/admin/payments.ts             ← verifyPayment, rejectPayment
 - [x] Payments verification queue (slice 2)
 - [x] Matches list + scoring shortcuts (slice 3)
 - [x] Courts CRUD (slice 3)
-- [ ] Schedule planner (basic)
+- [x] Schedule edit per match (slice 4 — drag-drop planner not in scope)
 - [ ] Sponsors CRUD + logo upload
 - [ ] Gallery multi-upload
-- [ ] Notifications dashboard
-- [ ] Users grants page
+- [x] Notifications dashboard (slice 4)
+- [x] Users grants page (slice 4)
 - [x] KPIs on landing (registrations today, pending payments, matches in progress)
 - [ ] Role gates verified (club_manager scoped)
 - [ ] Playwright per major flow

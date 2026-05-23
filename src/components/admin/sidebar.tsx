@@ -24,6 +24,13 @@ const groups: { label: string; items: { href: string; label: string }[] }[] = [
     label: "Thi đấu",
     items: [{ href: "/admin/matches", label: "Trận đấu" }],
   },
+  {
+    label: "Hệ thống",
+    items: [
+      { href: "/admin/notifications", label: "Thông báo" },
+      { href: "/admin/users", label: "Người dùng & Quyền" },
+    ],
+  },
 ];
 
 export function AdminSidebar() {

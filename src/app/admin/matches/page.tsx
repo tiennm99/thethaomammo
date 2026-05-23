@@ -189,7 +189,13 @@ export default async function AdminMatchesListPage({
                         {STATUS_LABEL[m.status] ?? m.status}
                       </span>
                     </td>
-                    <td className="px-3 py-2 text-right">
+                    <td className="px-3 py-2 text-right space-x-3">
+                      <Link
+                        href={`/admin/matches/${m.id}`}
+                        className="underline text-muted-foreground"
+                      >
+                        Lịch
+                      </Link>
                       {m.status !== "completed" && (
                         <Link
                           href={`/admin/matches/${m.id}/scoring`}
