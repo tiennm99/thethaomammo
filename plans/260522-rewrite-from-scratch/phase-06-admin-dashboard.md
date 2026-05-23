@@ -130,8 +130,8 @@ src/server/admin/payments.ts             ← verifyPayment, rejectPayment
 - [x] Matches list + scoring shortcuts (slice 3)
 - [x] Courts CRUD (slice 3)
 - [x] Schedule edit per match (slice 4 — drag-drop planner not in scope)
-- [ ] Sponsors CRUD + logo upload
-- [ ] Gallery multi-upload
+- [x] Sponsors CRUD + logo upload (slice 5 — bucket migration 000016)
+- [x] Gallery multi-upload (slice 5)
 - [x] Notifications dashboard (slice 4)
 - [x] Users grants page (slice 4)
 - [x] KPIs on landing (registrations today, pending payments, matches in progress)
