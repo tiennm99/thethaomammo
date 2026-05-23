@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { isAdmin } from "@/lib/auth/grants";
+import { enqueueNotification } from "@/server/notifications/produce";
 
 type ActionResult = { error?: string; ok?: boolean };
 
@@ -75,9 +76,9 @@ export async function verifyPaymentAction(
     if (insErr) return { error: insErr.message };
   }
 
-  await supabase.from("notifications").insert({
-    user_id: reg.user_id,
+  await enqueueNotification(supabase, {
     type: "payment_verified",
+    user_id: reg.user_id,
     payload: {
       registration_id: reg.id,
       event_id: reg.event_id,
@@ -114,9 +115,9 @@ export async function rejectPaymentAction(
   if (regErr) return { error: regErr.message };
   if (!reg) return { error: "Đăng ký không ở trạng thái chờ duyệt." };
 
-  await supabase.from("notifications").insert({
-    user_id: reg.user_id,
+  await enqueueNotification(supabase, {
     type: "payment_rejected",
+    user_id: reg.user_id,
     payload: {
       registration_id: reg.id,
       event_id: reg.event_id,

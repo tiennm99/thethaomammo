@@ -1,7 +1,7 @@
 ---
 phase: 08
 title: Notifications + Jobs — Gmail SMTP edge fn, QStash schedules, reminders
-status: pending
+status: in_progress
 effort: M (4-6 days)
 blocks: [09]
 depends_on: [03, 04, 06]
@@ -122,20 +122,20 @@ Edge Function: enqueue-reminders
 11. Tests: template snapshots; dispatch fn returns counts; dedup_key constraint rejects dupes.
 
 ## Todo List
-- [ ] `000016` notifications state applied
-- [ ] Gmail app password stored as edge fn secret
-- [ ] SMTP wrapper works (smoke send to test inbox)
-- [ ] All 5 templates render Vietnamese correctly
-- [ ] dispatch-notifications fn handles batch
-- [ ] Redis idempotency locks work
-- [ ] enqueue-reminders fn produces correct rows
-- [ ] QStash schedules created (documented in infra file)
-- [ ] Bracket trigger inserts notifications
-- [ ] Match completion trigger inserts notifications
-- [ ] Verify payment action inserts notification
-- [ ] Gmail daily quota dashboard or counter (basic)
-- [ ] Zalo deep-link button on tournament detail
-- [ ] Snapshot tests for templates
+- [x] Notifications state schema (already shipped in Phase 03 `000007`: status, dedup_key, sent_at, error)
+- [ ] Gmail app password stored as edge fn secret (deploy task)
+- [x] SMTP wrapper (denomailer Gmail) — slice 1
+- [x] All 7 templates render Vietnamese correctly (slice 1, vitest)
+- [x] dispatch-notifications fn handles batch (slice 1, batch=20)
+- [ ] Redis idempotency locks (deferred — DB unique dedup_key already idempotent)
+- [x] enqueue-reminders fn produces correct rows (slice 1: payment_reminder + match_reminder)
+- [ ] QStash schedules created (documented in `supabase/functions/README.md` — manual setup)
+- [ ] Bracket trigger inserts notifications (defer to Phase 05 RPC extension)
+- [ ] Match completion trigger inserts notifications (defer to Phase 05 cascade)
+- [x] Verify/reject payment action inserts notification (refactored to `enqueueNotification` helper)
+- [ ] Gmail daily quota dashboard or counter (defer)
+- [x] Zalo deep-link button on tournament detail (Phase 07 already handles)
+- [x] Snapshot/unit tests for templates (5 vitest cases)
 
 ## Success Criteria
 - Submit registration → email arrives in test inbox within 5min.

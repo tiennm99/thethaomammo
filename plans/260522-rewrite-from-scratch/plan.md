@@ -24,7 +24,7 @@ Greenfield rewrite. Reference repo is read-only. Distill 66 messy migrations →
 | 05 | Bracket + scoring (generation, cascade, realtime) | [phase-05-bracket-and-scoring.md](phase-05-bracket-and-scoring.md) | L | pending |
 | 06 | Admin dashboard (CRUD UIs) | [phase-06-admin-dashboard.md](phase-06-admin-dashboard.md) | L | in_progress |
 | 07 | Public pages (list/detail/live/gallery/sponsors/print) | [phase-07-public-pages.md](phase-07-public-pages.md) | M | in_progress |
-| 08 | Notifications + jobs (Gmail SMTP edge fn, QStash schedules) | [phase-08-notifications-and-jobs.md](phase-08-notifications-and-jobs.md) | M | pending |
+| 08 | Notifications + jobs (Gmail SMTP edge fn, QStash schedules) | [phase-08-notifications-and-jobs.md](phase-08-notifications-and-jobs.md) | M | in_progress |
 | 09 | Polish + launch (SEO, perf, deploy checklist) | [phase-09-polish-and-launch.md](phase-09-polish-and-launch.md) | S | pending |
 | 10 | Data migration (OPTIONAL — easy tables only; fresh-start path also supported) | [phase-10-data-migration.md](phase-10-data-migration.md) | M | optional |
 
