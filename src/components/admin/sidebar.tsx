@@ -12,6 +12,10 @@ const groups: { label: string; items: { href: string; label: string }[] }[] = [
       { href: "/admin/clubs", label: "Câu lạc bộ" },
     ],
   },
+  {
+    label: "Đăng ký",
+    items: [{ href: "/admin/payments", label: "Duyệt thanh toán" }],
+  },
 ];
 
 export function AdminSidebar() {

@@ -69,10 +69,16 @@ export default async function AdminTournamentEditPage({ params }: Params) {
       <section>
         <div className="flex items-center justify-between mb-3">
           <h2 className="text-lg font-medium">Nội dung thi đấu</h2>
+          <Link
+            href={`/admin/tournaments/${id}/events/new`}
+            className="inline-flex h-9 px-3 items-center rounded-md bg-primary text-primary-foreground text-sm font-medium hover:opacity-90"
+          >
+            + Thêm nội dung
+          </Link>
         </div>
         {(!events || events.length === 0) && (
           <p className="text-sm text-muted-foreground">
-            Chưa có nội dung. (Quản lý nội dung sẽ thêm sau.)
+            Chưa có nội dung nào.
           </p>
         )}
         {events && events.length > 0 && (
@@ -83,14 +89,19 @@ export default async function AdminTournamentEditPage({ params }: Params) {
                 className="flex items-center justify-between p-3 text-sm"
               >
                 <div>
-                  <span className="font-medium">{e.name}</span>
+                  <Link
+                    href={`/admin/tournaments/${id}/events/${e.id}`}
+                    className="font-medium hover:underline"
+                  >
+                    {e.name}
+                  </Link>
                   <span className="ml-2 text-muted-foreground">
                     [{e.kind}]
                   </span>
                 </div>
                 <Link
                   href={`/admin/tournaments/${id}/events/${e.id}/bracket`}
-                  className="underline"
+                  className="underline text-muted-foreground"
                 >
                   Bảng đấu →
                 </Link>

@@ -122,11 +122,11 @@ src/server/admin/payments.ts             ← verifyPayment, rejectPayment
 - [x] Admin layout + auth guard (slice 1: any-grant layout, isAdmin per-page)
 - [ ] Generic resource-table + resource-form (deferred — risk note says build concrete first)
 - [x] Tournament settings — General tab only (Events/Sponsors/Gallery/Brackets tabs pending)
-- [ ] Events CRUD nested under tournament
+- [x] Events CRUD nested under tournament (slice 2)
 - [ ] Athletes CRUD + CSV import/export
 - [x] Clubs CRUD (basic — no logo upload yet)
 - [ ] Registrations admin
-- [ ] Payments verification queue
+- [x] Payments verification queue (slice 2)
 - [ ] Matches list + scoring shortcuts
 - [ ] Courts CRUD
 - [ ] Schedule planner (basic)
