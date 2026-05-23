@@ -1,7 +1,7 @@
 ---
 phase: 05
 title: Bracket Generation + Live Scoring
-status: pending
+status: complete
 effort: L (7-10 days)
 blocks: [06, 07]
 depends_on: [03, 04]

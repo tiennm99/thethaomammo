@@ -1,7 +1,7 @@
 ---
 phase: 07
 title: Public Pages — list/detail/live/gallery/sponsors/print
-status: in_progress
+status: complete
 effort: M (5-7 days)
 blocks: [09]
 depends_on: [03, 05]

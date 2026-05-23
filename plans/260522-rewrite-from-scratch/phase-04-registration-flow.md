@@ -1,7 +1,7 @@
 ---
 phase: 04
 title: Registration Flow — RHF+zod, payment proof, dedup RPC
-status: pending
+status: complete
 effort: L (5-6 days)
 blocks: [06, 07, 08]
 depends_on: [02, 03]

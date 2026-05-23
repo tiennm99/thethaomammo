@@ -1,7 +1,7 @@
 ---
 phase: 06
 title: Admin Dashboard — CRUD UIs for all resources
-status: in_progress
+status: complete
 effort: L (7-10 days)
 blocks: [07, 09]
 depends_on: [02, 03, 04, 05]

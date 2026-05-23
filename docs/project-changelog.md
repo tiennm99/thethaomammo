@@ -23,6 +23,6 @@
 - `payments.ts` server actions now use the shared `enqueueNotification` helper instead of inline insert (DRY).
 - `tsconfig.json` excludes `supabase/functions` (Deno runtime, separate type-check).
 
-## v1.0.0 — pending
+## v1.0.0 — pending (awaiting first prod deploy)
 
-Greenfield rewrite (see `plans/260522-rewrite-from-scratch/`). Cut on completion of Phase 09 launch checklist.
+Greenfield rewrite complete (all 9 implementation phases shipped; Phase 10 data migration skipped — fresh-start path chosen). See `plans/260522-rewrite-from-scratch/`. Tag will be cut after first prod deploy passes Lighthouse + smoke gates.

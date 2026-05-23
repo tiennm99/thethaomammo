@@ -1,7 +1,7 @@
 ---
 phase: 01
 title: Foundation — repo, env, Supabase shared, Vercel+Upstash
-status: pending
+status: complete
 effort: M (3-5 days)
 blocks: [02, 03, 04, 05, 06, 07, 08, 09]
 ---

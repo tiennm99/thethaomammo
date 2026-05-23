@@ -1,7 +1,7 @@
 ---
 phase: 03
 title: Data Model — clean v1 schema for thethaomammo
-status: pending
+status: complete
 effort: L (5-7 days)
 blocks: [04, 05, 06, 07, 08]
 depends_on: [02]

@@ -1,10 +1,11 @@
 ---
 phase: 10
 title: Data Migration — OPTIONAL, easy tables only
-status: optional
+status: skipped
 effort: M (4-6 days) — skip entirely is also valid
 blocks: []
 depends_on: [02, 03, 09]
+note: Fresh-start path chosen for v1.0 launch — empty DB, admin CRUD via Phase 06. Old project preserved read-only for 30 days. This phase's scripts are not run; document retained as reference for any future partial-import need.
 ---
 
 # Phase 10 — Data Migration (OPTIONAL)

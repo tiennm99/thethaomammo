@@ -1,7 +1,7 @@
 ---
 phase: 09
 title: Polish + Launch — SEO, perf, error budget, deploy checklist
-status: in_progress
+status: complete
 effort: S (3-5 days)
 blocks: [10]
 depends_on: [01, 02, 03, 04, 05, 06, 07, 08]

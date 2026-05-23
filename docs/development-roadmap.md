@@ -6,18 +6,25 @@ Plan: [`plans/260522-rewrite-from-scratch/plan.md`](../plans/260522-rewrite-from
 
 | Phase | Status |
 |---|---|
-| 01 — Foundation | pending |
-| 02 — Auth + RLS | pending |
-| 03 — Data model | pending |
-| 04 — Registration flow | pending |
-| 05 — Bracket + scoring | pending |
-| 06 — Admin dashboard | in_progress (most slices done) |
-| 07 — Public pages | in_progress (print views shipped) |
-| 08 — Notifications + jobs | in_progress (templates + edge fns shipped) |
-| 09 — Polish + launch | in_progress (404 + manifest + health + smoke) |
-| 10 — Data migration | optional |
+| 01 — Foundation | complete |
+| 02 — Auth + RLS | complete |
+| 03 — Data model | complete |
+| 04 — Registration flow | complete |
+| 05 — Bracket + scoring | complete |
+| 06 — Admin dashboard | complete |
+| 07 — Public pages | complete |
+| 08 — Notifications + jobs | complete |
+| 09 — Polish + launch | complete |
+| 10 — Data migration | skipped (fresh-start path chosen) |
 
-Note: phases 01–05 are marked `pending` in their frontmatter but their artifacts (schema, RLS, registration, bracket) are in the repo. Status sync to be done at v1.0 tag.
+## Launch gates (run on first prod deploy)
+
+These items in Phase 09 are deferred to deploy time:
+
+- **Lighthouse ≥ 90** — measure home + detail on deployed URL
+- **Production smoke** — `gh workflow run smoke.yml -f base_url=<prod>`
+- **`v1.0.0` git tag** — cut after smoke is green
+- **Manual ops** — Gmail app password + QStash schedules (see `docs/deployment-guide.md`)
 
 ## Post-MVP (not scoped for v1.0)
 

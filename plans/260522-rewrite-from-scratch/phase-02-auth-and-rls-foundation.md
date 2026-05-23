@@ -1,7 +1,7 @@
 ---
 phase: 02
 title: Auth + RLS Foundation — Supabase Auth, app_grants, RLS helpers
-status: pending
+status: complete
 effort: M (3-4 days)
 blocks: [03, 04, 05, 06, 07]
 depends_on: [01]

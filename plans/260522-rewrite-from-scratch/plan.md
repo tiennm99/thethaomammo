@@ -1,12 +1,17 @@
 ---
 title: "thethaomammo — Greenfield Rewrite"
 description: "Rebuild Vietnamese badminton tournament app on locked Vercel + Supabase + Upstash stack with clean schema and DRY architecture."
-status: pending
+status: complete
 priority: P1
 effort: ~10 phases (target 6-10 weeks single-dev)
 branch: main
 tags: [rewrite, greenfield, nextjs16, supabase, tournament]
 created: 2026-05-22
+launch_gated:
+  - Lighthouse ≥ 90 measurement (run after first prod deploy)
+  - Production smoke green (run against deployed URL)
+  - v1.0.0 git tag (cut on first prod deploy)
+  - Gmail app password + QStash schedules (manual ops setup, documented)
 ---
 
 # Rewrite Plan — thethaomammo
@@ -17,16 +22,16 @@ Greenfield rewrite. Reference repo is read-only. Distill 66 messy migrations →
 
 | # | Phase | File | Effort | Status |
 |---|---|---|---|---|
-| 01 | Foundation (repo, env, Supabase shared, Vercel+Upstash) | [phase-01-foundation.md](phase-01-foundation.md) | M | pending |
-| 02 | Auth + RLS foundation (Supabase Auth, app_grants, helpers) | [phase-02-auth-and-rls-foundation.md](phase-02-auth-and-rls-foundation.md) | M | pending |
-| 03 | Data model (clean v1 schema for thethaomammo) | [phase-03-data-model.md](phase-03-data-model.md) | L | pending |
-| 04 | Registration flow (RHF+zod, payment proof, dedup RPC) | [phase-04-registration-flow.md](phase-04-registration-flow.md) | L | pending |
-| 05 | Bracket + scoring (generation, cascade, realtime) | [phase-05-bracket-and-scoring.md](phase-05-bracket-and-scoring.md) | L | pending |
-| 06 | Admin dashboard (CRUD UIs) | [phase-06-admin-dashboard.md](phase-06-admin-dashboard.md) | L | in_progress |
-| 07 | Public pages (list/detail/live/gallery/sponsors/print) | [phase-07-public-pages.md](phase-07-public-pages.md) | M | in_progress |
-| 08 | Notifications + jobs (Gmail SMTP edge fn, QStash schedules) | [phase-08-notifications-and-jobs.md](phase-08-notifications-and-jobs.md) | M | in_progress |
-| 09 | Polish + launch (SEO, perf, deploy checklist) | [phase-09-polish-and-launch.md](phase-09-polish-and-launch.md) | S | in_progress |
-| 10 | Data migration (OPTIONAL — easy tables only; fresh-start path also supported) | [phase-10-data-migration.md](phase-10-data-migration.md) | M | optional |
+| 01 | Foundation (repo, env, Supabase shared, Vercel+Upstash) | [phase-01-foundation.md](phase-01-foundation.md) | M | complete |
+| 02 | Auth + RLS foundation (Supabase Auth, app_grants, helpers) | [phase-02-auth-and-rls-foundation.md](phase-02-auth-and-rls-foundation.md) | M | complete |
+| 03 | Data model (clean v1 schema for thethaomammo) | [phase-03-data-model.md](phase-03-data-model.md) | L | complete |
+| 04 | Registration flow (RHF+zod, payment proof, dedup RPC) | [phase-04-registration-flow.md](phase-04-registration-flow.md) | L | complete |
+| 05 | Bracket + scoring (generation, cascade, realtime) | [phase-05-bracket-and-scoring.md](phase-05-bracket-and-scoring.md) | L | complete |
+| 06 | Admin dashboard (CRUD UIs) | [phase-06-admin-dashboard.md](phase-06-admin-dashboard.md) | L | complete |
+| 07 | Public pages (list/detail/live/gallery/sponsors/print) | [phase-07-public-pages.md](phase-07-public-pages.md) | M | complete |
+| 08 | Notifications + jobs (Gmail SMTP edge fn, QStash schedules) | [phase-08-notifications-and-jobs.md](phase-08-notifications-and-jobs.md) | M | complete |
+| 09 | Polish + launch (SEO, perf, deploy checklist) | [phase-09-polish-and-launch.md](phase-09-polish-and-launch.md) | S | complete |
+| 10 | Data migration (OPTIONAL — fresh-start chosen, scripts not run) | [phase-10-data-migration.md](phase-10-data-migration.md) | M | skipped |
 
 ## Highest-Risk Phases
 1. **Phase 03** — schema design locks downstream.

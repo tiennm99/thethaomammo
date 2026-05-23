@@ -1,7 +1,7 @@
 ---
 phase: 08
 title: Notifications + Jobs — Gmail SMTP edge fn, QStash schedules, reminders
-status: in_progress
+status: complete
 effort: M (4-6 days)
 blocks: [09]
 depends_on: [03, 04, 06]
