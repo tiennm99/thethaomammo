@@ -22,7 +22,7 @@ Greenfield rewrite. Reference repo is read-only. Distill 66 messy migrations →
 | 03 | Data model (clean v1 schema for thethaomammo) | [phase-03-data-model.md](phase-03-data-model.md) | L | pending |
 | 04 | Registration flow (RHF+zod, payment proof, dedup RPC) | [phase-04-registration-flow.md](phase-04-registration-flow.md) | L | pending |
 | 05 | Bracket + scoring (generation, cascade, realtime) | [phase-05-bracket-and-scoring.md](phase-05-bracket-and-scoring.md) | L | pending |
-| 06 | Admin dashboard (CRUD UIs) | [phase-06-admin-dashboard.md](phase-06-admin-dashboard.md) | L | pending |
+| 06 | Admin dashboard (CRUD UIs) | [phase-06-admin-dashboard.md](phase-06-admin-dashboard.md) | L | in_progress |
 | 07 | Public pages (list/detail/live/gallery/sponsors/print) | [phase-07-public-pages.md](phase-07-public-pages.md) | M | pending |
 | 08 | Notifications + jobs (Gmail SMTP edge fn, QStash schedules) | [phase-08-notifications-and-jobs.md](phase-08-notifications-and-jobs.md) | M | pending |
 | 09 | Polish + launch (SEO, perf, deploy checklist) | [phase-09-polish-and-launch.md](phase-09-polish-and-launch.md) | S | pending |

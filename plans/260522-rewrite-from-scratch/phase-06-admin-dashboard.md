@@ -1,7 +1,7 @@
 ---
 phase: 06
 title: Admin Dashboard — CRUD UIs for all resources
-status: pending
+status: in_progress
 effort: L (7-10 days)
 blocks: [07, 09]
 depends_on: [02, 03, 04, 05]
@@ -119,12 +119,12 @@ src/server/admin/payments.ts             ← verifyPayment, rejectPayment
 15. KPIs queries on dashboard landing — cached 30s.
 
 ## Todo List
-- [ ] Admin layout + auth guard
-- [ ] Generic resource-table + resource-form
-- [ ] Tournament settings (all tabs)
+- [x] Admin layout + auth guard (slice 1: any-grant layout, isAdmin per-page)
+- [ ] Generic resource-table + resource-form (deferred — risk note says build concrete first)
+- [x] Tournament settings — General tab only (Events/Sponsors/Gallery/Brackets tabs pending)
 - [ ] Events CRUD nested under tournament
 - [ ] Athletes CRUD + CSV import/export
-- [ ] Clubs CRUD
+- [x] Clubs CRUD (basic — no logo upload yet)
 - [ ] Registrations admin
 - [ ] Payments verification queue
 - [ ] Matches list + scoring shortcuts
@@ -134,7 +134,7 @@ src/server/admin/payments.ts             ← verifyPayment, rejectPayment
 - [ ] Gallery multi-upload
 - [ ] Notifications dashboard
 - [ ] Users grants page
-- [ ] KPIs on landing
+- [x] KPIs on landing (registrations today, pending payments, matches in progress)
 - [ ] Role gates verified (club_manager scoped)
 - [ ] Playwright per major flow
 
