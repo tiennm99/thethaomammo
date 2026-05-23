@@ -1,5 +1,9 @@
 # Changelog
 
+> **Educational rewrite — not for production use.** This is a learning exercise.
+> The codebase has not undergone a production security review and is not
+> recommended for live deployment without significant additional hardening.
+
 ## Unreleased
 
 ### Added

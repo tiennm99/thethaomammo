@@ -16,6 +16,9 @@ launch_gated:
 
 # Rewrite Plan — thethaomammo
 
+> **Educational rewrite — not for production use.** Learning exercise; no
+> production security review has been performed.
+
 Greenfield rewrite. Reference repo is read-only. Distill 66 messy migrations → ~5 clean v1 migrations. Drop Drive + @base-ui/react + Resend + Sentry + R2. Adopt Gmail SMTP via edge fn, Upstash Redis (+optional QStash), multi-project Supabase with `thethaomammo` schema + shared `auth.*`/`shared.*` schema. **Data migration is optional** — fresh-start with admin CRUD (Phase 06) is fully supported and is the default; Phase 10 covers the partial-migration path if desired. Old project preserved read-only for 30 days regardless.
 
 ## Phases
