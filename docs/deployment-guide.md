@@ -59,7 +59,7 @@ Add the QStash signing key into edge fn secrets above so verification succeeds.
 ## 5. Vercel
 
 - Framework preset: Next.js
-- Build command: `pnpm build`
+- Build command: `npm run build`
 - Output: default
 - Node 24+ (set in `package.json` engines)
 

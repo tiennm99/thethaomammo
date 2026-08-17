@@ -36,7 +36,7 @@ Greenfield rewrite complete (all 9 implementation phases shipped; Phase 10 data 
 - Build: `pnpm build` clean (Next.js 16, all routes registered)
 - Unit tests: 62 passing across 8 files
 - Smoke (local): 5/5 passing against `pnpm dev` — home, live, /api/health, sitemap.xml, robots.txt
-- Lighthouse: deferred to first prod deploy (Chrome libs unavailable in local sandbox); rerun via `pnpm dlx lighthouse <prod-url>` after deploy
+- Lighthouse: deferred to first prod deploy (Chrome libs unavailable in local sandbox); rerun via `npx lighthouse <prod-url>` after deploy
 
 ### Pending operator setup (documented)
 

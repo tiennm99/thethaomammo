@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 
 /**
  * Production smoke — 5 routes. Run against PROD_URL after deploy.
- *   PLAYWRIGHT_BASE_URL=https://thethaomammo.example pnpm exec playwright test tests/smoke
+ *   PLAYWRIGHT_BASE_URL=https://thethaomammo.example npx playwright test tests/smoke
  */
 
 test("home returns 200", async ({ request }) => {
