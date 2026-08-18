@@ -3,14 +3,19 @@
 
 import { SMTPClient } from "https://deno.land/x/denomailer@1.6.0/mod.ts";
 
-export type SendArgs = {
-  to: string;
-  subject: string;
-  html: string;
-  text: string;
-};
+/**
+ * @typedef {Object} SendArgs
+ * @property {string} to
+ * @property {string} subject
+ * @property {string} html
+ * @property {string} text
+ */
 
-export async function sendMail(args: SendArgs): Promise<void> {
+/**
+ * @param {SendArgs} args
+ * @returns {Promise<void>}
+ */
+export async function sendMail(args) {
   const user = Deno.env.get("GMAIL_USER");
   const pass = Deno.env.get("GMAIL_APP_PASSWORD");
   const from = Deno.env.get("MAIL_FROM") ?? user;

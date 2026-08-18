@@ -2,7 +2,7 @@
 // Dedup_key constraint silently no-ops repeated runs.
 
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.4";
-import { verifyQstash } from "../_shared/qstash-verify.ts";
+import { verifyQstash } from "../_shared/qstash-verify.js";
 
 const WINDOW_MS = 24 * 60 * 60 * 1000;
 
@@ -56,25 +56,25 @@ Deno.serve(async (req) => {
     .gte("scheduled_at", nowIso)
     .lte("scheduled_at", horizonIso);
 
-  type EnvelopedTournament = {
-    tournament:
-      | { id: string; name: string; starts_at: string | null; is_legacy: boolean }
-      | { id: string; name: string; starts_at: string | null; is_legacy: boolean }[]
-      | null;
-  };
-  function flatten<T>(v: T | T[] | null | undefined): T | null {
+  /**
+   * @typedef {{ id: string, name: string, starts_at: string | null, is_legacy: boolean }} TournamentRow
+   * @typedef {{ tournament: TournamentRow | TournamentRow[] | null }} EnvelopedTournament
+   */
+  /**
+   * @template T
+   * @param {T | T[] | null | undefined} v
+   * @returns {T | null}
+   */
+  function flatten(v) {
     if (!v) return null;
     return Array.isArray(v) ? (v[0] ?? null) : v;
   }
 
-  const rows: Record<string, unknown>[] = [];
+  /** @type {Record<string, unknown>[]} */
+  const rows = [];
 
-  for (const r of (pendingPayments ?? []) as Array<{
-    id: string;
-    user_id: string | null;
-    event_id: string;
-    event: EnvelopedTournament | EnvelopedTournament[] | null;
-  }>) {
+  /** @typedef {{ id: string, user_id: string | null, event_id: string, event: EnvelopedTournament | EnvelopedTournament[] | null }} PendingPaymentRow */
+  for (const r of /** @type {PendingPaymentRow[]} */ (pendingPayments ?? [])) {
     if (!r.user_id) continue;
     const event = flatten(r.event);
     const t = event ? flatten(event.tournament) : null;
@@ -89,26 +89,23 @@ Deno.serve(async (req) => {
     });
   }
 
-  type MatchRow = {
-    id: string;
-    scheduled_at: string | null;
-    round: number;
-    event:
-      | { name: string; tournament: { id: string; name: string; is_legacy: boolean } | { id: string; name: string; is_legacy: boolean }[] | null }
-      | { name: string; tournament: { id: string; name: string; is_legacy: boolean } | { id: string; name: string; is_legacy: boolean }[] | null }[]
-      | null;
-    participants: { athlete_id: string | null }[] | null;
-  };
+  /**
+   * @typedef {{ id: string, name: string, is_legacy: boolean }} MatchTournamentRow
+   * @typedef {{ name: string, tournament: MatchTournamentRow | MatchTournamentRow[] | null }} MatchEventRow
+   * @typedef {{ id: string, scheduled_at: string | null, round: number, event: MatchEventRow | MatchEventRow[] | null, participants: { athlete_id: string | null }[] | null }} MatchRow
+   */
 
   // Collect all unique athlete IDs across all upcoming matches in one pass,
   // then resolve claim_user_id in a single DB roundtrip (avoids N+1).
-  const allAthleteIds = new Set<string>();
-  for (const m of (upcomingMatches ?? []) as MatchRow[]) {
+  /** @type {Set<string>} */
+  const allAthleteIds = new Set();
+  for (const m of /** @type {MatchRow[]} */ (upcomingMatches ?? [])) {
     for (const p of m.participants ?? []) {
       if (p.athlete_id) allAthleteIds.add(p.athlete_id);
     }
   }
-  const athleteUserMap = new Map<string, string>();
+  /** @type {Map<string, string>} */
+  const athleteUserMap = new Map();
   if (allAthleteIds.size > 0) {
     const { data: athleteRows } = await supabase
       .from("athletes")
@@ -119,14 +116,14 @@ Deno.serve(async (req) => {
     }
   }
 
-  for (const m of (upcomingMatches ?? []) as MatchRow[]) {
+  for (const m of /** @type {MatchRow[]} */ (upcomingMatches ?? [])) {
     const event = flatten(m.event);
     const t = event ? flatten(event.tournament) : null;
     if (!t || t.is_legacy) continue;
     const eventName = event?.name ?? "";
     const athletes = (m.participants ?? [])
       .map((p) => p.athlete_id)
-      .filter((id): id is string => Boolean(id));
+      .filter(/** @returns {id is string} */ (id) => Boolean(id));
     for (const athleteId of athletes) {
       // Athletes without a claimed account won't receive a reminder;
       // could be extended via registrations.user_id.

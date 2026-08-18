@@ -1,7 +1,8 @@
-// Mirror of src/lib/notifications/templates.ts for Deno edge runtime. Keep in
-// sync with the TS module — both render the same payload contract.
+// Mirror of src/lib/notifications/templates.js for Deno edge runtime. Keep in
+// sync with that module — both render the same payload contract.
 
-const MAP: Record<string, string> = {
+/** @type {Record<string, string>} */
+const MAP = {
   "&": "&amp;",
   "<": "&lt;",
   ">": "&gt;",
@@ -9,31 +10,49 @@ const MAP: Record<string, string> = {
   "'": "&#39;",
 };
 
-function escapeHtml(value: unknown): string {
+/**
+ * @param {unknown} value
+ * @returns {string}
+ */
+function escapeHtml(value) {
   if (value === null || value === undefined) return "";
   return String(value).replace(/[&<>"']/g, (ch) => MAP[ch] ?? ch);
 }
 
-export type NotificationType =
-  | "registration_success"
-  | "payment_verified"
-  | "payment_rejected"
-  | "payment_reminder"
-  | "match_reminder"
-  | "match_result"
-  | "bracket_generated";
+/**
+ * @typedef {(
+ *   | "registration_success"
+ *   | "payment_verified"
+ *   | "payment_rejected"
+ *   | "payment_reminder"
+ *   | "match_reminder"
+ *   | "match_result"
+ *   | "bracket_generated"
+ * )} NotificationType
+ */
 
-export type RenderedEmail = { subject: string; html: string; text: string };
-type Payload = Record<string, unknown>;
+/** @typedef {{ subject: string, html: string, text: string }} RenderedEmail */
+/** @typedef {Record<string, unknown>} Payload */
 
 const SITE_NAME = "Thể Thao Mầm Mơ";
 
-function pick(p: Payload, k: string, fallback = ""): string {
+/**
+ * @param {Payload} p
+ * @param {string} k
+ * @param {string} [fallback]
+ * @returns {string}
+ */
+function pick(p, k, fallback = "") {
   const v = p[k];
   return typeof v === "string" ? v : fallback;
 }
 
-function shell(title: string, body: string): string {
+/**
+ * @param {string} title
+ * @param {string} body
+ * @returns {string}
+ */
+function shell(title, body) {
   return `<!doctype html><html lang="vi"><head><meta charset="utf-8"><title>${escapeHtml(
     title,
   )}</title></head><body style="font-family:system-ui,-apple-system,sans-serif;line-height:1.5;color:#111;max-width:560px;margin:0 auto;padding:24px;">${body}<hr style="margin-top:32px;border:0;border-top:1px solid #ddd"><p style="font-size:12px;color:#666">${escapeHtml(
@@ -41,7 +60,12 @@ function shell(title: string, body: string): string {
   )}</p></body></html>`;
 }
 
-export function renderEmail(type: NotificationType, payload: Payload): RenderedEmail {
+/**
+ * @param {NotificationType} type
+ * @param {Payload} payload
+ * @returns {RenderedEmail}
+ */
+export function renderEmail(type, payload) {
   const tournament = pick(payload, "tournament_name", "giải đấu");
   const event = pick(payload, "event_name", "");
   const athlete = pick(payload, "athlete_name", "");

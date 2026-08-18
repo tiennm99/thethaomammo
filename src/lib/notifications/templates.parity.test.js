@@ -23,7 +23,7 @@ const JS_PATH = path.join(
 );
 const DENO_PATH = path.join(
   REPO_ROOT,
-  "supabase/functions/_shared/templates.ts",
+  "supabase/functions/_shared/templates.js",
 );
 
 // ---------------------------------------------------------------------------
