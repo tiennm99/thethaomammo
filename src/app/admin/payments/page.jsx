@@ -5,11 +5,18 @@ import { isAdmin } from "@/lib/auth/grants";
 
 export const dynamic = "force-dynamic";
 
-function formatDate(iso: string | null): string {
+/**
+ * @param {string | null} iso
+ * @returns {string}
+ */
+function formatDate(iso) {
   if (!iso) return "—";
   return new Date(iso).toLocaleString("vi-VN");
 }
 
+/**
+ * @returns {Promise<import("react").JSX.Element>}
+ */
 export default async function AdminPaymentsQueuePage() {
   if (!(await isAdmin())) notFound();
 

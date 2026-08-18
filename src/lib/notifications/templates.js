@@ -1,25 +1,29 @@
 import { escapeHtml } from "./escape-html";
 
-export type NotificationType =
-  | "registration_success"
-  | "payment_verified"
-  | "payment_rejected"
-  | "payment_reminder"
-  | "match_reminder"
-  | "match_result"
-  | "bracket_generated";
+/**
+ * @typedef {(
+ *   | "registration_success"
+ *   | "payment_verified"
+ *   | "payment_rejected"
+ *   | "payment_reminder"
+ *   | "match_reminder"
+ *   | "match_result"
+ *   | "bracket_generated"
+ * )} NotificationType
+ */
 
-export type RenderedEmail = {
-  subject: string;
-  html: string;
-  text: string;
-};
+/** @typedef {{ subject: string, html: string, text: string }} RenderedEmail */
 
-type Payload = Record<string, unknown>;
+/** @typedef {Record<string, unknown>} Payload */
 
 const SITE_NAME = "Thể Thao Mầm Mơ";
 
-function shell(title: string, body: string): string {
+/**
+ * @param {string} title
+ * @param {string} body
+ * @returns {string}
+ */
+function shell(title, body) {
   return `<!doctype html><html lang="vi"><head><meta charset="utf-8"><title>${escapeHtml(
     title,
   )}</title></head><body style="font-family:system-ui,-apple-system,sans-serif;line-height:1.5;color:#111;max-width:560px;margin:0 auto;padding:24px;">${body}<hr style="margin-top:32px;border:0;border-top:1px solid #ddd"><p style="font-size:12px;color:#666">${escapeHtml(
@@ -27,12 +31,22 @@ function shell(title: string, body: string): string {
   )}</p></body></html>`;
 }
 
-function pickString(payload: Payload, key: string, fallback = ""): string {
+/**
+ * @param {Payload} payload
+ * @param {string} key
+ * @param {string} [fallback]
+ * @returns {string}
+ */
+function pickString(payload, key, fallback = "") {
   const v = payload[key];
   return typeof v === "string" ? v : fallback;
 }
 
-function registrationSuccess(payload: Payload): RenderedEmail {
+/**
+ * @param {Payload} payload
+ * @returns {RenderedEmail}
+ */
+function registrationSuccess(payload) {
   const tournament = pickString(payload, "tournament_name", "giải đấu");
   const event = pickString(payload, "event_name", "");
   const athlete = pickString(payload, "athlete_name", "");
@@ -48,7 +62,11 @@ function registrationSuccess(payload: Payload): RenderedEmail {
   };
 }
 
-function paymentVerified(payload: Payload): RenderedEmail {
+/**
+ * @param {Payload} payload
+ * @returns {RenderedEmail}
+ */
+function paymentVerified(payload) {
   const tournament = pickString(payload, "tournament_name", "giải đấu");
   const athlete = pickString(payload, "athlete_name", "");
   const body = `
@@ -62,7 +80,11 @@ function paymentVerified(payload: Payload): RenderedEmail {
   };
 }
 
-function paymentRejected(payload: Payload): RenderedEmail {
+/**
+ * @param {Payload} payload
+ * @returns {RenderedEmail}
+ */
+function paymentRejected(payload) {
   const tournament = pickString(payload, "tournament_name", "giải đấu");
   const reason = pickString(payload, "reason", "");
   const body = `
@@ -77,7 +99,11 @@ function paymentRejected(payload: Payload): RenderedEmail {
   };
 }
 
-function paymentReminder(payload: Payload): RenderedEmail {
+/**
+ * @param {Payload} payload
+ * @returns {RenderedEmail}
+ */
+function paymentReminder(payload) {
   const tournament = pickString(payload, "tournament_name", "giải đấu");
   const body = `
     <h2>Nhắc nhở thanh toán</h2>
@@ -90,7 +116,11 @@ function paymentReminder(payload: Payload): RenderedEmail {
   };
 }
 
-function matchReminder(payload: Payload): RenderedEmail {
+/**
+ * @param {Payload} payload
+ * @returns {RenderedEmail}
+ */
+function matchReminder(payload) {
   const tournament = pickString(payload, "tournament_name", "giải đấu");
   const event = pickString(payload, "event_name", "");
   const round = pickString(payload, "round", "");
@@ -110,7 +140,11 @@ function matchReminder(payload: Payload): RenderedEmail {
   };
 }
 
-function matchResult(payload: Payload): RenderedEmail {
+/**
+ * @param {Payload} payload
+ * @returns {RenderedEmail}
+ */
+function matchResult(payload) {
   const tournament = pickString(payload, "tournament_name", "giải đấu");
   const event = pickString(payload, "event_name", "");
   const result = pickString(payload, "result", "");
@@ -127,7 +161,11 @@ function matchResult(payload: Payload): RenderedEmail {
   };
 }
 
-function bracketGenerated(payload: Payload): RenderedEmail {
+/**
+ * @param {Payload} payload
+ * @returns {RenderedEmail}
+ */
+function bracketGenerated(payload) {
   const tournament = pickString(payload, "tournament_name", "giải đấu");
   const event = pickString(payload, "event_name", "");
   const body = `
@@ -141,7 +179,8 @@ function bracketGenerated(payload: Payload): RenderedEmail {
   };
 }
 
-const RENDERERS: Record<NotificationType, (p: Payload) => RenderedEmail> = {
+/** @type {Record<NotificationType, (p: Payload) => RenderedEmail>} */
+const RENDERERS = {
   registration_success: registrationSuccess,
   payment_verified: paymentVerified,
   payment_rejected: paymentRejected,
@@ -151,10 +190,12 @@ const RENDERERS: Record<NotificationType, (p: Payload) => RenderedEmail> = {
   bracket_generated: bracketGenerated,
 };
 
-export function renderEmail(
-  type: NotificationType,
-  payload: Payload,
-): RenderedEmail {
+/**
+ * @param {NotificationType} type
+ * @param {Payload} payload
+ * @returns {RenderedEmail}
+ */
+export function renderEmail(type, payload) {
   const renderer = RENDERERS[type];
   if (!renderer) {
     throw new Error(`Unknown notification type: ${type}`);

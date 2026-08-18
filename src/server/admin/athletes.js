@@ -8,17 +8,26 @@ import {
   athleteInputSchema,
 } from "@/lib/schemas/admin-athlete";
 
-type ActionResult = { error?: string; ok?: boolean };
+/**
+ * @typedef {object} ActionResult
+ * @property {string} [error]
+ * @property {boolean} [ok]
+ */
 
-async function assertAdmin(): Promise<string | null> {
+/**
+ * @returns {Promise<string | null>}
+ */
+async function assertAdmin() {
   if (!(await isAdmin())) return "Không có quyền.";
   return null;
 }
 
-export async function updateAthleteAction(
-  id: string,
-  fd: FormData,
-): Promise<ActionResult> {
+/**
+ * @param {string} id
+ * @param {FormData} fd
+ * @returns {Promise<ActionResult>}
+ */
+export async function updateAthleteAction(id, fd) {
   const guard = await assertAdmin();
   if (guard) return { error: guard };
 
@@ -40,7 +49,11 @@ export async function updateAthleteAction(
   return { ok: true };
 }
 
-export async function softDeleteAthleteAction(id: string): Promise<ActionResult> {
+/**
+ * @param {string} id
+ * @returns {Promise<ActionResult>}
+ */
+export async function softDeleteAthleteAction(id) {
   const guard = await assertAdmin();
   if (guard) return { error: guard };
 
@@ -68,7 +81,11 @@ export async function softDeleteAthleteAction(id: string): Promise<ActionResult>
   return { ok: true };
 }
 
-export async function restoreAthleteAction(id: string): Promise<ActionResult> {
+/**
+ * @param {string} id
+ * @returns {Promise<ActionResult>}
+ */
+export async function restoreAthleteAction(id) {
   const guard = await assertAdmin();
   if (guard) return { error: guard };
 

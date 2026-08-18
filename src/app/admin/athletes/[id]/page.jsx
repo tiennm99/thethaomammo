@@ -13,9 +13,11 @@ import { AthleteDangerButtons } from "./athlete-danger-buttons";
 
 export const dynamic = "force-dynamic";
 
-type Params = { params: Promise<{ id: string }> };
-
-export default async function AdminAthleteEditPage({ params }: Params) {
+/**
+ * @param {{ params: Promise<{ id: string }> }} props
+ * @returns {Promise<import("react").JSX.Element>}
+ */
+export default async function AdminAthleteEditPage({ params }) {
   if (!(await isAdmin())) notFound();
   const { id } = await params;
 

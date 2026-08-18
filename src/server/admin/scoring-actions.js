@@ -12,11 +12,13 @@ const scoreSchema = z.object({
   slot2_score: z.number().int().min(0).max(99),
 });
 
-export type ScoreInput = z.infer<typeof scoreSchema>;
+/** @typedef {z.infer<typeof scoreSchema>} ScoreInput */
 
-export async function recordSetAction(
-  input: unknown,
-): Promise<{ ok: true } | { ok: false; error: string }> {
+/**
+ * @param {unknown} input
+ * @returns {Promise<{ ok: true } | { ok: false; error: string }>}
+ */
+export async function recordSetAction(input) {
   const parsed = scoreSchema.safeParse(input);
   if (!parsed.success) {
     return { ok: false, error: parsed.error.issues[0]?.message ?? "Dữ liệu không hợp lệ." };

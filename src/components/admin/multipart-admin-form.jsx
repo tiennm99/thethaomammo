@@ -2,26 +2,33 @@
 
 import { useState, useTransition } from "react";
 
-type Result = { error?: string; ok?: boolean };
+/** @typedef {{ error?: string; ok?: boolean }} Result */
 
-type Props = {
-  action: (fd: FormData) => Promise<Result | void>;
-  submitLabel: string;
-  successMessage?: string;
-  children: React.ReactNode;
-};
+/**
+ * @typedef {object} Props
+ * @property {(fd: FormData) => Promise<Result | void>} action
+ * @property {string} submitLabel
+ * @property {string} [successMessage]
+ * @property {import("react").ReactNode} children
+ */
 
+/**
+ * @param {Props} props
+ */
 export function MultipartAdminForm({
   action,
   submitLabel,
   successMessage,
   children,
-}: Props) {
-  const [error, setError] = useState<string | null>(null);
+}) {
+  const [error, setError] = useState(/** @type {string | null} */ (null));
   const [ok, setOk] = useState(false);
   const [pending, startTransition] = useTransition();
 
-  function onSubmit(fd: FormData) {
+  /**
+   * @param {FormData} fd
+   */
+  function onSubmit(fd) {
     setError(null);
     setOk(false);
     startTransition(async () => {

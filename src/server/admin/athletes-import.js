@@ -6,20 +6,23 @@ import { createClient } from "@/lib/supabase/server";
 import { isAdmin } from "@/lib/auth/grants";
 import { csvRowSchema } from "@/lib/csv/athletes-csv";
 
-type ImportResult = {
-  ok?: boolean;
-  error?: string;
-  inserted?: number;
-  errors?: { row: number; message: string }[];
-};
+/**
+ * @typedef {object} ImportResult
+ * @property {boolean} [ok]
+ * @property {string} [error]
+ * @property {number} [inserted]
+ * @property {{ row: number, message: string }[]} [errors]
+ */
 
 const importInputSchema = z.object({
   rows: z.array(csvRowSchema).min(1).max(1000),
 });
 
-export async function importAthletesAction(
-  rawRows: unknown,
-): Promise<ImportResult> {
+/**
+ * @param {unknown} rawRows
+ * @returns {Promise<ImportResult>}
+ */
+export async function importAthletesAction(rawRows) {
   if (!(await isAdmin())) return { error: "Không có quyền." };
 
   const parsed = importInputSchema.safeParse({ rows: rawRows });
@@ -36,10 +39,9 @@ export async function importAthletesAction(
 
   if (error) return { error: error.message };
 
-  const result = data as {
-    inserted: number;
-    errors: { row: number; message: string }[];
-  };
+  const result = /** @type {{ inserted: number, errors: { row: number, message: string }[] }} */ (
+    data
+  );
 
   revalidatePath("/admin/athletes");
   return {

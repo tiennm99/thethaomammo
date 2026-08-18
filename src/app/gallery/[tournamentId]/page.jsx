@@ -1,15 +1,17 @@
 import { cache } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
 import { publicAssetUrl } from "@/lib/storage/public-asset-url";
 
 export const revalidate = 300;
 
-type Params = { params: Promise<{ tournamentId: string }> };
+/** @typedef {{ params: Promise<{ tournamentId: string }> }} Params */
 
-const loadTournament = cache(async (id: string) => {
+/**
+ * @param {string} id
+ */
+const loadTournament = cache(async (/** @type {string} */ id) => {
   const supabase = await createClient();
   const { data } = await supabase
     .from("v_tournaments_public")
@@ -19,7 +21,11 @@ const loadTournament = cache(async (id: string) => {
   return data;
 });
 
-export async function generateMetadata({ params }: Params): Promise<Metadata> {
+/**
+ * @param {Params} props
+ * @returns {Promise<import("next").Metadata>}
+ */
+export async function generateMetadata({ params }) {
   const { tournamentId } = await params;
   const data = await loadTournament(tournamentId);
   if (!data) return { title: "Không tìm thấy thư viện ảnh" };
@@ -29,7 +35,11 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   };
 }
 
-export default async function GalleryPage({ params }: Params) {
+/**
+ * @param {Params} props
+ * @returns {Promise<import("react").JSX.Element>}
+ */
+export default async function GalleryPage({ params }) {
   const { tournamentId } = await params;
   const tournament = await loadTournament(tournamentId);
   if (!tournament) notFound();

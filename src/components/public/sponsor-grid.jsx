@@ -1,16 +1,18 @@
 import { publicAssetUrl } from "@/lib/storage/public-asset-url";
 
-type Sponsor = {
-  id: string;
-  name: string;
-  tier: string;
-  logo_path: string | null;
-  link_url: string | null;
-  invert_in_light: boolean;
-  sort_order: number;
-};
+/**
+ * @typedef {object} Sponsor
+ * @property {string} id
+ * @property {string} name
+ * @property {string} tier
+ * @property {string | null} logo_path
+ * @property {string | null} link_url
+ * @property {boolean} invert_in_light
+ * @property {number} sort_order
+ */
 
-const TIER_ORDER: Record<string, number> = {
+/** @type {Record<string, number>} */
+const TIER_ORDER = {
   gold: 0,
   silver: 1,
   bronze: 2,
@@ -18,7 +20,8 @@ const TIER_ORDER: Record<string, number> = {
   court: 4,
 };
 
-const TIER_LABEL: Record<string, string> = {
+/** @type {Record<string, string>} */
+const TIER_LABEL = {
   gold: "Tài trợ Vàng",
   silver: "Tài trợ Bạc",
   bronze: "Tài trợ Đồng",
@@ -26,10 +29,14 @@ const TIER_LABEL: Record<string, string> = {
   court: "Tài trợ sân",
 };
 
-export function SponsorGrid({ sponsors }: { sponsors: Sponsor[] }) {
+/**
+ * @param {{ sponsors: Sponsor[] }} props
+ */
+export function SponsorGrid({ sponsors }) {
   if (sponsors.length === 0) return null;
 
-  const byTier = new Map<string, Sponsor[]>();
+  /** @type {Map<string, Sponsor[]>} */
+  const byTier = new Map();
   for (const s of sponsors) {
     const list = byTier.get(s.tier) ?? [];
     list.push(s);

@@ -14,10 +14,11 @@ export const eventInputSchema = z.object({
     .nullable(),
 });
 
-export type EventInput = z.infer<typeof eventInputSchema>;
+/** @typedef {import("zod").infer<typeof eventInputSchema>} EventInput */
 
-export function eventFormDataToInput(fd: FormData) {
-  const obj = Object.fromEntries(fd) as Record<string, string>;
+/** @param {FormData} fd */
+export function eventFormDataToInput(fd) {
+  const obj = /** @type {Record<string, string>} */ (Object.fromEntries(fd));
   const fee = Number.parseInt(obj.entry_fee_vnd ?? "0", 10);
   const cap = obj.capacity ? Number.parseInt(obj.capacity, 10) : null;
   return {

@@ -6,7 +6,11 @@ import { createClient } from "@/lib/supabase/server";
 import { isAdmin } from "@/lib/auth/grants";
 import { APP_SLUG } from "@/lib/auth/app-slug";
 
-type ActionResult = { error?: string; ok?: boolean };
+/**
+ * @typedef {object} ActionResult
+ * @property {string} [error]
+ * @property {boolean} [ok]
+ */
 
 const roleSchema = z.enum(["admin", "club_manager", "referee", "athlete"]);
 
@@ -25,16 +29,23 @@ const grantInputSchema = z
     },
   );
 
-async function assertAdmin(): Promise<string | null> {
+/**
+ * @returns {Promise<string | null>}
+ */
+async function assertAdmin() {
   if (!(await isAdmin())) return "Không có quyền.";
   return null;
 }
 
-export async function grantRoleAction(fd: FormData): Promise<ActionResult> {
+/**
+ * @param {FormData} fd
+ * @returns {Promise<ActionResult>}
+ */
+export async function grantRoleAction(fd) {
   const guard = await assertAdmin();
   if (guard) return { error: guard };
 
-  const obj = Object.fromEntries(fd) as Record<string, string>;
+  const obj = /** @type {Record<string, string>} */ (Object.fromEntries(fd));
   const parsed = grantInputSchema.safeParse({
     user_id: obj.user_id,
     role: obj.role,
@@ -60,11 +71,13 @@ export async function grantRoleAction(fd: FormData): Promise<ActionResult> {
   return { ok: true };
 }
 
-export async function revokeRoleAction(
-  userId: string,
-  role: string,
-  scopeId: string | null,
-): Promise<ActionResult> {
+/**
+ * @param {string} userId
+ * @param {string} role
+ * @param {string | null} scopeId
+ * @returns {Promise<ActionResult>}
+ */
+export async function revokeRoleAction(userId, role, scopeId) {
   const guard = await assertAdmin();
   if (guard) return { error: guard };
 

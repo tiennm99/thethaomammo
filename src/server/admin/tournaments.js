@@ -9,16 +9,21 @@ import {
   tournamentInputSchema,
 } from "@/lib/schemas/admin-tournament";
 
-type ActionResult = { error?: string; ok?: boolean; id?: string };
+/** @typedef {{ error?: string; ok?: boolean; id?: string }} ActionResult */
 
-async function assertAdmin(): Promise<string | null> {
+/**
+ * @returns {Promise<string | null>}
+ */
+async function assertAdmin() {
   if (!(await isAdmin())) return "Không có quyền.";
   return null;
 }
 
-export async function createTournamentAction(
-  fd: FormData,
-): Promise<ActionResult> {
+/**
+ * @param {FormData} fd
+ * @returns {Promise<ActionResult>}
+ */
+export async function createTournamentAction(fd) {
   const guard = await assertAdmin();
   if (guard) return { error: guard };
 
@@ -40,10 +45,12 @@ export async function createTournamentAction(
   redirect(`/admin/tournaments/${data.id}`);
 }
 
-export async function updateTournamentAction(
-  id: string,
-  fd: FormData,
-): Promise<ActionResult> {
+/**
+ * @param {string} id
+ * @param {FormData} fd
+ * @returns {Promise<ActionResult>}
+ */
+export async function updateTournamentAction(id, fd) {
   const guard = await assertAdmin();
   if (guard) return { error: guard };
 
@@ -65,7 +72,11 @@ export async function updateTournamentAction(
   return { ok: true };
 }
 
-export async function archiveTournamentAction(id: string): Promise<ActionResult> {
+/**
+ * @param {string} id
+ * @returns {Promise<ActionResult>}
+ */
+export async function archiveTournamentAction(id) {
   const guard = await assertAdmin();
   if (guard) return { error: guard };
 

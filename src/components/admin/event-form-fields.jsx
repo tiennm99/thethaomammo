@@ -3,24 +3,29 @@ import {
   TextField,
 } from "@/components/admin/admin-form";
 
-type Event = {
-  name?: string | null;
-  kind?: string | null;
-  gender?: string | null;
-  age_category_id?: string | null;
-  entry_fee_vnd?: number | null;
-  capacity?: number | null;
-  color_code?: string | null;
-};
+/**
+ * @typedef {object} Event
+ * @property {string | null} [name]
+ * @property {string | null} [kind]
+ * @property {string | null} [gender]
+ * @property {string | null} [age_category_id]
+ * @property {number | null} [entry_fee_vnd]
+ * @property {number | null} [capacity]
+ * @property {string | null} [color_code]
+ */
 
-type AgeCategory = { id: string; name: string };
+/** @typedef {{ id: string; name: string }} AgeCategory */
 
-type Props = {
-  initial?: Event;
-  ageCategories: AgeCategory[];
-};
+/**
+ * @typedef {object} Props
+ * @property {Event} [initial]
+ * @property {AgeCategory[]} ageCategories
+ */
 
-export function EventFormFields({ initial, ageCategories }: Props) {
+/**
+ * @param {Props} props
+ */
+export function EventFormFields({ initial, ageCategories }) {
   return (
     <>
       <TextField

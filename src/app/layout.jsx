@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -15,7 +14,8 @@ const mono = Geist_Mono({
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
-export const metadata: Metadata = {
+/** @type {import("next").Metadata} */
+export const metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
     default: "Thể Thao Mầm Mơ",
@@ -38,9 +38,10 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{ children: React.ReactNode }>) {
+/**
+ * @param {Readonly<{ children: import("react").ReactNode }>} props
+ */
+export default function RootLayout({ children }) {
   return (
     <html
       lang="vi"

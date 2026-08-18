@@ -9,9 +9,11 @@ import { DeleteClubButton } from "./delete-club-button";
 
 export const dynamic = "force-dynamic";
 
-type Params = { params: Promise<{ id: string }> };
-
-export default async function AdminClubEditPage({ params }: Params) {
+/**
+ * @param {{ params: Promise<{ id: string }> }} props
+ * @returns {Promise<import("react").JSX.Element>}
+ */
+export default async function AdminClubEditPage({ params }) {
   if (!(await isAdmin())) notFound();
   const { id } = await params;
   const supabase = await createClient();

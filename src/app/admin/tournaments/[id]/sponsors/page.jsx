@@ -6,7 +6,8 @@ import { publicUrlFor } from "@/lib/storage/asset-upload";
 
 export const dynamic = "force-dynamic";
 
-const TIER_LABEL: Record<string, string> = {
+/** @type {Record<string, string>} */
+const TIER_LABEL = {
   gold: "Vàng",
   silver: "Bạc",
   bronze: "Đồng",
@@ -14,9 +15,11 @@ const TIER_LABEL: Record<string, string> = {
   court: "Tài trợ sân",
 };
 
-type Params = { params: Promise<{ id: string }> };
-
-export default async function AdminSponsorsListPage({ params }: Params) {
+/**
+ * @param {{ params: Promise<{ id: string }> }} props
+ * @returns {Promise<import("react").JSX.Element>}
+ */
+export default async function AdminSponsorsListPage({ params }) {
   if (!(await isAdmin())) notFound();
   const { id } = await params;
 

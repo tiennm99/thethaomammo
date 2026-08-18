@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+/** 404 page for unknown tournament slugs. @returns {import("react").JSX.Element} */
 export default function TournamentNotFound() {
   return (
     <main className="flex-1 flex items-center justify-center p-8">

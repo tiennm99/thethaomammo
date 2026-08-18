@@ -2,15 +2,17 @@ import { createBrowserClient } from "@supabase/ssr";
 
 const APP_SCHEMA = "thethaomammo";
 
-type Client = ReturnType<typeof createBrowserClient>;
+/** @typedef {ReturnType<typeof createBrowserClient>} Client */
 
-let client: Client | undefined;
+/** @type {Client | undefined} */
+let client;
 
-export function getSupabase(): Client {
+/** @returns {Client} */
+export function getSupabase() {
   if (!client) {
     client = createBrowserClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      /** @type {string} */ (process.env.NEXT_PUBLIC_SUPABASE_URL),
+      /** @type {string} */ (process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY),
       { db: { schema: APP_SCHEMA } },
     );
   }

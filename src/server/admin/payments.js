@@ -5,28 +5,32 @@ import { createClient } from "@/lib/supabase/server";
 import { isAdmin } from "@/lib/auth/grants";
 import { enqueueNotification } from "@/server/notifications/produce";
 
-type ActionResult = { error?: string; ok?: boolean };
+/** @typedef {{ error?: string, ok?: boolean }} ActionResult */
 
-async function assertAdmin(): Promise<string | null> {
+/** @returns {Promise<string | null>} */
+async function assertAdmin() {
   if (!(await isAdmin())) return "Không có quyền.";
   return null;
 }
 
-async function currentUserId(): Promise<string | null> {
+/** @returns {Promise<string | null>} */
+async function currentUserId() {
   const supabase = await createClient();
   const { data } = await supabase.auth.getUser();
   return data.user?.id ?? null;
 }
 
-export async function verifyPaymentAction(
-  registrationId: string,
-  fd: FormData,
-): Promise<ActionResult> {
+/**
+ * @param {string} registrationId
+ * @param {FormData} fd
+ * @returns {Promise<ActionResult>}
+ */
+export async function verifyPaymentAction(registrationId, fd) {
   const guard = await assertAdmin();
   if (guard) return { error: guard };
 
-  const noteRaw = (fd.get("note") as string | null) ?? "";
-  const amountRaw = (fd.get("amount_vnd") as string | null) ?? "";
+  const noteRaw = /** @type {string | null} */ (fd.get("note")) ?? "";
+  const amountRaw = /** @type {string | null} */ (fd.get("amount_vnd")) ?? "";
   const amount = Number.parseInt(amountRaw, 10);
   if (!Number.isFinite(amount) || amount < 0) {
     return { error: "Số tiền không hợp lệ." };
@@ -99,14 +103,16 @@ export async function verifyPaymentAction(
   return { ok: true };
 }
 
-export async function rejectPaymentAction(
-  registrationId: string,
-  fd: FormData,
-): Promise<ActionResult> {
+/**
+ * @param {string} registrationId
+ * @param {FormData} fd
+ * @returns {Promise<ActionResult>}
+ */
+export async function rejectPaymentAction(registrationId, fd) {
   const guard = await assertAdmin();
   if (guard) return { error: guard };
 
-  const note = ((fd.get("note") as string | null) ?? "").trim();
+  const note = (/** @type {string | null} */ (fd.get("note")) ?? "").trim();
   if (!note) return { error: "Vui lòng nhập lý do từ chối." };
 
   const supabase = await createClient();

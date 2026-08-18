@@ -1,18 +1,23 @@
 import Link from "next/link";
 import { publicAssetUrl } from "@/lib/storage/public-asset-url";
 
-type Photo = {
-  id: string;
-  storage_path: string;
-  caption: string | null;
-};
+/**
+ * @typedef {object} Photo
+ * @property {string} id
+ * @property {string} storage_path
+ * @property {string | null} caption
+ */
 
-type Props = {
-  tournamentId: string;
-  photos: Photo[];
-};
+/**
+ * @typedef {object} Props
+ * @property {string} tournamentId
+ * @property {Photo[]} photos
+ */
 
-export function GalleryPreview({ tournamentId, photos }: Props) {
+/**
+ * @param {Props} props
+ */
+export function GalleryPreview({ tournamentId, photos }) {
   if (photos.length === 0) return null;
 
   return (

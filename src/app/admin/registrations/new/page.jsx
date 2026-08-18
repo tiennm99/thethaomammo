@@ -12,6 +12,7 @@ import { createManualRegistrationAction } from "@/server/admin/manual-registrati
 
 export const dynamic = "force-dynamic";
 
+/** Admin manual-registration form page. @returns {Promise<import("react").JSX.Element>} */
 export default async function AdminManualRegistrationPage() {
   if (!(await isAdmin())) notFound();
 

@@ -5,6 +5,7 @@ import { AthleteImportFlow } from "./athlete-import-flow";
 
 export const dynamic = "force-dynamic";
 
+/** Admin athlete CSV import page. @returns {Promise<import("react").JSX.Element>} */
 export default async function AdminAthleteImportPage() {
   if (!(await isAdmin())) notFound();
 

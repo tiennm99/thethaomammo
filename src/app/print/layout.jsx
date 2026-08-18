@@ -1,12 +1,13 @@
-import type { Metadata } from "next";
 import "./print.css";
 
-export const metadata: Metadata = {
+/** @type {import("next").Metadata} */
+export const metadata = {
   robots: { index: false, follow: false },
 };
 
-export default function PrintLayout({
-  children,
-}: Readonly<{ children: React.ReactNode }>) {
+/**
+ * @param {Readonly<{ children: import("react").ReactNode }>} props
+ */
+export default function PrintLayout({ children }) {
   return <div className="print-root">{children}</div>;
 }

@@ -1,13 +1,15 @@
 import { cache } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
 import { formatDate } from "@/lib/format/date-range";
 
 export const revalidate = 300;
 
-const loadAthlete = cache(async (id: string) => {
+/**
+ * @param {string} id
+ */
+const loadAthlete = cache(async (/** @type {string} */ id) => {
   const supabase = await createClient();
   const { data } = await supabase
     .from("v_athletes_public")
@@ -19,21 +21,27 @@ const loadAthlete = cache(async (id: string) => {
   return data;
 });
 
-const GENDER_LABEL: Record<string, string> = {
+/** @type {Record<string, string>} */
+const GENDER_LABEL = {
   male: "Nam",
   female: "Nữ",
 };
 
-const MATCH_STATUS_LABEL: Record<string, string> = {
+/** @type {Record<string, string>} */
+const MATCH_STATUS_LABEL = {
   pending: "Chờ thi đấu",
   in_progress: "Đang thi đấu",
   completed: "Đã kết thúc",
   walkover: "Walkover",
 };
 
-type Params = { params: Promise<{ id: string }> };
+/** @typedef {{ params: Promise<{ id: string }> }} Params */
 
-export async function generateMetadata({ params }: Params): Promise<Metadata> {
+/**
+ * @param {Params} props
+ * @returns {Promise<import("next").Metadata>}
+ */
+export async function generateMetadata({ params }) {
   const { id } = await params;
   const data = await loadAthlete(id);
   if (!data) return { title: "Không tìm thấy VĐV" };
@@ -44,13 +52,17 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   };
 }
 
-export default async function AthleteProfilePage({ params }: Params) {
+/**
+ * @param {Params} props
+ * @returns {Promise<import("react").JSX.Element>}
+ */
+export default async function AthleteProfilePage({ params }) {
   const { id } = await params;
   const athlete = await loadAthlete(id);
   if (!athlete) notFound();
   const supabase = await createClient();
 
-  let clubSlug: string | null = null;
+  let clubSlug = /** @type {string | null} */ (null);
   if (athlete.club_id) {
     const { data: club } = await supabase
       .from("clubs")
@@ -100,7 +112,7 @@ export default async function AthleteProfilePage({ params }: Params) {
   const registrations = regsRes.data ?? [];
   const matches = (matchesRes.data ?? [])
     .map((m) => (Array.isArray(m.match) ? m.match[0] : m.match))
-    .filter((m): m is NonNullable<typeof m> => Boolean(m));
+    .filter((m) => Boolean(m));
 
   const clubName = athlete.club_resolved_name ?? athlete.club_name;
 

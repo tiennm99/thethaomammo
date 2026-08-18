@@ -7,10 +7,11 @@ export const courtInputSchema = z.object({
   status: courtStatusSchema,
 });
 
-export type CourtInput = z.infer<typeof courtInputSchema>;
+/** @typedef {import("zod").infer<typeof courtInputSchema>} CourtInput */
 
-export function courtFormDataToInput(fd: FormData) {
-  const obj = Object.fromEntries(fd) as Record<string, string>;
+/** @param {FormData} fd */
+export function courtFormDataToInput(fd) {
+  const obj = /** @type {Record<string, string>} */ (Object.fromEntries(fd));
   const sort = Number.parseInt(obj.sort_order ?? "0", 10);
   return {
     name: obj.name,

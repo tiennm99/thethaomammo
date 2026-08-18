@@ -7,26 +7,28 @@ import {
   updatePhotoCaptionAction,
 } from "@/server/admin/gallery";
 
-type Props = {
-  tournamentId: string;
-  photoId: string;
-  url: string | null;
-  caption: string | null;
-};
-
+/**
+ * @param {{
+ *   tournamentId: string,
+ *   photoId: string,
+ *   url: string | null,
+ *   caption: string | null,
+ * }} props
+ */
 export function GalleryPhotoCard({
   tournamentId,
   photoId,
   url,
   caption,
-}: Props) {
+}) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
-  const [opError, setOpError] = useState<string | null>(null);
+  const [opError, setOpError] = useState(/** @type {string | null} */ (null));
   const [savedCaption, setSavedCaption] = useState(caption ?? "");
   const [dirty, setDirty] = useState(false);
 
-  function saveCaption(fd: FormData) {
+  /** @param {FormData} fd */
+  function saveCaption(fd) {
     setOpError(null);
     startTransition(async () => {
       const result = await updatePhotoCaptionAction(tournamentId, photoId, fd);
@@ -34,7 +36,7 @@ export function GalleryPhotoCard({
         setOpError(result.error);
         return;
       }
-      setSavedCaption((fd.get("caption") as string) ?? "");
+      setSavedCaption(/** @type {string} */ (fd.get("caption")) ?? "");
       setDirty(false);
     });
   }

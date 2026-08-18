@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
 
+/** Live tournaments index. @returns {Promise<import("react").JSX.Element>} */
 export default async function LiveIndexPage() {
   const supabase = await createClient();
   const { data: tournaments } = await supabase

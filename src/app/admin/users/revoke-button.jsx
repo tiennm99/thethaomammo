@@ -4,16 +4,13 @@ import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { revokeRoleAction } from "@/server/admin/grants";
 
-type Props = {
-  userId: string;
-  role: string;
-  scopeId: string | null;
-};
-
-export function RevokeButton({ userId, role, scopeId }: Props) {
+/**
+ * @param {{ userId: string, role: string, scopeId: string | null }} props
+ */
+export function RevokeButton({ userId, role, scopeId }) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState(/** @type {string | null} */ (null));
 
   function onClick() {
     if (!window.confirm("Thu hồi quyền này?")) return;

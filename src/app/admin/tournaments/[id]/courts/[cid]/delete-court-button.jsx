@@ -3,15 +3,16 @@
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 
-type Props = {
-  action: () => Promise<{ error?: string; ok?: boolean }>;
-  disabled?: boolean;
-};
-
-export function DeleteCourtButton({ action, disabled }: Props) {
+/**
+ * @param {{
+ *   action: () => Promise<{ error?: string, ok?: boolean }>,
+ *   disabled?: boolean,
+ * }} props
+ */
+export function DeleteCourtButton({ action, disabled }) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState(/** @type {string | null} */ (null));
 
   function onClick() {
     if (!window.confirm("Xóa sân này?")) return;

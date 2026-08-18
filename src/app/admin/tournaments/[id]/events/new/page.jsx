@@ -8,9 +8,11 @@ import { createEventAction } from "@/server/admin/events";
 
 export const dynamic = "force-dynamic";
 
-type Params = { params: Promise<{ id: string }> };
-
-export default async function AdminEventNewPage({ params }: Params) {
+/**
+ * @param {{ params: Promise<{ id: string }> }} props
+ * @returns {Promise<import("react").JSX.Element>}
+ */
+export default async function AdminEventNewPage({ params }) {
   if (!(await isAdmin())) notFound();
   const { id } = await params;
 

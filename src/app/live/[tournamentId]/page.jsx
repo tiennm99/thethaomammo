@@ -4,9 +4,11 @@ import { LiveMatches } from "@/components/live/live-matches";
 
 export const dynamic = "force-dynamic";
 
-type Params = { params: Promise<{ tournamentId: string }> };
-
-export default async function LiveTournamentPage({ params }: Params) {
+/**
+ * @param {{ params: Promise<{ tournamentId: string }> }} props
+ * @returns {Promise<import("react").JSX.Element>}
+ */
+export default async function LiveTournamentPage({ params }) {
   const { tournamentId } = await params;
   const supabase = await createClient();
 

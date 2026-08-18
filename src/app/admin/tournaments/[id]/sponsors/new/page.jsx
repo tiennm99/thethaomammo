@@ -8,9 +8,11 @@ import { createSponsorAction } from "@/server/admin/sponsors";
 
 export const dynamic = "force-dynamic";
 
-type Params = { params: Promise<{ id: string }> };
-
-export default async function AdminSponsorNewPage({ params }: Params) {
+/**
+ * @param {{ params: Promise<{ id: string }> }} props
+ * @returns {Promise<import("react").JSX.Element>}
+ */
+export default async function AdminSponsorNewPage({ params }) {
   if (!(await isAdmin())) notFound();
   const { id } = await params;
 

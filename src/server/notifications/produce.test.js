@@ -1,7 +1,10 @@
 import { describe, expect, it, vi } from "vitest";
 import { enqueueNotification } from "./produce";
 
-function makeClient(error: { code?: string; message: string } | null = null) {
+/**
+ * @param {{ code?: string; message: string } | null} [error]
+ */
+function makeClient(error = null) {
   const insert = vi.fn().mockResolvedValue({ error });
   return {
     client: {

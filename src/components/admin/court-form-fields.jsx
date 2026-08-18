@@ -1,12 +1,16 @@
 import { SelectField, TextField } from "@/components/admin/admin-form";
 
-type Court = {
-  name?: string | null;
-  sort_order?: number | null;
-  status?: string | null;
-};
+/**
+ * @typedef {object} Court
+ * @property {string | null} [name]
+ * @property {number | null} [sort_order]
+ * @property {string | null} [status]
+ */
 
-export function CourtFormFields({ initial }: { initial?: Court }) {
+/**
+ * @param {{ initial?: Court }} props
+ */
+export function CourtFormFields({ initial }) {
   return (
     <>
       <TextField

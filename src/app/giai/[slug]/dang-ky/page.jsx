@@ -4,9 +4,11 @@ import { RegistrationForm } from "./registration-form";
 
 export const dynamic = "force-dynamic";
 
-type Params = { params: Promise<{ slug: string }> };
-
-export default async function RegisterPage({ params }: Params) {
+/**
+ * @param {{ params: Promise<{ slug: string }> }} props
+ * @returns {Promise<import("react").JSX.Element>}
+ */
+export default async function RegisterPage({ params }) {
   const { slug } = await params;
   const supabase = await createClient();
 
@@ -67,7 +69,7 @@ export default async function RegisterPage({ params }: Params) {
       <RegistrationForm
         tournamentId={tournament.id}
         tournamentSlug={tournament.slug}
-        events={events as never}
+        events={/** @type {never} */ (events)}
       />
     </main>
   );

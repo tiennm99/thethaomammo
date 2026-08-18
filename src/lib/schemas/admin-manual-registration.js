@@ -13,12 +13,11 @@ export const manualRegistrationInputSchema = z.object({
   note: z.string().trim().max(500).nullable(),
 });
 
-export type ManualRegistrationInput = z.infer<
-  typeof manualRegistrationInputSchema
->;
+/** @typedef {import("zod").infer<typeof manualRegistrationInputSchema>} ManualRegistrationInput */
 
-export function manualRegistrationFormDataToInput(fd: FormData) {
-  const obj = Object.fromEntries(fd) as Record<string, string>;
+/** @param {FormData} fd */
+export function manualRegistrationFormDataToInput(fd) {
+  const obj = /** @type {Record<string, string>} */ (Object.fromEntries(fd));
   const amountRaw = obj.amount_vnd?.trim() ?? "";
   const amount = amountRaw ? Number.parseInt(amountRaw, 10) : null;
   return {

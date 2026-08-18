@@ -4,9 +4,10 @@ import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { generateBracketAction } from "@/server/admin/bracket-actions";
 
-export function GenerateBracketButton({ eventId }: { eventId: string }) {
+/** @param {{ eventId: string }} props */
+export function GenerateBracketButton({ eventId }) {
   const router = useRouter();
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState(/** @type {string | null} */ (null));
   const [pending, startTransition] = useTransition();
 
   function handle() {

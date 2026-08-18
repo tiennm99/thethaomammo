@@ -4,6 +4,7 @@ export const redis = Redis.fromEnv();
 
 export const APP_PREFIX = "thethaomammo";
 
-export function key(...parts: (string | number)[]) {
+/** @param {(string | number)[]} parts */
+export function key(...parts) {
   return [APP_PREFIX, ...parts].join(":");
 }

@@ -1,11 +1,13 @@
-import type { MetadataRoute } from "next";
 import { createClient } from "@/lib/supabase/server";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
 export const revalidate = 3600;
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+/**
+ * @returns {Promise<import("next").MetadataRoute.Sitemap>}
+ */
+export default async function sitemap() {
   const supabase = await createClient();
   const { data } = await supabase
     .from("v_tournaments_public")
@@ -17,7 +19,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     return {
       url: `${SITE_URL}/giai/${t.slug}`,
       lastModified: last ? new Date(last) : new Date(),
-      changeFrequency: "daily" as const,
+      changeFrequency: /** @type {const} */ ("daily"),
       priority: 0.7,
     };
   });

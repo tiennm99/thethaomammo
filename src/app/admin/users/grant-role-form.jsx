@@ -4,16 +4,22 @@ import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { grantRoleAction } from "@/server/admin/grants";
 
-type Club = { id: string; name: string };
+/** @typedef {{ id: string, name: string }} Club */
 
-export function GrantRoleForm({ clubs }: { clubs: Club[] }) {
+/**
+ * @param {{ clubs: Club[] }} props
+ */
+export function GrantRoleForm({ clubs }) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState(/** @type {string | null} */ (null));
   const [ok, setOk] = useState(false);
   const [role, setRole] = useState("admin");
 
-  function onSubmit(fd: FormData) {
+  /**
+   * @param {FormData} fd
+   */
+  function onSubmit(fd) {
     setError(null);
     setOk(false);
     startTransition(async () => {

@@ -3,24 +3,31 @@
 import { useEffect, useMemo, useState } from "react";
 import { getSupabase } from "@/lib/supabase/browser";
 
-type LiveMatch = {
-  id: string;
-  event_id: string;
-  round: number;
-  slot: number;
-  status: string;
-  court_name: string | null;
-  third_place: boolean;
-};
+/**
+ * @typedef {object} LiveMatch
+ * @property {string} id
+ * @property {string} event_id
+ * @property {number} round
+ * @property {number} slot
+ * @property {string} status
+ * @property {string | null} court_name
+ * @property {boolean} third_place
+ */
 
-type Props = {
-  tournamentId: string;
-  eventIds: string[];
-  initial: LiveMatch[];
-};
+/**
+ * @typedef {object} Props
+ * @property {string} tournamentId
+ * @property {string[]} eventIds
+ * @property {LiveMatch[]} initial
+ */
 
-export function LiveMatches({ tournamentId, eventIds, initial }: Props) {
-  const [matches, setMatches] = useState<LiveMatch[]>(initial);
+/**
+ * @param {Props} props
+ */
+export function LiveMatches({ tournamentId, eventIds, initial }) {
+  const [matches, setMatches] = useState(
+    /** @type {LiveMatch[]} */ (initial),
+  );
   // Stable key so the effect doesn't re-subscribe on every parent re-render.
   const eventIdsKey = useMemo(() => [...eventIds].sort().join(","), [eventIds]);
 

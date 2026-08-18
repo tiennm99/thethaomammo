@@ -3,18 +3,19 @@
 import { useState, useTransition } from "react";
 import { markNotificationReadAction } from "@/server/admin/notifications";
 
-type Props = {
-  id: string;
-  type: string;
-  statusLabel: string;
-  email: string | null;
-  createdAt: string;
-  sentAt: string;
-  isRead: boolean;
-  error: string | null;
-  payload: unknown;
-};
-
+/**
+ * @param {{
+ *   id: string,
+ *   type: string,
+ *   statusLabel: string,
+ *   email: string | null,
+ *   createdAt: string,
+ *   sentAt: string,
+ *   isRead: boolean,
+ *   error: string | null,
+ *   payload: unknown,
+ * }} props
+ */
 export function NotificationRow({
   id,
   type,
@@ -25,9 +26,9 @@ export function NotificationRow({
   isRead,
   error,
   payload,
-}: Props) {
+}) {
   const [pending, startTransition] = useTransition();
-  const [opErr, setOpErr] = useState<string | null>(null);
+  const [opErr, setOpErr] = useState(/** @type {string | null} */ (null));
 
   function markRead() {
     setOpErr(null);

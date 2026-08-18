@@ -6,14 +6,26 @@ import { createClient } from "@/lib/supabase/server";
 import { isAdmin } from "@/lib/auth/grants";
 import { clubFormDataToInput, clubInputSchema } from "@/lib/schemas/admin-club";
 
-type ActionResult = { error?: string; ok?: boolean; id?: string };
+/**
+ * @typedef {object} ActionResult
+ * @property {string} [error]
+ * @property {boolean} [ok]
+ * @property {string} [id]
+ */
 
-async function assertAdmin(): Promise<string | null> {
+/**
+ * @returns {Promise<string | null>}
+ */
+async function assertAdmin() {
   if (!(await isAdmin())) return "Không có quyền.";
   return null;
 }
 
-export async function createClubAction(fd: FormData): Promise<ActionResult> {
+/**
+ * @param {FormData} fd
+ * @returns {Promise<ActionResult>}
+ */
+export async function createClubAction(fd) {
   const guard = await assertAdmin();
   if (guard) return { error: guard };
 
@@ -35,10 +47,12 @@ export async function createClubAction(fd: FormData): Promise<ActionResult> {
   redirect(`/admin/clubs/${data.id}`);
 }
 
-export async function updateClubAction(
-  id: string,
-  fd: FormData,
-): Promise<ActionResult> {
+/**
+ * @param {string} id
+ * @param {FormData} fd
+ * @returns {Promise<ActionResult>}
+ */
+export async function updateClubAction(id, fd) {
   const guard = await assertAdmin();
   if (guard) return { error: guard };
 
@@ -60,7 +74,11 @@ export async function updateClubAction(
   return { ok: true };
 }
 
-export async function deleteClubAction(id: string): Promise<ActionResult> {
+/**
+ * @param {string} id
+ * @returns {Promise<ActionResult>}
+ */
+export async function deleteClubAction(id) {
   const guard = await assertAdmin();
   if (guard) return { error: guard };
 

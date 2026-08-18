@@ -5,6 +5,9 @@ import { isAdmin } from "@/lib/auth/grants";
 
 export const dynamic = "force-dynamic";
 
+/**
+ * @returns {Promise<import("react").JSX.Element>}
+ */
 export default async function AdminClubsListPage() {
   if (!(await isAdmin())) notFound();
   const supabase = await createClient();

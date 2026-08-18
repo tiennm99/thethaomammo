@@ -1,12 +1,16 @@
 import { TextField } from "@/components/admin/admin-form";
 
-type Club = {
-  name?: string | null;
-  slug?: string | null;
-  zalo_phone?: string | null;
-};
+/**
+ * @typedef {object} Club
+ * @property {string | null} [name]
+ * @property {string | null} [slug]
+ * @property {string | null} [zalo_phone]
+ */
 
-export function ClubFormFields({ initial }: { initial?: Club }) {
+/**
+ * @param {{ initial?: Club }} props
+ */
+export function ClubFormFields({ initial }) {
   return (
     <>
       <TextField

@@ -2,29 +2,37 @@
 
 import { useState, useTransition } from "react";
 
-type Action = (fd: FormData) => Promise<{ error?: string; ok?: boolean }>;
+/** @typedef {(fd: FormData) => Promise<{ error?: string; ok?: boolean }>} Action */
 
-type Field = {
-  name: string;
-  label: string;
-  type?: string;
-  required?: boolean;
-  autoComplete?: string;
-};
+/**
+ * @typedef {object} Field
+ * @property {string} name
+ * @property {string} label
+ * @property {string} [type]
+ * @property {boolean} [required]
+ * @property {string} [autoComplete]
+ */
 
-type Props = {
-  action: Action;
-  fields: Field[];
-  submitLabel: string;
-  successMessage?: string;
-};
+/**
+ * @typedef {object} Props
+ * @property {Action} action
+ * @property {Field[]} fields
+ * @property {string} submitLabel
+ * @property {string} [successMessage]
+ */
 
-export function AuthForm({ action, fields, submitLabel, successMessage }: Props) {
-  const [error, setError] = useState<string | null>(null);
+/**
+ * @param {Props} props
+ */
+export function AuthForm({ action, fields, submitLabel, successMessage }) {
+  const [error, setError] = useState(/** @type {string | null} */ (null));
   const [ok, setOk] = useState(false);
   const [pending, startTransition] = useTransition();
 
-  function onSubmit(formData: FormData) {
+  /**
+   * @param {FormData} formData
+   */
+  function onSubmit(formData) {
     setError(null);
     setOk(false);
     startTransition(async () => {

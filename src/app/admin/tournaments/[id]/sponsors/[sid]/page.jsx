@@ -10,9 +10,11 @@ import { DeleteSponsorButton } from "./delete-sponsor-button";
 
 export const dynamic = "force-dynamic";
 
-type Params = { params: Promise<{ id: string; sid: string }> };
-
-export default async function AdminSponsorEditPage({ params }: Params) {
+/**
+ * @param {{ params: Promise<{ id: string, sid: string }> }} props
+ * @returns {Promise<import("react").JSX.Element>}
+ */
+export default async function AdminSponsorEditPage({ params }) {
   if (!(await isAdmin())) notFound();
   const { id, sid } = await params;
 

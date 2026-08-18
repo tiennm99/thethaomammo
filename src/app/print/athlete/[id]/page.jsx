@@ -1,12 +1,14 @@
 import { cache } from "react";
 import { notFound } from "next/navigation";
-import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
 import { PrintActions } from "@/components/print/print-actions";
 
 export const revalidate = 300;
 
-const loadAthlete = cache(async (id: string) => {
+/**
+ * @param {string} id
+ */
+const loadAthlete = cache(async (/** @type {string} */ id) => {
   const supabase = await createClient();
   const { data } = await supabase
     .from("v_athletes_public")
@@ -18,21 +20,30 @@ const loadAthlete = cache(async (id: string) => {
   return data;
 });
 
-const GENDER_LABEL: Record<string, string> = {
+/** @type {Record<string, string>} */
+const GENDER_LABEL = {
   male: "Nam",
   female: "Nữ",
 };
 
-type Params = { params: Promise<{ id: string }> };
+/** @typedef {{ params: Promise<{ id: string }> }} Params */
 
-export async function generateMetadata({ params }: Params): Promise<Metadata> {
+/**
+ * @param {Params} props
+ * @returns {Promise<import("next").Metadata>}
+ */
+export async function generateMetadata({ params }) {
   const { id } = await params;
   const data = await loadAthlete(id);
   if (!data) return { title: "Không tìm thấy VĐV" };
   return { title: `Thẻ VĐV — ${data.full_name}`, robots: { index: false } };
 }
 
-export default async function PrintAthletePage({ params }: Params) {
+/**
+ * @param {Params} props
+ * @returns {Promise<import("react").JSX.Element>}
+ */
+export default async function PrintAthletePage({ params }) {
   const { id } = await params;
   const athlete = await loadAthlete(id);
   if (!athlete) notFound();

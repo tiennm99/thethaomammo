@@ -1,11 +1,10 @@
 import Link from "next/link";
 
-type Params = {
-  params: Promise<{ slug: string }>;
-  searchParams: Promise<{ id?: string }>;
-};
-
-export default async function ThanksPage({ params, searchParams }: Params) {
+/**
+ * @param {{ params: Promise<{ slug: string }>, searchParams: Promise<{ id?: string }> }} props
+ * @returns {Promise<import("react").JSX.Element>}
+ */
+export default async function ThanksPage({ params, searchParams }) {
   const { slug } = await params;
   const { id } = await searchParams;
 

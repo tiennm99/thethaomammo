@@ -5,9 +5,11 @@ import { ScoringForm } from "./scoring-form";
 
 export const dynamic = "force-dynamic";
 
-type Params = { params: Promise<{ id: string }> };
-
-export default async function ScoringPage({ params }: Params) {
+/**
+ * @param {{ params: Promise<{ id: string }> }} props
+ * @returns {Promise<import("react").JSX.Element>}
+ */
+export default async function ScoringPage({ params }) {
   const { id } = await params;
   if (!(await isAdmin()) && !(await hasRole("referee"))) notFound();
 

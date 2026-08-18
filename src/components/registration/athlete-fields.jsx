@@ -1,14 +1,21 @@
 "use client";
 
 import { useFormContext } from "react-hook-form";
-import type { RegistrationPayload } from "@/lib/schemas/registration";
+/** @typedef {import("@/lib/schemas/registration").RegistrationPayload} RegistrationPayload */
 
-type Props = { index: 0 | 1; legend: string };
+/** @typedef {{ index: 0 | 1; legend: string }} Props */
 
-export function AthleteFields({ index, legend }: Props) {
-  const { register, formState } = useFormContext<RegistrationPayload>();
-  const base = `athletes.${index}` as const;
-  const errors = (formState.errors.athletes as Array<Record<string, { message?: string }>> | undefined)?.[index];
+/**
+ * @param {Props} props
+ */
+export function AthleteFields({ index, legend }) {
+  const { register, formState } = /** @type {import("react-hook-form").UseFormReturn<RegistrationPayload>} */ (
+    useFormContext()
+  );
+  const base = /** @type {const} */ (`athletes.${index}`);
+  const errors = /** @type {Array<Record<string, { message?: string }>> | undefined} */ (
+    formState.errors.athletes
+  )?.[index];
 
   return (
     <fieldset className="space-y-3 border border-border rounded-md p-4">
@@ -16,7 +23,7 @@ export function AthleteFields({ index, legend }: Props) {
 
       <Field label="Họ tên" error={errors?.full_name?.message}>
         <input
-          {...register(`${base}.full_name` as const)}
+          {...register(/** @type {const} */ (`${base}.full_name`))}
           autoComplete="name"
           className={inputClass}
         />
@@ -26,13 +33,16 @@ export function AthleteFields({ index, legend }: Props) {
         <Field label="Ngày sinh" error={errors?.dob?.message}>
           <input
             type="date"
-            {...register(`${base}.dob` as const)}
+            {...register(/** @type {const} */ (`${base}.dob`))}
             className={inputClass}
           />
         </Field>
 
         <Field label="Giới tính" error={errors?.gender?.message}>
-          <select {...register(`${base}.gender` as const)} className={inputClass}>
+          <select
+            {...register(/** @type {const} */ (`${base}.gender`))}
+            className={inputClass}
+          >
             <option value="">--</option>
             <option value="male">Nam</option>
             <option value="female">Nữ</option>
@@ -41,13 +51,16 @@ export function AthleteFields({ index, legend }: Props) {
       </div>
 
       <Field label="CLB" error={errors?.club_name?.message}>
-        <input {...register(`${base}.club_name` as const)} className={inputClass} />
+        <input
+          {...register(/** @type {const} */ (`${base}.club_name`))}
+          className={inputClass}
+        />
       </Field>
 
       <div className="grid grid-cols-2 gap-3">
         <Field label="Số điện thoại" error={errors?.phone?.message}>
           <input
-            {...register(`${base}.phone` as const)}
+            {...register(/** @type {const} */ (`${base}.phone`))}
             inputMode="numeric"
             autoComplete="tel"
             className={inputClass}
@@ -57,7 +70,7 @@ export function AthleteFields({ index, legend }: Props) {
         <Field label="Email (tuỳ chọn)" error={errors?.email?.message}>
           <input
             type="email"
-            {...register(`${base}.email` as const)}
+            {...register(/** @type {const} */ (`${base}.email`))}
             autoComplete="email"
             className={inputClass}
           />
@@ -70,15 +83,10 @@ export function AthleteFields({ index, legend }: Props) {
 const inputClass =
   "w-full h-10 px-3 rounded-md border border-input bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring";
 
-function Field({
-  label,
-  error,
-  children,
-}: {
-  label: string;
-  error?: string;
-  children: React.ReactNode;
-}) {
+/**
+ * @param {{ label: string; error?: string; children: import("react").ReactNode }} props
+ */
+function Field({ label, error, children }) {
   return (
     <label className="block space-y-1.5 text-sm">
       <span className="font-medium">{label}</span>

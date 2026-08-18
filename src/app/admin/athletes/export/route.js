@@ -7,6 +7,7 @@ export const dynamic = "force-dynamic";
 
 const EXPORT_CAP = 5000;
 
+/** Streams the athlete list as a CSV download. @returns {Promise<Response>} */
 export async function GET() {
   // 404 (not 403) keeps parity with other admin RSCs that use notFound().
   if (!(await isAdmin())) {

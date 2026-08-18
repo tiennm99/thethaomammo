@@ -8,21 +8,30 @@ import {
   uploadGalleryPhoto,
 } from "@/lib/storage/asset-upload";
 
-type ActionResult = { error?: string; ok?: boolean };
+/**
+ * @typedef {object} ActionResult
+ * @property {string} [error]
+ * @property {boolean} [ok]
+ */
 
-async function assertAdmin(): Promise<string | null> {
+/**
+ * @returns {Promise<string | null>}
+ */
+async function assertAdmin() {
   if (!(await isAdmin())) return "Không có quyền.";
   return null;
 }
 
-export async function uploadGalleryPhotosAction(
-  tournamentId: string,
-  fd: FormData,
-): Promise<ActionResult & { uploaded?: number; errors?: string[] }> {
+/**
+ * @param {string} tournamentId
+ * @param {FormData} fd
+ * @returns {Promise<ActionResult & { uploaded?: number, errors?: string[] }>}
+ */
+export async function uploadGalleryPhotosAction(tournamentId, fd) {
   const guard = await assertAdmin();
   if (guard) return { error: guard };
 
-  const files = fd.getAll("photos") as File[];
+  const files = /** @type {File[]} */ (fd.getAll("photos"));
   const valid = files.filter((f) => f && f.size > 0);
   if (valid.length === 0) return { error: "Chưa chọn ảnh." };
 
@@ -38,7 +47,8 @@ export async function uploadGalleryPhotosAction(
     .maybeSingle();
   let nextSort = (maxRow?.sort_order ?? -1) + 1;
 
-  const errors: string[] = [];
+  /** @type {string[]} */
+  const errors = [];
   let uploaded = 0;
 
   for (const file of valid) {
@@ -71,15 +81,17 @@ export async function uploadGalleryPhotosAction(
   };
 }
 
-export async function updatePhotoCaptionAction(
-  tournamentId: string,
-  photoId: string,
-  fd: FormData,
-): Promise<ActionResult> {
+/**
+ * @param {string} tournamentId
+ * @param {string} photoId
+ * @param {FormData} fd
+ * @returns {Promise<ActionResult>}
+ */
+export async function updatePhotoCaptionAction(tournamentId, photoId, fd) {
   const guard = await assertAdmin();
   if (guard) return { error: guard };
 
-  const caption = ((fd.get("caption") as string | null) ?? "").trim();
+  const caption = (/** @type {string | null} */ (fd.get("caption")) ?? "").trim();
   const supabase = await createClient();
   const { error } = await supabase
     .from("gallery_photos")
@@ -92,10 +104,12 @@ export async function updatePhotoCaptionAction(
   return { ok: true };
 }
 
-export async function deleteGalleryPhotoAction(
-  tournamentId: string,
-  photoId: string,
-): Promise<ActionResult> {
+/**
+ * @param {string} tournamentId
+ * @param {string} photoId
+ * @returns {Promise<ActionResult>}
+ */
+export async function deleteGalleryPhotoAction(tournamentId, photoId) {
   const guard = await assertAdmin();
   if (guard) return { error: guard };
 

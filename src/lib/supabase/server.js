@@ -3,12 +3,13 @@ import { cookies } from "next/headers";
 
 const APP_SCHEMA = "thethaomammo";
 
+/** Server Supabase client bound to the request cookie store. Return type stays inferred so query generics flow to callers. */
 export async function createClient() {
   const cookieStore = await cookies();
 
   return createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    /** @type {string} */ (process.env.NEXT_PUBLIC_SUPABASE_URL),
+    /** @type {string} */ (process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY),
     {
       db: { schema: APP_SCHEMA },
       cookies: {

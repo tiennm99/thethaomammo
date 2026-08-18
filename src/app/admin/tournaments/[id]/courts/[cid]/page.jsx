@@ -9,9 +9,11 @@ import { DeleteCourtButton } from "./delete-court-button";
 
 export const dynamic = "force-dynamic";
 
-type Params = { params: Promise<{ id: string; cid: string }> };
-
-export default async function AdminCourtEditPage({ params }: Params) {
+/**
+ * @param {{ params: Promise<{ id: string, cid: string }> }} props
+ * @returns {Promise<import("react").JSX.Element>}
+ */
+export default async function AdminCourtEditPage({ params }) {
   if (!(await isAdmin())) notFound();
   const { id, cid } = await params;
 

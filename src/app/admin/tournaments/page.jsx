@@ -5,7 +5,8 @@ import { isAdmin } from "@/lib/auth/grants";
 
 export const dynamic = "force-dynamic";
 
-const STATUS_LABEL: Record<string, string> = {
+/** @type {Record<string, string>} */
+const STATUS_LABEL = {
   draft: "Nháp",
   open: "Mở đăng ký",
   in_progress: "Đang diễn ra",
@@ -13,12 +14,19 @@ const STATUS_LABEL: Record<string, string> = {
   archived: "Lưu trữ",
 };
 
-function formatDate(iso: string | null): string {
+/**
+ * @param {string | null} iso
+ * @returns {string}
+ */
+function formatDate(iso) {
   if (!iso) return "—";
   const d = new Date(iso);
   return d.toLocaleDateString("vi-VN");
 }
 
+/**
+ * @returns {Promise<import("react").JSX.Element>}
+ */
 export default async function AdminTournamentsListPage() {
   if (!(await isAdmin())) notFound();
   const supabase = await createClient();

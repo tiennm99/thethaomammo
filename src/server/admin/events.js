@@ -6,17 +6,27 @@ import { createClient } from "@/lib/supabase/server";
 import { isAdmin } from "@/lib/auth/grants";
 import { eventFormDataToInput, eventInputSchema } from "@/lib/schemas/admin-event";
 
-type ActionResult = { error?: string; ok?: boolean; id?: string };
+/**
+ * @typedef {object} ActionResult
+ * @property {string} [error]
+ * @property {boolean} [ok]
+ * @property {string} [id]
+ */
 
-async function assertAdmin(): Promise<string | null> {
+/**
+ * @returns {Promise<string | null>}
+ */
+async function assertAdmin() {
   if (!(await isAdmin())) return "Không có quyền.";
   return null;
 }
 
-export async function createEventAction(
-  tournamentId: string,
-  fd: FormData,
-): Promise<ActionResult> {
+/**
+ * @param {string} tournamentId
+ * @param {FormData} fd
+ * @returns {Promise<ActionResult>}
+ */
+export async function createEventAction(tournamentId, fd) {
   const guard = await assertAdmin();
   if (guard) return { error: guard };
 
@@ -38,11 +48,13 @@ export async function createEventAction(
   redirect(`/admin/tournaments/${tournamentId}/events/${data.id}`);
 }
 
-export async function updateEventAction(
-  tournamentId: string,
-  eventId: string,
-  fd: FormData,
-): Promise<ActionResult> {
+/**
+ * @param {string} tournamentId
+ * @param {string} eventId
+ * @param {FormData} fd
+ * @returns {Promise<ActionResult>}
+ */
+export async function updateEventAction(tournamentId, eventId, fd) {
   const guard = await assertAdmin();
   if (guard) return { error: guard };
 
@@ -65,10 +77,12 @@ export async function updateEventAction(
   return { ok: true };
 }
 
-export async function deleteEventAction(
-  tournamentId: string,
-  eventId: string,
-): Promise<ActionResult> {
+/**
+ * @param {string} tournamentId
+ * @param {string} eventId
+ * @returns {Promise<ActionResult>}
+ */
+export async function deleteEventAction(tournamentId, eventId) {
   const guard = await assertAdmin();
   if (guard) return { error: guard };
 

@@ -2,21 +2,28 @@
 
 import { useState, useTransition } from "react";
 
-type Result = { error?: string; ok?: boolean };
+/** @typedef {{ error?: string; ok?: boolean }} Result */
 
-type Props = {
-  action: (fd: FormData) => Promise<Result | void>;
-  submitLabel: string;
-  successMessage?: string;
-  children: React.ReactNode;
-};
+/**
+ * @typedef {object} Props
+ * @property {(fd: FormData) => Promise<Result | void>} action
+ * @property {string} submitLabel
+ * @property {string} [successMessage]
+ * @property {import("react").ReactNode} children
+ */
 
-export function AdminForm({ action, submitLabel, successMessage, children }: Props) {
-  const [error, setError] = useState<string | null>(null);
+/**
+ * @param {Props} props
+ */
+export function AdminForm({ action, submitLabel, successMessage, children }) {
+  const [error, setError] = useState(/** @type {string | null} */ (null));
   const [ok, setOk] = useState(false);
   const [pending, startTransition] = useTransition();
 
-  function onSubmit(fd: FormData) {
+  /**
+   * @param {FormData} fd
+   */
+  function onSubmit(fd) {
     setError(null);
     setOk(false);
     startTransition(async () => {
@@ -48,16 +55,20 @@ export function AdminForm({ action, submitLabel, successMessage, children }: Pro
   );
 }
 
-type FieldProps = {
-  name: string;
-  label: string;
-  type?: string;
-  defaultValue?: string | null;
-  required?: boolean;
-  placeholder?: string;
-  hint?: string;
-};
+/**
+ * @typedef {object} FieldProps
+ * @property {string} name
+ * @property {string} label
+ * @property {string} [type]
+ * @property {string | null} [defaultValue]
+ * @property {boolean} [required]
+ * @property {string} [placeholder]
+ * @property {string} [hint]
+ */
 
+/**
+ * @param {FieldProps} props
+ */
 export function TextField({
   name,
   label,
@@ -66,7 +77,7 @@ export function TextField({
   required,
   placeholder,
   hint,
-}: FieldProps) {
+}) {
   return (
     <div className="space-y-1.5">
       <label htmlFor={name} className="block text-sm font-medium">
@@ -87,6 +98,9 @@ export function TextField({
   );
 }
 
+/**
+ * @param {FieldProps & { rows?: number }} props
+ */
 export function TextAreaField({
   name,
   label,
@@ -95,7 +109,7 @@ export function TextAreaField({
   placeholder,
   hint,
   rows = 4,
-}: FieldProps & { rows?: number }) {
+}) {
   return (
     <div className="space-y-1.5">
       <label htmlFor={name} className="block text-sm font-medium">
@@ -116,17 +130,20 @@ export function TextAreaField({
   );
 }
 
-type SelectProps = FieldProps & {
-  options: { value: string; label: string }[];
-};
+/**
+ * @typedef {FieldProps & { options: { value: string; label: string }[] }} SelectProps
+ */
 
+/**
+ * @param {SelectProps} props
+ */
 export function SelectField({
   name,
   label,
   defaultValue,
   required,
   options,
-}: SelectProps) {
+}) {
   return (
     <div className="space-y-1.5">
       <label htmlFor={name} className="block text-sm font-medium">

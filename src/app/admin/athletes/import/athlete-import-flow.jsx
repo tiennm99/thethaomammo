@@ -4,24 +4,34 @@ import Papa from "papaparse";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { importAthletesAction } from "@/server/admin/athletes-import";
-import { summarizeParsed, type ParseSummary } from "@/lib/csv/athletes-csv";
+import { summarizeParsed } from "@/lib/csv/athletes-csv";
 
+/** @typedef {import("@/lib/csv/athletes-csv").ParseSummary} ParseSummary */
+
+/** CSV upload, preview, and confirm flow for bulk athlete import. @returns {import("react").JSX.Element} */
 export function AthleteImportFlow() {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
-  const [summary, setSummary] = useState<ParseSummary | null>(null);
-  const [parseError, setParseError] = useState<string | null>(null);
-  const [importResult, setImportResult] = useState<
-    null | { inserted: number; errors: { row: number; message: string }[] }
-  >(null);
+  const [summary, setSummary] = useState(
+    /** @type {ParseSummary | null} */ (null),
+  );
+  const [parseError, setParseError] = useState(
+    /** @type {string | null} */ (null),
+  );
+  const [importResult, setImportResult] = useState(
+    /** @type {null | { inserted: number, errors: { row: number, message: string }[] }} */ (
+      null
+    ),
+  );
 
-  function onFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+  /** @param {import("react").ChangeEvent<HTMLInputElement>} e */
+  function onFileChange(e) {
     setParseError(null);
     setSummary(null);
     setImportResult(null);
     const file = e.target.files?.[0];
     if (!file) return;
-    Papa.parse<Record<string, unknown>>(file, {
+    Papa.parse(file, {
       header: true,
       skipEmptyLines: "greedy",
       transformHeader: (h) => h.trim().toLowerCase(),

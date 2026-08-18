@@ -79,10 +79,10 @@ export const registrationInputSchema = z.object({
   club_name: z.string().min(1).max(200),
 });
 
-export type Tournament = z.infer<typeof tournamentSchema>;
-export type Athlete = z.infer<typeof athleteSchema>;
-export type RegistrationInput = z.infer<typeof registrationInputSchema>;
-export type Gender = z.infer<typeof genderSchema>;
-export type RegistrationStatus = z.infer<typeof registrationStatusSchema>;
-export type PaymentStatus = z.infer<typeof paymentStatusSchema>;
-export type MatchStatus = z.infer<typeof matchStatusSchema>;
+/** @typedef {import("zod").infer<typeof tournamentSchema>} Tournament */
+/** @typedef {import("zod").infer<typeof athleteSchema>} Athlete */
+/** @typedef {import("zod").infer<typeof registrationInputSchema>} RegistrationInput */
+/** @typedef {import("zod").infer<typeof genderSchema>} Gender */
+/** @typedef {import("zod").infer<typeof registrationStatusSchema>} RegistrationStatus */
+/** @typedef {import("zod").infer<typeof paymentStatusSchema>} PaymentStatus */
+/** @typedef {import("zod").infer<typeof matchStatusSchema>} MatchStatus */

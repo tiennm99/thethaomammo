@@ -1,5 +1,6 @@
 "use client";
 
+/** Print/back buttons shown on print layouts (hidden when printing). @returns {import("react").JSX.Element} */
 export function PrintActions() {
   return (
     <div className="no-print" style={{ display: "flex", gap: 8, marginBottom: 8 }}>

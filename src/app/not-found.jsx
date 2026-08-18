@@ -1,8 +1,9 @@
 import Link from "next/link";
-import type { Metadata } from "next";
 
-export const metadata: Metadata = { title: "Không tìm thấy trang" };
+/** @type {import("next").Metadata} */
+export const metadata = { title: "Không tìm thấy trang" };
 
+/** Site-wide 404 page. @returns {import("react").JSX.Element} */
 export default function NotFound() {
   return (
     <main className="flex-1 flex items-center justify-center p-8">

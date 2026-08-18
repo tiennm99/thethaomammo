@@ -9,10 +9,11 @@ export const sponsorInputSchema = z.object({
   invert_in_light: z.boolean(),
 });
 
-export type SponsorInput = z.infer<typeof sponsorInputSchema>;
+/** @typedef {import("zod").infer<typeof sponsorInputSchema>} SponsorInput */
 
-export function sponsorFormDataToInput(fd: FormData) {
-  const obj = Object.fromEntries(fd) as Record<string, string>;
+/** @param {FormData} fd */
+export function sponsorFormDataToInput(fd) {
+  const obj = /** @type {Record<string, string>} */ (Object.fromEntries(fd));
   const sort = Number.parseInt(obj.sort_order ?? "0", 10);
   return {
     name: obj.name,

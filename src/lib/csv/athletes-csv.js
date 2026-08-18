@@ -1,13 +1,13 @@
 import { z } from "zod";
 
 // CSV column headers (lowercase, snake_case). The first row of the CSV must match.
-export const ATHLETE_CSV_HEADERS = [
+export const ATHLETE_CSV_HEADERS = /** @type {const} */ ([
   "full_name",
   "dob",
   "gender",
   "club_name",
   "phone",
-] as const;
+]);
 
 export const csvRowSchema = z.object({
   full_name: z.string().trim().min(1).max(200),
@@ -28,20 +28,28 @@ export const csvRowSchema = z.object({
   phone: z.string().trim().max(20).optional().default(""),
 });
 
-export type CsvRowInput = z.input<typeof csvRowSchema>;
-export type CsvRow = z.output<typeof csvRowSchema>;
+/** @typedef {import("zod").input<typeof csvRowSchema>} CsvRowInput */
+/** @typedef {import("zod").output<typeof csvRowSchema>} CsvRow */
 
-export type ParseSummary = {
-  total: number;
-  valid: number;
-  preview: CsvRow[];
-  errors: { row: number; message: string }[];
-  rows: CsvRow[];
-};
+/**
+ * @typedef {{
+ *   total: number,
+ *   valid: number,
+ *   preview: CsvRow[],
+ *   errors: { row: number, message: string }[],
+ *   rows: CsvRow[],
+ * }} ParseSummary
+ */
 
-export function summarizeParsed(rows: Record<string, unknown>[]): ParseSummary {
-  const errors: { row: number; message: string }[] = [];
-  const valid: CsvRow[] = [];
+/**
+ * @param {Record<string, unknown>[]} rows
+ * @returns {ParseSummary}
+ */
+export function summarizeParsed(rows) {
+  /** @type {{ row: number, message: string }[]} */
+  const errors = [];
+  /** @type {CsvRow[]} */
+  const valid = [];
 
   rows.forEach((raw, i) => {
     const parsed = csvRowSchema.safeParse(raw);
@@ -65,17 +73,20 @@ export function summarizeParsed(rows: Record<string, unknown>[]): ParseSummary {
   };
 }
 
-export function athletesToCsv(
-  athletes: {
-    display_id: string;
-    full_name: string;
-    dob: string | null;
-    gender: string | null;
-    club_name: string | null;
-    phone: string | null;
-  }[],
-): string {
-  const escape = (v: string | null | undefined): string => {
+/**
+ * @param {{
+ *   display_id: string,
+ *   full_name: string,
+ *   dob: string | null,
+ *   gender: string | null,
+ *   club_name: string | null,
+ *   phone: string | null,
+ * }[]} athletes
+ * @returns {string}
+ */
+export function athletesToCsv(athletes) {
+  /** @param {string | null | undefined} v */
+  const escape = (v) => {
     const raw = v ?? "";
     // CSV-injection defense (CWE-1236): if a cell starts with =, +, -, @, tab, or CR,
     // Excel/Sheets will treat it as a formula. Prefix with a single quote inside the

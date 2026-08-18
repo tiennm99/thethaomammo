@@ -1,14 +1,17 @@
 import { notFound } from "next/navigation";
-import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
 import { PrintActions } from "@/components/print/print-actions";
 import { formatDate } from "@/lib/format/date-range";
 
 export const dynamic = "force-dynamic";
 
-type Params = { params: Promise<{ matchId: string }> };
+/** @typedef {{ params: Promise<{ matchId: string }> }} Params */
 
-export async function generateMetadata({ params }: Params): Promise<Metadata> {
+/**
+ * @param {Params} props
+ * @returns {Promise<import("next").Metadata>}
+ */
+export async function generateMetadata({ params }) {
   const { matchId } = await params;
   return {
     title: `Biên bản thi đấu — ${matchId.slice(0, 8)}`,
@@ -16,34 +19,48 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   };
 }
 
-type Match = {
-  id: string;
-  round: number;
-  slot: number;
-  status: string;
-  third_place: boolean;
-  scheduled_at: string | null;
-  event: {
-    name: string | null;
-    tournament: { name: string | null; venue: string | null } | null;
-  } | null;
-  court: { name: string | null } | null;
-};
+/**
+ * @typedef {{
+ *   id: string,
+ *   round: number,
+ *   slot: number,
+ *   status: string,
+ *   third_place: boolean,
+ *   scheduled_at: string | null,
+ *   event: {
+ *     name: string | null,
+ *     tournament: { name: string | null, venue: string | null } | null,
+ *   } | null,
+ *   court: { name: string | null } | null,
+ * }} Match
+ */
 
-type Participant = {
-  slot: number;
-  athlete: { full_name: string | null; display_id: string | null; club_name: string | null } | null;
-  team: { name: string | null } | null;
-};
+/**
+ * @typedef {{
+ *   slot: number,
+ *   athlete: { full_name: string | null, display_id: string | null, club_name: string | null } | null,
+ *   team: { name: string | null } | null,
+ * }} Participant
+ */
 
-type Score = { set_no: number; slot1_score: number; slot2_score: number };
+/** @typedef {{ set_no: number, slot1_score: number, slot2_score: number }} Score */
 
-function flatten<T>(v: T | T[] | null | undefined): T | null {
+/**
+ * @template T
+ * @param {T | T[] | null | undefined} v
+ * @returns {T | null}
+ */
+function flatten(v) {
   if (!v) return null;
   return Array.isArray(v) ? (v[0] ?? null) : v;
 }
 
-function nameFor(participants: Participant[], slot: number): string {
+/**
+ * @param {Participant[]} participants
+ * @param {number} slot
+ * @returns {string}
+ */
+function nameFor(participants, slot) {
   const p = participants.find((x) => x.slot === slot);
   if (!p) return "";
   const a = flatten(p.athlete);
@@ -52,14 +69,23 @@ function nameFor(participants: Participant[], slot: number): string {
   return t?.name ?? "";
 }
 
-function clubFor(participants: Participant[], slot: number): string {
+/**
+ * @param {Participant[]} participants
+ * @param {number} slot
+ * @returns {string}
+ */
+function clubFor(participants, slot) {
   const p = participants.find((x) => x.slot === slot);
   if (!p) return "";
   const a = flatten(p.athlete);
   return a?.club_name ?? "";
 }
 
-export default async function PrintRecordPage({ params }: Params) {
+/**
+ * @param {Params} props
+ * @returns {Promise<import("react").JSX.Element>}
+ */
+export default async function PrintRecordPage({ params }) {
   const { matchId } = await params;
   const supabase = await createClient();
 
@@ -74,16 +100,21 @@ export default async function PrintRecordPage({ params }: Params) {
     .maybeSingle();
   if (!matchRaw) notFound();
 
-  type RawEvent = {
-    name: string | null;
-    tournament:
-      | { name: string | null; venue: string | null }
-      | { name: string | null; venue: string | null }[]
-      | null;
-  };
-  type RawCourt = { name: string | null };
-  const rawEvent = flatten<RawEvent>(matchRaw.event as RawEvent | RawEvent[] | null);
-  const match: Match = {
+  /**
+   * @typedef {{
+   *   name: string | null,
+   *   tournament:
+   *     | { name: string | null, venue: string | null }
+   *     | { name: string | null, venue: string | null }[]
+   *     | null,
+   * }} RawEvent
+   */
+  /** @typedef {{ name: string | null }} RawCourt */
+  const rawEvent = flatten(
+    /** @type {RawEvent | RawEvent[] | null} */ (matchRaw.event),
+  );
+  /** @type {Match} */
+  const match = {
     id: matchRaw.id,
     round: matchRaw.round,
     slot: matchRaw.slot,
@@ -96,7 +127,7 @@ export default async function PrintRecordPage({ params }: Params) {
           tournament: flatten(rawEvent.tournament),
         }
       : null,
-    court: flatten(matchRaw.court as RawCourt | RawCourt[] | null),
+    court: flatten(/** @type {RawCourt | RawCourt[] | null} */ (matchRaw.court)),
   };
 
   const [participantsRes, scoresRes] = await Promise.all([
@@ -116,20 +147,23 @@ export default async function PrintRecordPage({ params }: Params) {
       .order("set_no"),
   ]);
 
-  const participants: Participant[] = (participantsRes.data ?? []).map((p: {
-    slot: number;
-    athlete: unknown;
-    team: unknown;
-  }) => ({
-    slot: p.slot,
-    athlete: flatten(p.athlete as {
-      full_name: string | null;
-      display_id: string | null;
-      club_name: string | null;
-    }),
-    team: flatten(p.team as { name: string | null }),
-  }));
-  const scores: Score[] = scoresRes.data ?? [];
+  const participants = /** @type {Participant[]} */ (
+    (participantsRes.data ?? []).map(
+      /**
+       * @param {{ slot: number, athlete: unknown, team: unknown }} p
+       */
+      (p) => ({
+        slot: p.slot,
+        athlete: flatten(
+          /** @type {{ full_name: string | null, display_id: string | null, club_name: string | null }} */ (
+            p.athlete
+          ),
+        ),
+        team: flatten(/** @type {{ name: string | null }} */ (p.team)),
+      }),
+    )
+  );
+  const scores = /** @type {Score[]} */ (scoresRes.data ?? []);
   const blankRows = Math.max(0, 3 - scores.length);
 
   return (

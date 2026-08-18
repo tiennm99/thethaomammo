@@ -3,24 +3,29 @@
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 
-type Result = { error?: string; ok?: boolean };
+/** @typedef {{ error?: string, ok?: boolean }} Result */
 
-type Props = {
-  defaultAmount: number;
-  verifyAction: (fd: FormData) => Promise<Result>;
-  rejectAction: (fd: FormData) => Promise<Result>;
-};
-
+/**
+ * @param {{
+ *   defaultAmount: number,
+ *   verifyAction: (fd: FormData) => Promise<Result>,
+ *   rejectAction: (fd: FormData) => Promise<Result>,
+ * }} props
+ */
 export function PaymentDecisionForms({
   defaultAmount,
   verifyAction,
   rejectAction,
-}: Props) {
+}) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState(/** @type {string | null} */ (null));
 
-  function submit(action: (fd: FormData) => Promise<Result>, fd: FormData) {
+  /**
+   * @param {(fd: FormData) => Promise<Result>} action
+   * @param {FormData} fd
+   */
+  function submit(action, fd) {
     setError(null);
     startTransition(async () => {
       const result = await action(fd);

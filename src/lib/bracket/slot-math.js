@@ -13,17 +13,23 @@
  * - Total matches = n - 1 (single-elim invariant).
  */
 
-export type BracketShape = {
-  participants: number;
-  rounds: number;
-  firstRoundSize: number;
-  byes: number;
-  r1Matches: number;
-  totalMatches: number;
-  matchesPerRound: number[]; // index 0 = R1, index k = R(k+1)
-};
+/**
+ * @typedef {{
+ *   participants: number,
+ *   rounds: number,
+ *   firstRoundSize: number,
+ *   byes: number,
+ *   r1Matches: number,
+ *   totalMatches: number,
+ *   matchesPerRound: number[],
+ * }} BracketShape
+ */
 
-export function bracketShape(participants: number): BracketShape {
+/**
+ * @param {number} participants
+ * @returns {BracketShape}
+ */
+export function bracketShape(participants) {
   if (participants < 2) {
     throw new Error("bracket requires at least 2 participants");
   }
@@ -31,7 +37,8 @@ export function bracketShape(participants: number): BracketShape {
   const firstRoundSize = 1 << rounds;
   const byes = firstRoundSize - participants;
   const r1Matches = participants - firstRoundSize / 2;
-  const matchesPerRound: number[] = [r1Matches];
+  /** @type {number[]} */
+  const matchesPerRound = [r1Matches];
   for (let r = 2; r <= rounds; r++) {
     matchesPerRound.push(firstRoundSize / (1 << r));
   }
@@ -47,24 +54,33 @@ export function bracketShape(participants: number): BracketShape {
   };
 }
 
-/** Where does the winner of (round R, slot K) go in round R+1? */
-export function advanceSlot(round: number, slot: number) {
+/**
+ * Where does the winner of (round R, slot K) go in round R+1?
+ * @param {number} round
+ * @param {number} slot
+ */
+export function advanceSlot(round, slot) {
   return {
     nextRound: round + 1,
     nextSlot: Math.ceil(slot / 2),
-    nextParticipantSlot: (((slot - 1) % 2) + 1) as 1 | 2,
+    nextParticipantSlot: /** @type {1 | 2} */ (((slot - 1) % 2) + 1),
   };
 }
 
-/** Round index where semifinals live (rounds - 1, min 1). */
-export function semifinalRound(rounds: number) {
+/**
+ * Round index where semifinals live (rounds - 1, min 1).
+ * @param {number} rounds
+ */
+export function semifinalRound(rounds) {
   return Math.max(1, rounds - 1);
 }
 
-/** Best-of-3 winner from a list of (slot1Score, slot2Score) sets. */
-export function bestOfThreeWinner(
-  sets: ReadonlyArray<{ slot1: number; slot2: number }>,
-): 1 | 2 | null {
+/**
+ * Best-of-3 winner from a list of (slot1Score, slot2Score) sets.
+ * @param {ReadonlyArray<{ slot1: number, slot2: number }>} sets
+ * @returns {1 | 2 | null}
+ */
+export function bestOfThreeWinner(sets) {
   let w1 = 0;
   let w2 = 0;
   for (const s of sets) {
@@ -80,10 +96,11 @@ export function bestOfThreeWinner(
  * For an R1 pair index S in 1..firstRoundSize/2, compute where the
  * participant lands in R2 — useful for the SQL placement reasoning.
  * Returns (r2Slot, r2ParticipantSlot).
+ * @param {number} pairSlot
  */
-export function r1PairToR2(pairSlot: number) {
+export function r1PairToR2(pairSlot) {
   return {
     r2Slot: Math.ceil(pairSlot / 2),
-    r2ParticipantSlot: (((pairSlot - 1) % 2) + 1) as 1 | 2,
+    r2ParticipantSlot: /** @type {1 | 2} */ (((pairSlot - 1) % 2) + 1),
   };
 }

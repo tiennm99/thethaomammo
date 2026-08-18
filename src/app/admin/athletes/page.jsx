@@ -7,17 +7,19 @@ export const dynamic = "force-dynamic";
 
 const PAGE_SIZE = 50;
 
-type SearchParams = Promise<{
-  q?: string;
-  club?: string;
-  include_deleted?: string;
-}>;
+/**
+ * @typedef {Promise<{
+ *   q?: string,
+ *   club?: string,
+ *   include_deleted?: string,
+ * }>} SearchParams
+ */
 
-export default async function AdminAthletesListPage({
-  searchParams,
-}: {
-  searchParams: SearchParams;
-}) {
+/**
+ * @param {{ searchParams: SearchParams }} props
+ * @returns {Promise<import("react").JSX.Element>}
+ */
+export default async function AdminAthletesListPage({ searchParams }) {
   if (!(await isAdmin())) notFound();
 
   const sp = await searchParams;

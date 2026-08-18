@@ -32,5 +32,5 @@ export const registrationSchema = z.discriminatedUnion("kind", [
   doublesRegistrationSchema,
 ]);
 
-export type AthleteInput = z.infer<typeof athleteInputSchema>;
-export type RegistrationPayload = z.infer<typeof registrationSchema>;
+/** @typedef {import("zod").infer<typeof athleteInputSchema>} AthleteInput */
+/** @typedef {import("zod").infer<typeof registrationSchema>} RegistrationPayload */

@@ -7,27 +7,35 @@ import { updateMatchScheduleAction } from "@/server/admin/match-schedule";
 
 export const dynamic = "force-dynamic";
 
-const STATUS_LABEL: Record<string, string> = {
+/** @type {Record<string, string>} */
+const STATUS_LABEL = {
   pending: "Chờ thi đấu",
   in_progress: "Đang thi đấu",
   completed: "Đã kết thúc",
   walkover: "Walkover",
 };
 
-function toDateInput(value: string | null | undefined): string | null {
+/**
+ * @param {string | null | undefined} value
+ * @returns {string | null}
+ */
+function toDateInput(value) {
   if (!value) return null;
   const d = new Date(value);
   if (Number.isNaN(d.getTime())) return null;
-  const pad = (n: number) => String(n).padStart(2, "0");
+  /** @param {number} n */
+  const pad = (n) => String(n).padStart(2, "0");
   return (
     `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}` +
     `T${pad(d.getHours())}:${pad(d.getMinutes())}`
   );
 }
 
-type Params = { params: Promise<{ id: string }> };
-
-export default async function AdminMatchDetailPage({ params }: Params) {
+/**
+ * @param {{ params: Promise<{ id: string }> }} props
+ * @returns {Promise<import("react").JSX.Element>}
+ */
+export default async function AdminMatchDetailPage({ params }) {
   if (!(await isAdmin())) notFound();
   const { id } = await params;
 

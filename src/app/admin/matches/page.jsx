@@ -7,32 +7,38 @@ export const dynamic = "force-dynamic";
 
 const PAGE_SIZE = 100;
 
-const STATUS_LABEL: Record<string, string> = {
+/** @type {Record<string, string>} */
+const STATUS_LABEL = {
   pending: "Chờ thi đấu",
   in_progress: "Đang thi đấu",
   completed: "Đã kết thúc",
   walkover: "Walkover",
 };
 
-const STATUS_BADGE: Record<string, string> = {
+/** @type {Record<string, string>} */
+const STATUS_BADGE = {
   pending: "bg-muted text-muted-foreground",
   in_progress: "bg-yellow-100 text-yellow-900",
   completed: "bg-green-100 text-green-900",
   walkover: "bg-blue-100 text-blue-900",
 };
 
-function formatDate(iso: string | null): string {
+/**
+ * @param {string | null} iso
+ * @returns {string}
+ */
+function formatDate(iso) {
   if (!iso) return "—";
   return new Date(iso).toLocaleString("vi-VN");
 }
 
-type SearchParams = Promise<{ status?: string; event?: string }>;
+/** @typedef {Promise<{ status?: string, event?: string }>} SearchParams */
 
-export default async function AdminMatchesListPage({
-  searchParams,
-}: {
-  searchParams: SearchParams;
-}) {
+/**
+ * @param {{ searchParams: SearchParams }} props
+ * @returns {Promise<import("react").JSX.Element>}
+ */
+export default async function AdminMatchesListPage({ searchParams }) {
   if (!(await isAdmin())) notFound();
 
   const sp = await searchParams;
@@ -66,7 +72,8 @@ export default async function AdminMatchesListPage({
 
   const events = eventsRes.data ?? [];
   // Active matches surface first — DB lex-sort on enum would put completed first.
-  const STATUS_PRIORITY: Record<string, number> = {
+  /** @type {Record<string, number>} */
+  const STATUS_PRIORITY = {
     in_progress: 0,
     pending: 1,
     walkover: 2,

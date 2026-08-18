@@ -7,6 +7,7 @@ import { isAdmin } from "@/lib/auth/grants";
 
 export const dynamic = "force-dynamic";
 
+/** New-tournament form page. @returns {Promise<import("react").JSX.Element>} */
 export default async function AdminTournamentNewPage() {
   if (!(await isAdmin())) notFound();
   return (

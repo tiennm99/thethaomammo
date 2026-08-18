@@ -39,7 +39,7 @@ describe("renderEmail", () => {
   });
 
   it("renders all 7 known types", () => {
-    const types = [
+    const types = /** @type {const} */ ([
       "registration_success",
       "payment_verified",
       "payment_rejected",
@@ -47,7 +47,7 @@ describe("renderEmail", () => {
       "match_reminder",
       "match_result",
       "bracket_generated",
-    ] as const;
+    ]);
     for (const t of types) {
       const out = renderEmail(t, { tournament_name: "G", event_name: "E" });
       expect(out.subject).toBeTruthy();

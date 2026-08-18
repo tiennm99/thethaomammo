@@ -8,9 +8,11 @@ import { createCourtAction } from "@/server/admin/courts";
 
 export const dynamic = "force-dynamic";
 
-type Params = { params: Promise<{ id: string }> };
-
-export default async function AdminCourtNewPage({ params }: Params) {
+/**
+ * @param {{ params: Promise<{ id: string }> }} props
+ * @returns {Promise<import("react").JSX.Element>}
+ */
+export default async function AdminCourtNewPage({ params }) {
   if (!(await isAdmin())) notFound();
   const { id } = await params;
 

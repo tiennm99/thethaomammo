@@ -13,19 +13,24 @@ import {
   uploadTournamentAsset,
 } from "@/lib/storage/asset-upload";
 
-type ActionResult = { error?: string; ok?: boolean };
+/** @typedef {{ error?: string; ok?: boolean }} ActionResult */
 
-async function assertAdmin(): Promise<string | null> {
+/**
+ * @returns {Promise<string | null>}
+ */
+async function assertAdmin() {
   if (!(await isAdmin())) return "Không có quyền.";
   return null;
 }
 
-async function maybeUploadLogo(
-  supabase: Awaited<ReturnType<typeof createClient>>,
-  tournamentId: string,
-  fd: FormData,
-): Promise<{ path?: string; error?: string }> {
-  const file = fd.get("logo") as File | null;
+/**
+ * @param {Awaited<ReturnType<typeof createClient>>} supabase
+ * @param {string} tournamentId
+ * @param {FormData} fd
+ * @returns {Promise<{ path?: string; error?: string }>}
+ */
+async function maybeUploadLogo(supabase, tournamentId, fd) {
+  const file = /** @type {File | null} */ (fd.get("logo"));
   if (!file || file.size === 0) return {};
   const result = await uploadTournamentAsset(
     supabase,
@@ -37,10 +42,12 @@ async function maybeUploadLogo(
   return { path: result.path };
 }
 
-export async function createSponsorAction(
-  tournamentId: string,
-  fd: FormData,
-): Promise<ActionResult> {
+/**
+ * @param {string} tournamentId
+ * @param {FormData} fd
+ * @returns {Promise<ActionResult>}
+ */
+export async function createSponsorAction(tournamentId, fd) {
   const guard = await assertAdmin();
   if (guard) return { error: guard };
 
@@ -79,11 +86,13 @@ export async function createSponsorAction(
   redirect(`/admin/tournaments/${tournamentId}/sponsors/${data.id}`);
 }
 
-export async function updateSponsorAction(
-  tournamentId: string,
-  sponsorId: string,
-  fd: FormData,
-): Promise<ActionResult> {
+/**
+ * @param {string} tournamentId
+ * @param {string} sponsorId
+ * @param {FormData} fd
+ * @returns {Promise<ActionResult>}
+ */
+export async function updateSponsorAction(tournamentId, sponsorId, fd) {
   const guard = await assertAdmin();
   if (guard) return { error: guard };
 
@@ -105,7 +114,8 @@ export async function updateSponsorAction(
   if (upload.error) return { error: upload.error };
 
   const linkUrl = parsed.data.link_url;
-  const patch: Record<string, unknown> = {
+  /** @type {Record<string, unknown>} */
+  const patch = {
     name: parsed.data.name,
     tier: parsed.data.tier,
     link_url: linkUrl,
@@ -136,10 +146,12 @@ export async function updateSponsorAction(
   return { ok: true };
 }
 
-export async function deleteSponsorAction(
-  tournamentId: string,
-  sponsorId: string,
-): Promise<ActionResult> {
+/**
+ * @param {string} tournamentId
+ * @param {string} sponsorId
+ * @returns {Promise<ActionResult>}
+ */
+export async function deleteSponsorAction(tournamentId, sponsorId) {
   const guard = await assertAdmin();
   if (guard) return { error: guard };
 

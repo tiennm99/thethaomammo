@@ -5,26 +5,29 @@ import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 import { isAdmin } from "@/lib/auth/grants";
 
-type ActionResult = { error?: string; ok?: boolean };
+/** @typedef {{ error?: string, ok?: boolean }} ActionResult */
 
 const scheduleInputSchema = z.object({
   scheduled_at: z.string().datetime().nullable(),
   court_id: z.string().uuid().nullable(),
 });
 
-async function assertAdmin(): Promise<string | null> {
+/** @returns {Promise<string | null>} */
+async function assertAdmin() {
   if (!(await isAdmin())) return "Không có quyền.";
   return null;
 }
 
-export async function updateMatchScheduleAction(
-  matchId: string,
-  fd: FormData,
-): Promise<ActionResult> {
+/**
+ * @param {string} matchId
+ * @param {FormData} fd
+ * @returns {Promise<ActionResult>}
+ */
+export async function updateMatchScheduleAction(matchId, fd) {
   const guard = await assertAdmin();
   if (guard) return { error: guard };
 
-  const obj = Object.fromEntries(fd) as Record<string, string>;
+  const obj = /** @type {Record<string, string>} */ (Object.fromEntries(fd));
   // datetime-local string is YYYY-MM-DDTHH:mm interpreted in server's local TZ;
   // ensure deploy pins TZ=Asia/Ho_Chi_Minh so admin-entered times match VN tournament time.
   const scheduledLocal = obj.scheduled_at?.trim() || "";

@@ -7,6 +7,9 @@ import { isAdmin } from "@/lib/auth/grants";
 
 export const dynamic = "force-dynamic";
 
+/**
+ * @returns {Promise<import("react").JSX.Element>}
+ */
 export default async function AdminClubNewPage() {
   if (!(await isAdmin())) notFound();
   return (

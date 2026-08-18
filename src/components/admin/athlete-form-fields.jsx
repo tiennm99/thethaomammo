@@ -3,23 +3,28 @@ import {
   TextField,
 } from "@/components/admin/admin-form";
 
-type Athlete = {
-  full_name?: string | null;
-  dob?: string | null;
-  gender?: string | null;
-  club_id?: string | null;
-  club_name?: string | null;
-  phone?: string | null;
-};
+/**
+ * @typedef {object} Athlete
+ * @property {string | null} [full_name]
+ * @property {string | null} [dob]
+ * @property {string | null} [gender]
+ * @property {string | null} [club_id]
+ * @property {string | null} [club_name]
+ * @property {string | null} [phone]
+ */
 
-type Club = { id: string; name: string };
+/** @typedef {{ id: string; name: string }} Club */
 
-type Props = {
-  initial?: Athlete;
-  clubs: Club[];
-};
+/**
+ * @typedef {object} Props
+ * @property {Athlete} [initial]
+ * @property {Club[]} clubs
+ */
 
-export function AthleteFormFields({ initial, clubs }: Props) {
+/**
+ * @param {Props} props
+ */
+export function AthleteFormFields({ initial, clubs }) {
   return (
     <>
       <TextField

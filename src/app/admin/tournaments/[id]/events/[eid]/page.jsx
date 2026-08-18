@@ -9,9 +9,11 @@ import { DeleteEventButton } from "./delete-event-button";
 
 export const dynamic = "force-dynamic";
 
-type Params = { params: Promise<{ id: string; eid: string }> };
-
-export default async function AdminEventEditPage({ params }: Params) {
+/**
+ * @param {{ params: Promise<{ id: string, eid: string }> }} props
+ * @returns {Promise<import("react").JSX.Element>}
+ */
+export default async function AdminEventEditPage({ params }) {
   if (!(await isAdmin())) notFound();
   const { id, eid } = await params;
 

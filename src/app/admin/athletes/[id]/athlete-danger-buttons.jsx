@@ -3,26 +3,31 @@
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 
-type Result = { error?: string; ok?: boolean };
+/** @typedef {{ error?: string, ok?: boolean }} Result */
 
-type Props = {
-  isDeleted: boolean;
-  deleteAction: () => Promise<Result>;
-  restoreAction: () => Promise<Result>;
-  deleteDisabled: boolean;
-};
-
+/**
+ * @param {{
+ *   isDeleted: boolean,
+ *   deleteAction: () => Promise<Result>,
+ *   restoreAction: () => Promise<Result>,
+ *   deleteDisabled: boolean,
+ * }} props
+ */
 export function AthleteDangerButtons({
   isDeleted,
   deleteAction,
   restoreAction,
   deleteDisabled,
-}: Props) {
+}) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState(/** @type {string | null} */ (null));
 
-  function run(action: () => Promise<Result>, confirmMsg?: string) {
+  /**
+   * @param {() => Promise<Result>} action
+   * @param {string} [confirmMsg]
+   */
+  function run(action, confirmMsg) {
     if (confirmMsg && !window.confirm(confirmMsg)) return;
     setError(null);
     startTransition(async () => {

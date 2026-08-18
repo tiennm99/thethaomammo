@@ -4,6 +4,7 @@ import { resetPasswordAction } from "@/server/auth/actions";
 
 export const metadata = { title: "Đặt lại mật khẩu" };
 
+/** Password-reset request page. @returns {import("react").JSX.Element} */
 export default function ResetPasswordPage() {
   return (
     <main className="flex-1 flex items-center justify-center p-6">

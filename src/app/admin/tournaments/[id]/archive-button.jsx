@@ -2,13 +2,12 @@
 
 import { useState, useTransition } from "react";
 
-type Props = {
-  action: () => Promise<{ error?: string; ok?: boolean }>;
-};
-
-export function ArchiveButton({ action }: Props) {
+/**
+ * @param {{ action: () => Promise<{ error?: string, ok?: boolean }> }} props
+ */
+export function ArchiveButton({ action }) {
   const [pending, startTransition] = useTransition();
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState(/** @type {string | null} */ (null));
 
   function onClick() {
     if (!window.confirm("Lưu trữ giải đấu này?")) return;

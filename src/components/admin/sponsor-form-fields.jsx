@@ -1,19 +1,24 @@
 import { SelectField, TextField } from "@/components/admin/admin-form";
 
-type Sponsor = {
-  name?: string | null;
-  tier?: string | null;
-  link_url?: string | null;
-  sort_order?: number | null;
-  invert_in_light?: boolean | null;
-};
+/**
+ * @typedef {object} Sponsor
+ * @property {string | null} [name]
+ * @property {string | null} [tier]
+ * @property {string | null} [link_url]
+ * @property {number | null} [sort_order]
+ * @property {boolean | null} [invert_in_light]
+ */
 
-type Props = {
-  initial?: Sponsor;
-  currentLogoUrl?: string | null;
-};
+/**
+ * @typedef {object} Props
+ * @property {Sponsor} [initial]
+ * @property {string | null} [currentLogoUrl]
+ */
 
-export function SponsorFormFields({ initial, currentLogoUrl }: Props) {
+/**
+ * @param {Props} props
+ */
+export function SponsorFormFields({ initial, currentLogoUrl }) {
   return (
     <>
       <TextField

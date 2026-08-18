@@ -38,7 +38,8 @@ function installRelHardeningHook() {
   });
 }
 
-export function sanitizeRulesHtml(html: string | null | undefined): string {
+/** @param {string | null | undefined} html */
+export function sanitizeRulesHtml(html) {
   if (!html) return "";
   installRelHardeningHook();
   return DOMPurify.sanitize(html, {

@@ -10,7 +10,8 @@ import { PaymentDecisionForms } from "./payment-decision-forms";
 
 export const dynamic = "force-dynamic";
 
-const STATUS_LABEL: Record<string, string> = {
+/** @type {Record<string, string>} */
+const STATUS_LABEL = {
   unpaid: "Chưa thanh toán",
   pending: "Chờ duyệt",
   paid: "Đã thanh toán",
@@ -20,9 +21,11 @@ const STATUS_LABEL: Record<string, string> = {
 
 const PROOF_URL_TTL_SECONDS = 600;
 
-type Params = { params: Promise<{ id: string }> };
-
-export default async function AdminPaymentDetailPage({ params }: Params) {
+/**
+ * @param {{ params: Promise<{ id: string }> }} props
+ * @returns {Promise<import("react").JSX.Element>}
+ */
+export default async function AdminPaymentDetailPage({ params }) {
   if (!(await isAdmin())) notFound();
   const { id } = await params;
 
@@ -54,7 +57,7 @@ export default async function AdminPaymentDetailPage({ params }: Params) {
       : event.tournament
     : null;
 
-  let proofUrl: string | null = null;
+  let proofUrl = /** @type {string | null} */ (null);
   if (registration.payment_proof_path) {
     const { data: signed } = await supabase.storage
       .from("payment-proofs")

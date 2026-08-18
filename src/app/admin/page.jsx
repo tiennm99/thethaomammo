@@ -30,7 +30,10 @@ async function fetchKpis() {
   };
 }
 
-function Kpi({ label, value, href }: { label: string; value: number; href?: string }) {
+/**
+ * @param {{ label: string, value: number, href?: string }} props
+ */
+function Kpi({ label, value, href }) {
   const inner = (
     <div className="rounded-lg border border-border bg-card p-4">
       <div className="text-xs uppercase tracking-wide text-muted-foreground">
@@ -49,6 +52,9 @@ function Kpi({ label, value, href }: { label: string; value: number; href?: stri
   return inner;
 }
 
+/**
+ * @returns {Promise<import("react").JSX.Element>}
+ */
 export default async function AdminDashboardPage() {
   const kpis = await fetchKpis();
 

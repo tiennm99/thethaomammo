@@ -9,17 +9,26 @@ import {
   courtInputSchema,
 } from "@/lib/schemas/admin-court";
 
-type ActionResult = { error?: string; ok?: boolean };
+/**
+ * @typedef {object} ActionResult
+ * @property {string} [error]
+ * @property {boolean} [ok]
+ */
 
-async function assertAdmin(): Promise<string | null> {
+/**
+ * @returns {Promise<string | null>}
+ */
+async function assertAdmin() {
   if (!(await isAdmin())) return "Không có quyền.";
   return null;
 }
 
-export async function createCourtAction(
-  tournamentId: string,
-  fd: FormData,
-): Promise<ActionResult> {
+/**
+ * @param {string} tournamentId
+ * @param {FormData} fd
+ * @returns {Promise<ActionResult>}
+ */
+export async function createCourtAction(tournamentId, fd) {
   const guard = await assertAdmin();
   if (guard) return { error: guard };
 
@@ -39,11 +48,13 @@ export async function createCourtAction(
   redirect(`/admin/tournaments/${tournamentId}/courts`);
 }
 
-export async function updateCourtAction(
-  tournamentId: string,
-  courtId: string,
-  fd: FormData,
-): Promise<ActionResult> {
+/**
+ * @param {string} tournamentId
+ * @param {string} courtId
+ * @param {FormData} fd
+ * @returns {Promise<ActionResult>}
+ */
+export async function updateCourtAction(tournamentId, courtId, fd) {
   const guard = await assertAdmin();
   if (guard) return { error: guard };
 
@@ -65,10 +76,12 @@ export async function updateCourtAction(
   return { ok: true };
 }
 
-export async function deleteCourtAction(
-  tournamentId: string,
-  courtId: string,
-): Promise<ActionResult> {
+/**
+ * @param {string} tournamentId
+ * @param {string} courtId
+ * @returns {Promise<ActionResult>}
+ */
+export async function deleteCourtAction(tournamentId, courtId) {
   const guard = await assertAdmin();
   if (guard) return { error: guard };
 

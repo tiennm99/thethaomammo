@@ -1,14 +1,16 @@
 import { cache } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
 import { sanitizeRulesHtml } from "@/lib/sanitize/rules-html";
 import { formatDate, formatDateRange } from "@/lib/format/date-range";
 import { SponsorGrid } from "@/components/public/sponsor-grid";
 import { GalleryPreview } from "@/components/public/gallery-preview";
 
-const loadTournament = cache(async (slug: string) => {
+/**
+ * @param {string} slug
+ */
+const loadTournament = cache(async (/** @type {string} */ slug) => {
   const supabase = await createClient();
   const { data } = await supabase
     .from("v_tournaments_public")
@@ -22,7 +24,8 @@ const loadTournament = cache(async (slug: string) => {
 
 export const revalidate = 60;
 
-const STATUS_LABEL: Record<string, string> = {
+/** @type {Record<string, string>} */
+const STATUS_LABEL = {
   open: "Đang mở đăng ký",
   in_progress: "Đang diễn ra",
   completed: "Đã kết thúc",
@@ -30,20 +33,26 @@ const STATUS_LABEL: Record<string, string> = {
   archived: "Lưu trữ",
 };
 
-const KIND_LABEL: Record<string, string> = {
+/** @type {Record<string, string>} */
+const KIND_LABEL = {
   singles: "Đơn",
   doubles: "Đôi",
 };
 
-const GENDER_LABEL: Record<string, string> = {
+/** @type {Record<string, string>} */
+const GENDER_LABEL = {
   male: "Nam",
   female: "Nữ",
   mixed: "Đôi nam nữ",
 };
 
-type Params = { params: Promise<{ slug: string }> };
+/** @typedef {{ params: Promise<{ slug: string }> }} Params */
 
-export async function generateMetadata({ params }: Params): Promise<Metadata> {
+/**
+ * @param {Params} props
+ * @returns {Promise<import("next").Metadata>}
+ */
+export async function generateMetadata({ params }) {
   const { slug } = await params;
   const data = await loadTournament(slug);
   if (!data) return { title: "Không tìm thấy giải đấu" };
@@ -69,7 +78,11 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   };
 }
 
-export default async function TournamentDetailPage({ params }: Params) {
+/**
+ * @param {Params} props
+ * @returns {Promise<import("react").JSX.Element>}
+ */
+export default async function TournamentDetailPage({ params }) {
   const { slug } = await params;
   const tournament = await loadTournament(slug);
   if (!tournament) notFound();

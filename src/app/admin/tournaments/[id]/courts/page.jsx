@@ -5,15 +5,18 @@ import { isAdmin } from "@/lib/auth/grants";
 
 export const dynamic = "force-dynamic";
 
-const STATUS_LABEL: Record<string, string> = {
+/** @type {Record<string, string>} */
+const STATUS_LABEL = {
   available: "Sẵn sàng",
   in_use: "Đang dùng",
   maintenance: "Bảo trì",
 };
 
-type Params = { params: Promise<{ id: string }> };
-
-export default async function AdminCourtsListPage({ params }: Params) {
+/**
+ * @param {{ params: Promise<{ id: string }> }} props
+ * @returns {Promise<import("react").JSX.Element>}
+ */
+export default async function AdminCourtsListPage({ params }) {
   if (!(await isAdmin())) notFound();
   const { id } = await params;
 

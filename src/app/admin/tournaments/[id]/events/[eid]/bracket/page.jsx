@@ -5,9 +5,11 @@ import { GenerateBracketButton } from "./generate-bracket-button";
 
 export const dynamic = "force-dynamic";
 
-type Params = { params: Promise<{ id: string; eid: string }> };
-
-export default async function BracketAdminPage({ params }: Params) {
+/**
+ * @param {{ params: Promise<{ id: string, eid: string }> }} props
+ * @returns {Promise<import("react").JSX.Element>}
+ */
+export default async function BracketAdminPage({ params }) {
   const { id, eid } = await params;
   if (!(await isAdmin())) notFound();
 

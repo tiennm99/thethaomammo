@@ -1,14 +1,17 @@
 import { notFound } from "next/navigation";
-import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
 import { PrintActions } from "@/components/print/print-actions";
 import { formatDate } from "@/lib/format/date-range";
 
 export const dynamic = "force-dynamic";
 
-type Params = { params: Promise<{ eventId: string }> };
+/** @typedef {{ params: Promise<{ eventId: string }> }} Params */
 
-export async function generateMetadata({ params }: Params): Promise<Metadata> {
+/**
+ * @param {Params} props
+ * @returns {Promise<import("next").Metadata>}
+ */
+export async function generateMetadata({ params }) {
   const { eventId } = await params;
   const supabase = await createClient();
   const { data } = await supabase
@@ -22,23 +25,32 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   };
 }
 
-type Participant = {
-  slot: number;
-  athlete: { full_name: string | null } | { full_name: string | null }[] | null;
-  team: { name: string | null } | { name: string | null }[] | null;
-};
+/**
+ * @typedef {{
+ *   slot: number,
+ *   athlete: { full_name: string | null } | { full_name: string | null }[] | null,
+ *   team: { name: string | null } | { name: string | null }[] | null,
+ * }} Participant
+ */
 
-type MatchRow = {
-  id: string;
-  round: number;
-  slot: number;
-  status: string;
-  third_place: boolean;
-  match_participants: Participant[] | null;
-  match_scores: { set_no: number; slot1_score: number; slot2_score: number }[] | null;
-};
+/**
+ * @typedef {{
+ *   id: string,
+ *   round: number,
+ *   slot: number,
+ *   status: string,
+ *   third_place: boolean,
+ *   match_participants: Participant[] | null,
+ *   match_scores: { set_no: number, slot1_score: number, slot2_score: number }[] | null,
+ * }} MatchRow
+ */
 
-function nameForSlot(participants: Participant[] | null | undefined, slot: number): string {
+/**
+ * @param {Participant[] | null | undefined} participants
+ * @param {number} slot
+ * @returns {string}
+ */
+function nameForSlot(participants, slot) {
   if (!participants) return "—";
   const p = participants.find((x) => x.slot === slot);
   if (!p) return "—";
@@ -49,7 +61,11 @@ function nameForSlot(participants: Participant[] | null | undefined, slot: numbe
   return "—";
 }
 
-function scoreLine(scores: MatchRow["match_scores"]): string {
+/**
+ * @param {MatchRow["match_scores"]} scores
+ * @returns {string}
+ */
+function scoreLine(scores) {
   if (!scores || scores.length === 0) return "";
   return [...scores]
     .sort((a, b) => a.set_no - b.set_no)
@@ -57,7 +73,11 @@ function scoreLine(scores: MatchRow["match_scores"]): string {
     .join(" / ");
 }
 
-export default async function PrintBracketPage({ params }: Params) {
+/**
+ * @param {Params} props
+ * @returns {Promise<import("react").JSX.Element>}
+ */
+export default async function PrintBracketPage({ params }) {
   const { eventId } = await params;
   const supabase = await createClient();
 
@@ -86,13 +106,14 @@ export default async function PrintBracketPage({ params }: Params) {
     .order("round")
     .order("slot");
 
-  const list = (matches ?? []) as unknown as MatchRow[];
+  const list = /** @type {MatchRow[]} */ (/** @type {unknown} */ (matches ?? []));
 
-  const grouped = new Map<string, MatchRow[]>();
+  /** @type {Map<string, MatchRow[]>} */
+  const grouped = new Map();
   for (const m of list) {
     const key = m.third_place ? "Tranh hạng 3" : `Vòng ${m.round}`;
     if (!grouped.has(key)) grouped.set(key, []);
-    grouped.get(key)!.push(m);
+    /** @type {MatchRow[]} */ (grouped.get(key)).push(m);
   }
 
   return (

@@ -1,12 +1,13 @@
-import type { NotificationType } from "@/lib/notifications/templates";
+/** @typedef {import("@/lib/notifications/templates").NotificationType} NotificationType */
 
-export type EnqueueParams = {
-  type: NotificationType;
-  user_id?: string | null;
-  email?: string | null;
-  payload?: Record<string, unknown>;
-  dedup_key?: string | null;
-};
+/**
+ * @typedef {object} EnqueueParams
+ * @property {NotificationType} type
+ * @property {string | null} [user_id]
+ * @property {string | null} [email]
+ * @property {Record<string, unknown>} [payload]
+ * @property {string | null} [dedup_key]
+ */
 
 // Minimal duck-typed client surface — `.from("notifications").insert(...)`
 // only. Avoids @supabase/supabase-js schema-generic friction.
@@ -15,23 +16,28 @@ export type EnqueueParams = {
 // scoped to the wrong schema will receive a Postgres error ("relation
 // does not exist") which is returned as `{ ok: false, error: <msg> }`.
 // The SSR client from `@/lib/supabase/server` satisfies this already.
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type Insertable = { insert(row: Record<string, unknown>): any };
-type NotificationsCapableClient = {
-  from(table: "notifications"): Insertable;
-};
+/**
+ * @typedef {object} Insertable
+ * @property {(row: Record<string, unknown>) => any} insert
+ */
+/**
+ * @typedef {object} NotificationsCapableClient
+ * @property {(table: "notifications") => Insertable} from
+ */
 
-export type EnqueueResult = {
-  ok: boolean;
-  error?: string;
-  /** true when the row was skipped due to a duplicate dedup_key (idempotent) */
-  deduped?: boolean;
-};
+/**
+ * @typedef {object} EnqueueResult
+ * @property {boolean} ok
+ * @property {string} [error]
+ * @property {boolean} [deduped] true when the row was skipped due to a duplicate dedup_key (idempotent)
+ */
 
-export async function enqueueNotification(
-  supabase: NotificationsCapableClient,
-  params: EnqueueParams,
-): Promise<EnqueueResult> {
+/**
+ * @param {NotificationsCapableClient} supabase
+ * @param {EnqueueParams} params
+ * @returns {Promise<EnqueueResult>}
+ */
+export async function enqueueNotification(supabase, params) {
   if (!params.user_id && !params.email) {
     return { ok: false, error: "user_id or email required" };
   }

@@ -4,16 +4,19 @@ import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { isAdmin } from "@/lib/auth/grants";
 
-type ActionResult = { error?: string; ok?: boolean };
+/** @typedef {{ error?: string, ok?: boolean }} ActionResult */
 
-async function assertAdmin(): Promise<string | null> {
+/** @returns {Promise<string | null>} */
+async function assertAdmin() {
   if (!(await isAdmin())) return "Không có quyền.";
   return null;
 }
 
-export async function markNotificationReadAction(
-  id: string,
-): Promise<ActionResult> {
+/**
+ * @param {string} id
+ * @returns {Promise<ActionResult>}
+ */
+export async function markNotificationReadAction(id) {
   const guard = await assertAdmin();
   if (guard) return { error: guard };
 
@@ -30,9 +33,11 @@ export async function markNotificationReadAction(
   return { ok: true };
 }
 
-export async function markAllNotificationsReadAction(
-  type: string | null,
-): Promise<ActionResult> {
+/**
+ * @param {string | null} type
+ * @returns {Promise<ActionResult>}
+ */
+export async function markAllNotificationsReadAction(type) {
   const guard = await assertAdmin();
   if (guard) return { error: guard };
 

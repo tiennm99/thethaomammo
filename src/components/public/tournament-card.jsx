@@ -1,28 +1,34 @@
 import Link from "next/link";
 import { formatDateRange } from "@/lib/format/date-range";
 
-type Props = {
-  slug: string;
-  name: string;
-  starts_at: string | null;
-  ends_at: string | null;
-  venue: string | null;
-  status: string;
-};
+/**
+ * @typedef {object} Props
+ * @property {string} slug
+ * @property {string} name
+ * @property {string | null} starts_at
+ * @property {string | null} ends_at
+ * @property {string | null} venue
+ * @property {string} status
+ */
 
-const STATUS_LABEL: Record<string, string> = {
+/** @type {Record<string, string>} */
+const STATUS_LABEL = {
   draft: "Nháp",
   open: "Đang mở đăng ký",
   in_progress: "Đang diễn ra",
   completed: "Đã kết thúc",
 };
 
-const STATUS_BADGE: Record<string, string> = {
+/** @type {Record<string, string>} */
+const STATUS_BADGE = {
   open: "bg-green-100 text-green-900",
   in_progress: "bg-blue-100 text-blue-900",
   completed: "bg-muted text-muted-foreground",
 };
 
+/**
+ * @param {Props} props
+ */
 export function TournamentCard({
   slug,
   name,
@@ -30,7 +36,7 @@ export function TournamentCard({
   ends_at,
   venue,
   status,
-}: Props) {
+}) {
   return (
     <Link
       href={`/giai/${slug}`}

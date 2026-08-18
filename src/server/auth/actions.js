@@ -16,7 +16,10 @@ const signUpSchema = signInSchema.extend({
 
 const resetSchema = z.object({ email: z.string().email() });
 
-export async function signInAction(formData: FormData) {
+/**
+ * @param {FormData} formData
+ */
+export async function signInAction(formData) {
   const parsed = signInSchema.safeParse(Object.fromEntries(formData));
   if (!parsed.success) return { error: "Email hoặc mật khẩu không hợp lệ." };
 
@@ -28,7 +31,10 @@ export async function signInAction(formData: FormData) {
   redirect("/");
 }
 
-export async function signUpAction(formData: FormData) {
+/**
+ * @param {FormData} formData
+ */
+export async function signUpAction(formData) {
   const parsed = signUpSchema.safeParse(Object.fromEntries(formData));
   if (!parsed.success) return { error: "Thông tin đăng ký không hợp lệ." };
 
@@ -43,7 +49,10 @@ export async function signUpAction(formData: FormData) {
   return { ok: true };
 }
 
-export async function resetPasswordAction(formData: FormData) {
+/**
+ * @param {FormData} formData
+ */
+export async function resetPasswordAction(formData) {
   const parsed = resetSchema.safeParse(Object.fromEntries(formData));
   if (!parsed.success) return { error: "Email không hợp lệ." };
 
@@ -54,6 +63,7 @@ export async function resetPasswordAction(formData: FormData) {
   return { ok: true };
 }
 
+/** Signs the current user out and redirects to /login. @returns {Promise<void>} */
 export async function signOutAction() {
   const supabase = await createClient();
   await supabase.auth.signOut();

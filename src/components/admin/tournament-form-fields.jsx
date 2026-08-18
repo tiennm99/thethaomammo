@@ -4,29 +4,37 @@ import {
   TextField,
 } from "@/components/admin/admin-form";
 
-type Tournament = {
-  slug?: string | null;
-  name?: string | null;
-  starts_at?: string | null;
-  ends_at?: string | null;
-  venue?: string | null;
-  status?: string | null;
-  zalo_group_url?: string | null;
-  payment_info_text?: string | null;
-};
+/**
+ * @typedef {object} Tournament
+ * @property {string | null} [slug]
+ * @property {string | null} [name]
+ * @property {string | null} [starts_at]
+ * @property {string | null} [ends_at]
+ * @property {string | null} [venue]
+ * @property {string | null} [status]
+ * @property {string | null} [zalo_group_url]
+ * @property {string | null} [payment_info_text]
+ */
 
-function toDateInput(value: string | null | undefined): string | null {
+/**
+ * @param {string | null | undefined} value
+ * @returns {string | null}
+ */
+function toDateInput(value) {
   if (!value) return null;
   const d = new Date(value);
   if (Number.isNaN(d.getTime())) return null;
-  const pad = (n: number) => String(n).padStart(2, "0");
+  const pad = (/** @type {number} */ n) => String(n).padStart(2, "0");
   return (
     `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}` +
     `T${pad(d.getHours())}:${pad(d.getMinutes())}`
   );
 }
 
-export function TournamentFormFields({ initial }: { initial?: Tournament }) {
+/**
+ * @param {{ initial?: Tournament }} props
+ */
+export function TournamentFormFields({ initial }) {
   return (
     <>
       <TextField

@@ -4,19 +4,17 @@ import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { recordSetAction } from "@/server/admin/scoring-actions";
 
-type Score = { set_no: number; slot1_score: number; slot2_score: number };
+/** @typedef {{ set_no: number, slot1_score: number, slot2_score: number }} Score */
 
-export function ScoringForm({
-  matchId,
-  initialScores,
-}: {
-  matchId: string;
-  initialScores: Score[];
-}) {
+/**
+ * @param {{ matchId: string, initialScores: Score[] }} props
+ */
+export function ScoringForm({ matchId, initialScores }) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
-  const [error, setError] = useState<string | null>(null);
-  const initial: Score[] = [1, 2, 3].map(
+  const [error, setError] = useState(/** @type {string | null} */ (null));
+  /** @type {Score[]} */
+  const initial = [1, 2, 3].map(
     (n) =>
       initialScores.find((s) => s.set_no === n) ?? {
         set_no: n,
@@ -26,7 +24,8 @@ export function ScoringForm({
   );
   const [sets, setSets] = useState(initial);
 
-  function saveSet(setNo: number) {
+  /** @param {number} setNo */
+  function saveSet(setNo) {
     const s = sets.find((x) => x.set_no === setNo);
     if (!s) return;
     setError(null);

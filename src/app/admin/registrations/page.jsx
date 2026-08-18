@@ -7,7 +7,8 @@ export const dynamic = "force-dynamic";
 
 const PAGE_SIZE = 100;
 
-const PAYMENT_LABEL: Record<string, string> = {
+/** @type {Record<string, string>} */
+const PAYMENT_LABEL = {
   unpaid: "Chưa thanh toán",
   pending: "Chờ duyệt",
   paid: "Đã thanh toán",
@@ -15,13 +16,15 @@ const PAYMENT_LABEL: Record<string, string> = {
   unknown: "Không rõ",
 };
 
-const STATUS_LABEL: Record<string, string> = {
+/** @type {Record<string, string>} */
+const STATUS_LABEL = {
   registered: "Đã đăng ký",
   confirmed: "Đã xác nhận",
   withdrew: "Rút lui",
 };
 
-const PAYMENT_BADGE: Record<string, string> = {
+/** @type {Record<string, string>} */
+const PAYMENT_BADGE = {
   unpaid: "bg-muted text-muted-foreground",
   pending: "bg-yellow-100 text-yellow-900",
   paid: "bg-green-100 text-green-900",
@@ -29,22 +32,20 @@ const PAYMENT_BADGE: Record<string, string> = {
   unknown: "bg-muted text-muted-foreground",
 };
 
-function formatDate(iso: string | null): string {
+/**
+ * @param {string | null} iso
+ * @returns {string}
+ */
+function formatDate(iso) {
   if (!iso) return "—";
   return new Date(iso).toLocaleString("vi-VN");
 }
 
-type SearchParams = Promise<{
-  event?: string;
-  payment?: string;
-  status?: string;
-}>;
-
-export default async function AdminRegistrationsListPage({
-  searchParams,
-}: {
-  searchParams: SearchParams;
-}) {
+/**
+ * @param {{ searchParams: Promise<{ event?: string, payment?: string, status?: string }> }} props
+ * @returns {Promise<import("react").JSX.Element>}
+ */
+export default async function AdminRegistrationsListPage({ searchParams }) {
   if (!(await isAdmin())) notFound();
 
   const sp = await searchParams;

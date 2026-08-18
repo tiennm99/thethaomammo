@@ -3,9 +3,9 @@
 import { createClient } from "@/lib/supabase/server";
 import { isAdmin } from "@/lib/auth/grants";
 
-export type BracketResult =
-  | { ok: true; rounds: number; matches: number; byes: number }
-  | { ok: false; error: string };
+/**
+ * @typedef {{ ok: true, rounds: number, matches: number, byes: number } | { ok: false, error: string }} BracketResult
+ */
 
 const KNOWN_ERRORS = new Set([
   "Sự kiện đã có bảng đấu. Hãy xoá trước khi tạo lại.",
@@ -14,10 +14,12 @@ const KNOWN_ERRORS = new Set([
   "forbidden",
 ]);
 
-export async function generateBracketAction(
-  eventId: string,
-  seed = "random",
-): Promise<BracketResult> {
+/**
+ * @param {string} eventId
+ * @param {string} [seed]
+ * @returns {Promise<BracketResult>}
+ */
+export async function generateBracketAction(eventId, seed = "random") {
   if (!(await isAdmin())) {
     return { ok: false, error: "forbidden" };
   }
@@ -38,13 +40,15 @@ export async function generateBracketAction(
     };
   }
 
-  const result = data as { rounds: number; matches: number; byes: number };
+  const result = /** @type {{ rounds: number, matches: number, byes: number }} */ (data);
   return { ok: true, ...result };
 }
 
-export async function rollbackMatchAction(matchId: string): Promise<
-  { ok: true } | { ok: false; error: string }
-> {
+/**
+ * @param {string} matchId
+ * @returns {Promise<{ ok: true } | { ok: false, error: string }>}
+ */
+export async function rollbackMatchAction(matchId) {
   if (!(await isAdmin())) {
     return { ok: false, error: "forbidden" };
   }

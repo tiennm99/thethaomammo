@@ -4,6 +4,7 @@ import { signInAction } from "@/server/auth/actions";
 
 export const metadata = { title: "Đăng nhập" };
 
+/** Login page. @returns {import("react").JSX.Element} */
 export default function LoginPage() {
   return (
     <main className="flex-1 flex items-center justify-center p-6">

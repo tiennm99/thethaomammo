@@ -9,6 +9,7 @@ export const metadata = {
     "Danh sách các giải thể thao thiện nguyện đang mở đăng ký và đang diễn ra.",
 };
 
+/** Public home page: upcoming and live tournaments. @returns {Promise<import("react").JSX.Element>} */
 export default async function HomePage() {
   const supabase = await createClient();
 

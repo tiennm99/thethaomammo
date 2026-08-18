@@ -5,28 +5,31 @@ import { createClient } from "@/lib/supabase/server";
 import { registrationSchema } from "@/lib/schemas/registration";
 import { registrationRateLimit } from "@/lib/upstash/ratelimit";
 
-export type RegisterResult =
-  | {
-      ok: true;
-      registration_ids: string[];
-      athlete_ids: string[];
-      team_id: string | null;
-    }
-  | { ok: false; error: string };
+/**
+ * @typedef {
+ *   | { ok: true, registration_ids: string[], athlete_ids: string[], team_id: string | null }
+ *   | { ok: false, error: string }
+ * } RegisterResult
+ */
 
 const GENERIC_ERROR = "Đăng ký không thành công. Vui lòng thử lại.";
 
 // Whitelist of Vietnamese error messages our RPC explicitly raises.
 // Anything else collapses to GENERIC_ERROR so raw Postgres details
 // (constraint names, stack hints) never leak to client.
-const KNOWN_RPC_ERRORS = new Set<string>([
+/** @type {Set<string>} */
+const KNOWN_RPC_ERRORS = new Set([
   "Vận động viên đã đăng ký cho nội dung này.",
   "Giải đấu không mở đăng ký.",
   "Hai vận động viên phải khác nhau.",
   "event not found",
 ]);
 
-export async function registerAction(rawPayload: unknown): Promise<RegisterResult> {
+/**
+ * @param {unknown} rawPayload
+ * @returns {Promise<RegisterResult>}
+ */
+export async function registerAction(rawPayload) {
   const parsed = registrationSchema.safeParse(rawPayload);
   if (!parsed.success) {
     return { ok: false, error: parsed.error.issues[0]?.message ?? "Dữ liệu không hợp lệ." };
@@ -55,11 +58,9 @@ export async function registerAction(rawPayload: unknown): Promise<RegisterResul
     return { ok: false, error: GENERIC_ERROR };
   }
 
-  const result = data as {
-    registration_ids: string[];
-    athlete_ids: string[];
-    team_id: string | null;
-  };
+  const result = /** @type {{ registration_ids: string[], athlete_ids: string[], team_id: string | null }} */ (
+    data
+  );
   return {
     ok: true,
     registration_ids: result.registration_ids,

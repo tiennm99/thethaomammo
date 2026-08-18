@@ -12,9 +12,11 @@ import { ArchiveButton } from "./archive-button";
 
 export const dynamic = "force-dynamic";
 
-type Params = { params: Promise<{ id: string }> };
-
-export default async function AdminTournamentEditPage({ params }: Params) {
+/**
+ * @param {{ params: Promise<{ id: string }> }} props
+ * @returns {Promise<import("react").JSX.Element>}
+ */
+export default async function AdminTournamentEditPage({ params }) {
   if (!(await isAdmin())) notFound();
   const { id } = await params;
   const supabase = await createClient();

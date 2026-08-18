@@ -4,14 +4,16 @@ import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { uploadGalleryPhotosAction } from "@/server/admin/gallery";
 
-export function GalleryUploadForm({ tournamentId }: { tournamentId: string }) {
+/** @param {{ tournamentId: string }} props */
+export function GalleryUploadForm({ tournamentId }) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
-  const [error, setError] = useState<string | null>(null);
-  const [info, setInfo] = useState<string | null>(null);
-  const [partial, setPartial] = useState<string[]>([]);
+  const [error, setError] = useState(/** @type {string | null} */ (null));
+  const [info, setInfo] = useState(/** @type {string | null} */ (null));
+  const [partial, setPartial] = useState(/** @type {string[]} */ ([]));
 
-  function onSubmit(fd: FormData) {
+  /** @param {FormData} fd */
+  function onSubmit(fd) {
     setError(null);
     setInfo(null);
     setPartial([]);

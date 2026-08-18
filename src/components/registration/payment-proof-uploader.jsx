@@ -3,18 +3,25 @@
 import { useState } from "react";
 import { getSupabase } from "@/lib/supabase/browser";
 
-type Props = {
-  tournamentId: string;
-  onUploaded: (path: string) => void;
-};
+/**
+ * @typedef {object} Props
+ * @property {string} tournamentId
+ * @property {(path: string) => void} onUploaded
+ */
 
-export function PaymentProofUploader({ tournamentId, onUploaded }: Props) {
-  const [preview, setPreview] = useState<string | null>(null);
+/**
+ * @param {Props} props
+ */
+export function PaymentProofUploader({ tournamentId, onUploaded }) {
+  const [preview, setPreview] = useState(/** @type {string | null} */ (null));
   const [uploading, setUploading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [path, setPath] = useState<string | null>(null);
+  const [error, setError] = useState(/** @type {string | null} */ (null));
+  const [path, setPath] = useState(/** @type {string | null} */ (null));
 
-  async function handleFile(file: File) {
+  /**
+   * @param {File} file
+   */
+  async function handleFile(file) {
     setError(null);
     if (!file.type.match(/^image\/(jpe?g|png|webp)$/)) {
       setError("Chỉ chấp nhận ảnh JPG/PNG/WEBP.");

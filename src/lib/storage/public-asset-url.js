@@ -3,12 +3,14 @@
 
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
 
-export type PublicBucket = "tournament-assets" | "gallery";
+/** @typedef {"tournament-assets" | "gallery"} PublicBucket */
 
-export function publicAssetUrl(
-  bucket: PublicBucket,
-  path: string | null | undefined,
-): string | null {
+/**
+ * @param {PublicBucket} bucket
+ * @param {string | null | undefined} path
+ * @returns {string | null}
+ */
+export function publicAssetUrl(bucket, path) {
   if (!path) return null;
   if (!SUPABASE_URL) return null;
   return `${SUPABASE_URL}/storage/v1/object/public/${bucket}/${path}`;

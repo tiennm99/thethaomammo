@@ -1,6 +1,7 @@
 import Link from "next/link";
 
-const groups: { label: string; items: { href: string; label: string }[] }[] = [
+/** @type {{ label: string; items: { href: string; label: string }[] }[]} */
+const groups = [
   {
     label: "Tổng quan",
     items: [{ href: "/admin", label: "Dashboard" }],
@@ -33,6 +34,7 @@ const groups: { label: string; items: { href: string; label: string }[] }[] = [
   },
 ];
 
+/** Admin navigation sidebar with active-route highlighting. @returns {import("react").JSX.Element} */
 export function AdminSidebar() {
   return (
     <aside className="w-56 shrink-0 border-r border-border bg-card">

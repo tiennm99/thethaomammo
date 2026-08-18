@@ -18,10 +18,11 @@ export const tournamentInputSchema = z.object({
   payment_info_text: z.string().max(2000).optional().nullable(),
 });
 
-export type TournamentInput = z.infer<typeof tournamentInputSchema>;
+/** @typedef {import("zod").infer<typeof tournamentInputSchema>} TournamentInput */
 
-export function tournamentFormDataToInput(fd: FormData) {
-  const obj = Object.fromEntries(fd) as Record<string, string>;
+/** @param {FormData} fd */
+export function tournamentFormDataToInput(fd) {
+  const obj = /** @type {Record<string, string>} */ (Object.fromEntries(fd));
   return {
     slug: obj.slug,
     name: obj.name,

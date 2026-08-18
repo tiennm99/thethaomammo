@@ -15,10 +15,11 @@ export const athleteInputSchema = z.object({
   phone: z.string().max(20).nullable(),
 });
 
-export type AthleteInput = z.infer<typeof athleteInputSchema>;
+/** @typedef {import("zod").infer<typeof athleteInputSchema>} AthleteInput */
 
-export function athleteFormDataToInput(fd: FormData) {
-  const obj = Object.fromEntries(fd) as Record<string, string>;
+/** @param {FormData} fd */
+export function athleteFormDataToInput(fd) {
+  const obj = /** @type {Record<string, string>} */ (Object.fromEntries(fd));
   return {
     full_name: obj.full_name,
     dob: obj.dob || null,

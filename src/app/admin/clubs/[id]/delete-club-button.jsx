@@ -3,14 +3,13 @@
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 
-type Props = {
-  action: () => Promise<{ error?: string; ok?: boolean }>;
-};
-
-export function DeleteClubButton({ action }: Props) {
+/**
+ * @param {{ action: () => Promise<{ error?: string, ok?: boolean }> }} props
+ */
+export function DeleteClubButton({ action }) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState(/** @type {string | null} */ (null));
 
   function onClick() {
     if (!window.confirm("Xóa CLB này?")) return;

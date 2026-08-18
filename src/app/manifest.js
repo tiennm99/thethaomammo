@@ -1,6 +1,7 @@
-import type { MetadataRoute } from "next";
-
-export default function manifest(): MetadataRoute.Manifest {
+/**
+ * @returns {import("next").MetadataRoute.Manifest}
+ */
+export default function manifest() {
   return {
     name: "Thể Thao Mầm Mơ",
     short_name: "Mầm Mơ",

@@ -7,16 +7,20 @@ import { RevokeButton } from "./revoke-button";
 
 export const dynamic = "force-dynamic";
 
-const ROLE_LABEL: Record<string, string> = {
+/** @type {Record<string, string>} */
+const ROLE_LABEL = {
   admin: "Quản trị",
   club_manager: "Quản lý CLB",
   referee: "Trọng tài",
   athlete: "Vận động viên",
 };
 
-type Profile = { user_id: string; display_name: string | null };
-type Grant = { user_id: string; role: string; scope_id: string | null };
+/** @typedef {{ user_id: string, display_name: string | null }} Profile */
+/** @typedef {{ user_id: string, role: string, scope_id: string | null }} Grant */
 
+/**
+ * @returns {Promise<import("react").JSX.Element>}
+ */
 export default async function AdminUsersGrantsPage() {
   if (!(await isAdmin())) notFound();
 
@@ -34,7 +38,7 @@ export default async function AdminUsersGrantsPage() {
       .order("name"),
   ]);
 
-  const grants = (grantsRes.data ?? []) as Grant[];
+  const grants = /** @type {Grant[]} */ (grantsRes.data ?? []);
   const clubs = clubsRes.data ?? [];
 
   const userIds = Array.from(new Set(grants.map((g) => g.user_id)));
@@ -44,12 +48,13 @@ export default async function AdminUsersGrantsPage() {
         .from("profiles")
         .select("user_id, display_name")
         .in("user_id", userIds)
-    : { data: [] as Profile[] };
-  const profiles = (profilesRes.data ?? []) as Profile[];
+    : { data: /** @type {Profile[]} */ ([]) };
+  const profiles = /** @type {Profile[]} */ (profilesRes.data ?? []);
   const profileById = new Map(profiles.map((p) => [p.user_id, p]));
   const clubById = new Map(clubs.map((c) => [c.id, c.name]));
 
-  const grantsByUser = new Map<string, Grant[]>();
+  /** @type {Map<string, Grant[]>} */
+  const grantsByUser = new Map();
   for (const g of grants) {
     const list = grantsByUser.get(g.user_id) ?? [];
     list.push(g);

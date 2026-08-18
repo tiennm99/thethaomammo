@@ -12,10 +12,11 @@ export const clubInputSchema = z.object({
   zalo_phone: z.string().max(20).optional().nullable(),
 });
 
-export type ClubInput = z.infer<typeof clubInputSchema>;
+/** @typedef {import("zod").infer<typeof clubInputSchema>} ClubInput */
 
-export function clubFormDataToInput(fd: FormData) {
-  const obj = Object.fromEntries(fd) as Record<string, string>;
+/** @param {FormData} fd */
+export function clubFormDataToInput(fd) {
+  const obj = /** @type {Record<string, string>} */ (Object.fromEntries(fd));
   return {
     slug: obj.slug,
     name: obj.name,

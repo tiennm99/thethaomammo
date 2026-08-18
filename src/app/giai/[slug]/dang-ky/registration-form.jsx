@@ -6,51 +6,53 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { AthleteFields } from "@/components/registration/athlete-fields";
 import { PaymentProofUploader } from "@/components/registration/payment-proof-uploader";
-import {
-  registrationSchema,
-  type RegistrationPayload,
-} from "@/lib/schemas/registration";
+import { registrationSchema } from "@/lib/schemas/registration";
 import { registerAction } from "./actions";
 
-type Event = {
-  id: string;
-  name: string;
-  kind: "singles" | "doubles";
-  entry_fee_vnd: number;
-};
+/** @typedef {import("@/lib/schemas/registration").RegistrationPayload} RegistrationPayload */
 
-type Props = {
-  tournamentId: string;
-  tournamentSlug: string;
-  events: Event[];
-};
+/** @typedef {{ id: string, name: string, kind: "singles" | "doubles", entry_fee_vnd: number }} Event */
 
-export function RegistrationForm({ tournamentId, tournamentSlug, events }: Props) {
+/**
+ * @param {{ tournamentId: string, tournamentSlug: string, events: Event[] }} props
+ */
+export function RegistrationForm({ tournamentId, tournamentSlug, events }) {
   const router = useRouter();
   const [eventId, setEventId] = useState(events[0]?.id ?? "");
-  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [submitError, setSubmitError] = useState(/** @type {string | null} */ (null));
   const [pending, startTransition] = useTransition();
 
   const selectedEvent = useMemo(
     () => events.find((e) => e.id === eventId),
     [events, eventId],
   );
-  const kind: "singles" | "doubles" = selectedEvent?.kind ?? "singles";
+  /** @type {"singles" | "doubles"} */
+  const kind = selectedEvent?.kind ?? "singles";
 
-  const form = useForm<RegistrationPayload>({
-    resolver: zodResolver(registrationSchema),
-    defaultValues: {
-      kind: "singles",
-      event_id: eventId,
-      athletes: [
-        { full_name: "", dob: "", gender: "male", club_name: "", phone: "" },
-      ],
-      payment_proof_path: "",
-    },
-    shouldUnregister: false,
-  });
+  // The schema is a discriminated union (singles | doubles); the TS version
+  // pinned useForm<RegistrationPayload> explicitly, which JSDoc can only
+  // express by casting the returned form object.
+  const form = /** @type {import("react-hook-form").UseFormReturn<RegistrationPayload>} */ (
+    /** @type {unknown} */ (
+      useForm({
+        resolver: zodResolver(registrationSchema),
+        defaultValues: {
+          kind: "singles",
+          event_id: eventId,
+          athletes: [
+            { full_name: "", dob: "", gender: "male", club_name: "", phone: "" },
+          ],
+          payment_proof_path: "",
+        },
+        shouldUnregister: false,
+      })
+    )
+  );
 
-  function onEventChange(nextEventId: string) {
+  /**
+   * @param {string} nextEventId
+   */
+  function onEventChange(nextEventId) {
     setEventId(nextEventId);
     const next = events.find((e) => e.id === nextEventId);
     if (!next) return;
@@ -76,7 +78,10 @@ export function RegistrationForm({ tournamentId, tournamentSlug, events }: Props
     }
   }
 
-  function onSubmit(values: RegistrationPayload) {
+  /**
+   * @param {RegistrationPayload} values
+   */
+  function onSubmit(values) {
     setSubmitError(null);
     startTransition(async () => {
       const result = await registerAction(values);

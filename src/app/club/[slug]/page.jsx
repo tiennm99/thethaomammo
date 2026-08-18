@@ -1,19 +1,22 @@
 import { cache } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
 
 export const revalidate = 300;
 
-type Params = { params: Promise<{ slug: string }> };
+/** @typedef {{ params: Promise<{ slug: string }> }} Params */
 
-const GENDER_LABEL: Record<string, string> = {
+/** @type {Record<string, string>} */
+const GENDER_LABEL = {
   male: "Nam",
   female: "Nữ",
 };
 
-const loadClub = cache(async (slug: string) => {
+/**
+ * @param {string} slug
+ */
+const loadClub = cache(async (/** @type {string} */ slug) => {
   const supabase = await createClient();
   const { data } = await supabase
     .from("clubs")
@@ -24,7 +27,11 @@ const loadClub = cache(async (slug: string) => {
   return data;
 });
 
-export async function generateMetadata({ params }: Params): Promise<Metadata> {
+/**
+ * @param {Params} props
+ * @returns {Promise<import("next").Metadata>}
+ */
+export async function generateMetadata({ params }) {
   const { slug } = await params;
   const data = await loadClub(slug);
   if (!data) return { title: "Không tìm thấy CLB" };
@@ -34,7 +41,11 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   };
 }
 
-export default async function ClubPage({ params }: Params) {
+/**
+ * @param {Params} props
+ * @returns {Promise<import("react").JSX.Element>}
+ */
+export default async function ClubPage({ params }) {
   const { slug } = await params;
   const club = await loadClub(slug);
   if (!club) notFound();

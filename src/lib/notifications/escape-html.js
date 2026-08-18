@@ -1,4 +1,5 @@
-const MAP: Record<string, string> = {
+/** @type {Record<string, string>} */
+const MAP = {
   "&": "&amp;",
   "<": "&lt;",
   ">": "&gt;",
@@ -6,7 +7,11 @@ const MAP: Record<string, string> = {
   "'": "&#39;",
 };
 
-export function escapeHtml(value: unknown): string {
+/**
+ * @param {unknown} value
+ * @returns {string}
+ */
+export function escapeHtml(value) {
   if (value === null || value === undefined) return "";
   return String(value).replace(/[&<>"']/g, (ch) => MAP[ch] ?? ch);
 }

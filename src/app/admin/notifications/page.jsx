@@ -9,7 +9,8 @@ export const dynamic = "force-dynamic";
 
 const PAGE_SIZE = 100;
 
-const TYPE_LABEL: Record<string, string> = {
+/** @type {Record<string, string>} */
+const TYPE_LABEL = {
   registration_success: "Đăng ký thành công",
   payment_verified: "Đã duyệt thanh toán",
   payment_rejected: "Từ chối thanh toán",
@@ -19,24 +20,27 @@ const TYPE_LABEL: Record<string, string> = {
   bracket_generated: "Đã sinh bảng",
 };
 
-const STATUS_LABEL: Record<string, string> = {
+/** @type {Record<string, string>} */
+const STATUS_LABEL = {
   queued: "Trong hàng đợi",
   sent: "Đã gửi",
   failed: "Lỗi gửi",
 };
 
-function formatDate(iso: string | null): string {
+/**
+ * @param {string | null} iso
+ * @returns {string}
+ */
+function formatDate(iso) {
   if (!iso) return "—";
   return new Date(iso).toLocaleString("vi-VN");
 }
 
-type SearchParams = Promise<{ type?: string; unread?: string }>;
-
-export default async function AdminNotificationsPage({
-  searchParams,
-}: {
-  searchParams: SearchParams;
-}) {
+/**
+ * @param {{ searchParams: Promise<{ type?: string, unread?: string }> }} props
+ * @returns {Promise<import("react").JSX.Element>}
+ */
+export default async function AdminNotificationsPage({ searchParams }) {
   if (!(await isAdmin())) notFound();
 
   const sp = await searchParams;
