@@ -81,7 +81,7 @@ Never import the service-role key from anything in `src/`.
 
 - Always go through `enqueueNotification(supabase, { type, user_id, payload, dedup_key })`.
 - Set `dedup_key` to `"{event_kind}:{primary_id}"` — repeat inserts no-op.
-- New notification type → add to `notification_type` enum (Supabase migration) AND add a renderer in `src/lib/notifications/templates.ts` + mirror it in `supabase/functions/_shared/templates.ts`.
+- New notification type → add to `notification_type` enum (Supabase migration) AND add a renderer in `src/lib/notifications/templates.js` + mirror it in `supabase/functions/_shared/templates.js`.
 
 ## Tests
 

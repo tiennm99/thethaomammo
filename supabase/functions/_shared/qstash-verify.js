@@ -7,13 +7,19 @@ import { Receiver } from "https://esm.sh/@upstash/qstash@2.7.16";
 // Detect production Supabase edge runtime. DENO_DEPLOYMENT_ID is injected
 // by the Supabase edge runtime for every deployed function; it is absent in
 // `supabase functions serve` (local dev).
-function isProduction(): boolean {
+/** @returns {boolean} */
+function isProduction() {
   if (Deno.env.get("DENO_DEPLOYMENT_ID")) return true;
   const supabaseUrl = Deno.env.get("SUPABASE_URL") ?? "";
   return supabaseUrl.includes("supabase.co");
 }
 
-export async function verifyQstash(req: Request, rawBody: string): Promise<boolean> {
+/**
+ * @param {Request} req
+ * @param {string} rawBody
+ * @returns {Promise<boolean>}
+ */
+export async function verifyQstash(req, rawBody) {
   const current = Deno.env.get("QSTASH_CURRENT_SIGNING_KEY");
   const next = Deno.env.get("QSTASH_NEXT_SIGNING_KEY");
   if (!current) {

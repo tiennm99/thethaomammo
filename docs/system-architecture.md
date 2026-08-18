@@ -46,7 +46,7 @@ flowchart TD
   Q[QStash cron *_/5 * * * *_]
   Q -->|HTTP POST| D[Edge fn: dispatch-notifications]
   D -->|select 20 oldest queued| N
-  D -->|renderEmail| T[templates.ts]
+  D -->|renderEmail| T[templates.js]
   D -->|SMTP send| G[Gmail]
   D -->|update status='sent'| N
   Q2[QStash cron daily 01:00 UTC]

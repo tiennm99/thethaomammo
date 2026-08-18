@@ -2,19 +2,20 @@
 // Gmail SMTP, mark sent/failed. Invoked by QStash on a 5-min schedule.
 
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.4";
-import { renderEmail, type NotificationType } from "../_shared/templates.ts";
-import { sendMail } from "../_shared/smtp.ts";
-import { verifyQstash } from "../_shared/qstash-verify.ts";
+import { renderEmail } from "../_shared/templates.js";
+import { sendMail } from "../_shared/smtp.js";
+import { verifyQstash } from "../_shared/qstash-verify.js";
 
 const BATCH = 20;
 
-type QueuedRow = {
-  id: string;
-  type: NotificationType;
-  email: string | null;
-  user_id: string | null;
-  payload: Record<string, unknown>;
-};
+/**
+ * @typedef {Object} QueuedRow
+ * @property {string} id
+ * @property {import("../_shared/templates.js").NotificationType} type
+ * @property {string | null} email
+ * @property {string | null} user_id
+ * @property {Record<string, unknown>} payload
+ */
 
 Deno.serve(async (req) => {
   const raw = await req.text();
@@ -47,7 +48,7 @@ Deno.serve(async (req) => {
     });
   }
 
-  const queued = (rows ?? []) as QueuedRow[];
+  const queued = /** @type {QueuedRow[]} */ (rows ?? []);
   let sent = 0;
   let failed = 0;
   let skipped = 0;
