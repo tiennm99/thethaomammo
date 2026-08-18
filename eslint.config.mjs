@@ -1,10 +1,28 @@
 import { defineConfig, globalIgnores } from "eslint/config";
 import nextVitals from "eslint-config-next/core-web-vitals";
-import nextTs from "eslint-config-next/typescript";
+import jsdoc from "eslint-plugin-jsdoc";
 
 const eslintConfig = defineConfig([
   ...nextVitals,
-  ...nextTs,
+  {
+    files: ["**/*.{js,jsx,mjs,cjs}"],
+    plugins: { jsdoc },
+    rules: {
+      "jsdoc/require-jsdoc": [
+        "warn",
+        {
+          publicOnly: true,
+          require: {
+            FunctionDeclaration: true,
+            FunctionExpression: true,
+            ArrowFunctionExpression: true,
+          },
+        },
+      ],
+      "jsdoc/require-param-type": "warn",
+      "jsdoc/require-returns-type": "warn",
+    },
+  },
   globalIgnores([
     ".next/**",
     "out/**",
@@ -13,9 +31,9 @@ const eslintConfig = defineConfig([
     "playwright-report/**",
     "test-results/**",
     "node_modules/**",
+    "supabase/functions/**",
     "*.config.js",
     "*.config.mjs",
-    "*.config.ts",
   ]),
 ]);
 

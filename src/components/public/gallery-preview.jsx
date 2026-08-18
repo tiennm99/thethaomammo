@@ -1,0 +1,55 @@
+import Link from "next/link";
+import { publicAssetUrl } from "@/lib/storage/public-asset-url";
+
+/**
+ * @typedef {object} Photo
+ * @property {string} id
+ * @property {string} storage_path
+ * @property {string | null} caption
+ */
+
+/**
+ * @typedef {object} Props
+ * @property {string} tournamentId
+ * @property {Photo[]} photos
+ */
+
+/**
+ * @param {Props} props
+ */
+export function GalleryPreview({ tournamentId, photos }) {
+  if (photos.length === 0) return null;
+
+  return (
+    <div className="space-y-3">
+      <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
+        {photos.slice(0, 6).map((p) => {
+          const url = publicAssetUrl("gallery", p.storage_path);
+          if (!url) return null;
+          return (
+            <li
+              key={p.id}
+              className="aspect-square overflow-hidden rounded-md bg-muted/40"
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element -- public gallery thumb served from public Supabase bucket */}
+              <img
+                src={url}
+                alt={p.caption ?? "Ảnh giải đấu"}
+                loading="lazy"
+                className="w-full h-full object-cover"
+              />
+            </li>
+          );
+        })}
+      </ul>
+      {photos.length > 6 && (
+        <Link
+          href={`/gallery/${tournamentId}`}
+          className="text-sm underline text-muted-foreground"
+        >
+          Xem tất cả {photos.length} ảnh →
+        </Link>
+      )}
+    </div>
+  );
+}
