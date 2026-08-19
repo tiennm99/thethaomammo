@@ -1,5 +1,13 @@
 # Final Stack Proposal — thethaomammo (Tournament Mgmt)
 
+> **Historical proposal — the pnpm and TypeScript picks were not adopted.** The
+> "locked-in core" below is the stack as proposed in May 2026. What shipped uses
+> **npm** and **plain JavaScript with JSDoc types** (`package-lock.json`,
+> `jsconfig.json`, `npm run typecheck`, no TypeScript sources); the rest of the
+> proposal (Next.js, Vercel, Supabase, Upstash) stands. Kept for the record of a
+> considered-and-rejected approach — do not follow it to reintroduce pnpm or
+> TypeScript.
+
 **Date:** 2026-05-22
 **Locked-in core:** Next.js + Vercel + Supabase + pnpm + TypeScript
 **Audience:** small/regional Vietnamese badminton/sports community
