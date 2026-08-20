@@ -10,6 +10,14 @@ note: Fresh-start path chosen for v1.0 launch — empty DB, admin CRUD via Phase
 
 # Phase 10 — Data Migration (OPTIONAL)
 
+> **Historical planning document — the tooling here was superseded.** This plan
+> prescribes pnpm and TypeScript. Neither was adopted. The repo ships **npm** and
+> **plain JavaScript with JSDoc types** — `package-lock.json`, `jsconfig.json`,
+> `npm run typecheck` (`tsc` in checkJs mode over JS only), and zero TypeScript
+> sources. Read the commands and file names below as a record of what was planned,
+> not as instructions: substitute `npm` for every `pnpm`, and the `.ts` / `.tsx`
+> paths named here exist as `.js` / `.jsx`. Do not reintroduce pnpm or TypeScript.
+
 ## Context Links
 - [Data migration audit](research/researcher-data-migration-audit.md) — full schema map (this phase migrates a subset).
 - [Phase 02 — `shared.app_grants`](phase-02-auth-and-rls-foundation.md)

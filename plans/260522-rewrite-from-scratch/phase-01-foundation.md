@@ -8,6 +8,14 @@ blocks: [02, 03, 04, 05, 06, 07, 08, 09]
 
 # Phase 01 — Foundation
 
+> **Historical planning document — the tooling here was superseded.** This plan
+> prescribes pnpm and TypeScript. Neither was adopted. The repo ships **npm** and
+> **plain JavaScript with JSDoc types** — `package-lock.json`, `jsconfig.json`,
+> `npm run typecheck` (`tsc` in checkJs mode over JS only), and zero TypeScript
+> sources. Read the commands and file names below as a record of what was planned,
+> not as instructions: substitute `npm` for every `pnpm`, and the `.ts` / `.tsx`
+> paths named here exist as `.js` / `.jsx`. Do not reintroduce pnpm or TypeScript.
+
 ## Context Links
 - [Stack proposal](research/brainstormer-final-stack-proposal.md)
 - [Current state audit](research/researcher-current-state-audit.md)

@@ -9,6 +9,14 @@ depends_on: [03, 04]
 
 # Phase 05 — Bracket + Scoring
 
+> **Historical planning document — the tooling here was superseded.** This plan
+> prescribes pnpm and TypeScript. Neither was adopted. The repo ships **npm** and
+> **plain JavaScript with JSDoc types** — `package-lock.json`, `jsconfig.json`,
+> `npm run typecheck` (`tsc` in checkJs mode over JS only), and zero TypeScript
+> sources. Read the commands and file names below as a record of what was planned,
+> not as instructions: substitute `npm` for every `pnpm`, and the `.ts` / `.tsx`
+> paths named here exist as `.js` / `.jsx`. Do not reintroduce pnpm or TypeScript.
+
 ## Context Links
 - [Audit § Matches & Live Scoring](research/researcher-current-state-audit.md)
 - [Audit § Risk: Bracket complexity](research/researcher-current-state-audit.md)
